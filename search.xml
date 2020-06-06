@@ -1,0 +1,1138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Writing-1</title>
+    <url>/2020/05/17/Writing-1/</url>
+    <content><![CDATA[<div class="pdfobject-container" data-target="Writing-1/notes.pdf" data-height="500px"></div>
+]]></content>
+  </entry>
+  <entry>
+    <title>NoSQL数据库系统Hadoop-Hbase安装配置(伪分布模式)与简单使用</title>
+    <url>/2020/05/15/Hadoop-Hbase/</url>
+    <content><![CDATA[<ul>
+<li>Hbase是一种NoSQL数据库，这意味着它不像传统的RDBMS(关系数据库管理系统 Relational Database Management System)数据库那样支持SQL作为查询语言</li>
+<li>Hbase是一种分布式存储的数据库，技术上来讲，它更像是分布式存储而不是分布式数据库</li>
+<li>数据库量要足够多，如果有十亿及百亿行数据，那么Hbase是一个很好的选项，如果只有几百万行甚至不到的数据量，RDBMS是一个很好的选择。因为数据量小的话，真正能工作的机器量少，剩余的机器都处于空闲的状态</li>
+<li>保证硬件资源足够，每个HDFS集群在少于5个节点的时候，都不能表现的很好。因为HDFS默认的复制数量是3，再加上一个NameNode</li>
+</ul>
+<a id="more"></a>
+<h2 id="实验环境">实验环境</h2>
+<ul>
+<li>VMware Workstation Pro 12</li>
+<li>系统为Ubuntu 16.04 Server的Linux虚拟机</li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">jdk-8u201-linux-x64.tar.gz</a>，<a href="https://www.oracle.com/webfolder/s/digest/8u201checksum.html" target="_blank" rel="noopener">校验和</a></li>
+<li><a href="http://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-3.1.2/hadoop-3.1.2.tar.gz" target="_blank" rel="noopener">hadoop-3.1.2.tar.gz</a>，<a href="https://archive.apache.org/dist/hadoop/common/hadoop-3.1.2/hadoop-3.1.2.tar.gz.mds" target="_blank" rel="noopener">校验和</a></li>
+<li>hbase-1.2.11-bin.tar.gz，<a href="https://archive.apache.org/dist/hbase/hbase-1.2.11/hbase-1.2.11-bin.tar.gz.sha512" target="_blank" rel="noopener">校验和</a></li>
+<li><a href="https://hadoop.apache.org/docs/r3.2.0/hadoop-project-dist/hadoop-common/SingleCluster.html" target="_blank" rel="noopener">官方教程1</a>、<a href="https://hbase.apache.org/book.html" target="_blank" rel="noopener">官方教程2</a></li>
+</ul>
+<h2 id="hbase结构">HBase结构</h2>
+<p><img data-src="hbase-construction.webp"></p>
+<h2 id="实验过程">实验过程</h2>
+<h3 id="准备阶段">准备阶段</h3>
+<h4 id="创建实验用户hadoop">创建实验用户hadoop</h4>
+<ul>
+<li><p>[再已配置mysql cluster的基础上] 可以采用已有的mysql用户，给mysql用户做相应管理员权限赋权，后续需要用到用户名hadoop的时候，使用mysql</p></li>
+<li><p>此处选择新创建hadoop用户</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo useradd -m hadoop -s &#x2F;bin&#x2F;bash  #创建hadoop用户，并使用&#x2F;bin&#x2F;bash作为shell</span><br><span class="line">$ sudo passwd hadoop  #为hadoop用户设置密码，之后需要连续输入两次密码</span><br><span class="line">$ sudo adduser hadoop sudo #为hadoop用户增加管理员权限</span><br><span class="line">$ su - hadoop            #切换当前用户为用户hadoop</span><br><span class="line">$ sudo apt-get update    #更新hadoop用户的apt,方便后面的安装</span><br></pre></td></tr></table></figure>
+<p><img data-src="adduserhadoop.png"></p></li>
+</ul>
+<h4 id="ssh配置免密登录">SSH配置免密登录</h4>
+<ul>
+<li><p>安装SSH，设置SSH无密码登陆</p>
+<p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install openssh-server   #安装SSH server</span><br><span class="line">$ ssh localhost         #登陆SSH，第一次登陆输入yes</span><br><span class="line">$ exit                  #退出登录的ssh localhost</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="ssh-install.png" width=70%></p></li>
+<li><p>生成密钥</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd ~&#x2F;.ssh&#x2F;                            #如果没法进入该目录，执行一次ssh localhost</span><br><span class="line">$ ssh-keygen -t rsa　　</span><br><span class="line"># 需要连续敲击三次回车</span><br><span class="line"># 第一次回车是让KEY存于默认位置，以方便后续的命令输入</span><br><span class="line"># 第二次和第三次是确定passphrase，相关性不大</span><br></pre></td></tr></table></figure>
+<p><img data-src="ssh-keygen.png" width=70%></p></li>
+<li><p>加入授权，免密登录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cat .&#x2F;id_rsa.pub &gt;&gt; .&#x2F;authorized_keys  #加入授权</span><br><span class="line">$ ssh localhost  #此时已不需密码即可登录localhost</span><br></pre></td></tr></table></figure>
+<p><img data-src="ssh-authorizedkeys.png" width=70%></p></li>
+</ul>
+<h3 id="安装jdk1.8">安装jdk1.8</h3>
+<ul>
+<li><p>在<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">oracle官网</a>下载jdk1.8，根据个人电脑系统选择对应版本，如<code>jdk-8u201-linux-x64.tar.gz</code></p></li>
+<li><p>安装过程</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ mkdir &#x2F;usr&#x2F;lib&#x2F;jvm  #创建jvm文件夹</span><br><span class="line">$ sudo tar zxvf  jdk-8u201-linux-x64.tar.gz  -C &#x2F;usr&#x2F;lib&#x2F;jvm  #&#x2F; 解压到&#x2F;usr&#x2F;lib&#x2F;jvm目录下</span><br><span class="line">$ cd &#x2F;usr&#x2F;lib&#x2F;jvm  #进入该目录</span><br><span class="line">$ mv  jdk1.8.0_201 java  #重命名为java</span><br><span class="line">$ vi ~&#x2F;.bashrc  #给JDK配置环境变量</span><br></pre></td></tr></table></figure></li>
+<li><p>编辑环境变量<code>vi ~/.bashrc</code>，在<code>.bashrc</code>文件添加如下指令： <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java</span><br><span class="line">export JRE_HOME&#x3D;$&#123;JAVA_HOME&#125;&#x2F;jre</span><br><span class="line">export CLASSPATH&#x3D;.:$&#123;JAVA_HOME&#125;&#x2F;lib:$&#123;JRE_HOME&#125;&#x2F;lib:$CLASSPATH</span><br><span class="line">export PATH&#x3D;$&#123;JAVA_HOME&#125;&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="javaenrpath.png"></p></li>
+<li><p>使得环境变量生效，并查看是否安装成功 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ source ~&#x2F;.bashrc  #使新配置的环境变量生效</span><br><span class="line">$ java -version  #检测是否安装成功，查看java版本</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="javainstallsuccess.png"></p></li>
+</ul>
+<h3 id="安装hadoop-3.1.2">安装hadoop-3.1.2</h3>
+<ul>
+<li>下载<a href="http://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-3.1.2/hadoop-3.1.2.tar.gz" target="_blank" rel="noopener">hadoop-3.1.2.tar.gz</a>并安装 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo tar -zxvf  hadoop-3.1.2.tar.gz  -C  &#x2F;usr&#x2F;local  #解压到&#x2F;usr&#x2F;local目录下</span><br><span class="line">$ cd &#x2F;usr&#x2F;local</span><br><span class="line">$ sudo mv  hadoop-3.1.2 hadoop  #重命名为hadoop</span><br><span class="line">$ sudo chown -R hadoop .&#x2F;hadoop  #修改文件权限，根据实际情况确定用户名</span><br></pre></td></tr></table></figure></li>
+<li>配置环境变量，将下面代码添加到<code>.bashrc</code>文件: <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export HADOOP_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;hadoop</span><br><span class="line">export HADOOP_COMMON_LIB_NATIVE_DIR&#x3D;$HADOOP_HOME&#x2F;lib&#x2F;native</span><br><span class="line">export PATH&#x3D;$PATH:$HADOOP_HOME&#x2F;bin:$HADOOP_HOME&#x2F;sbin</span><br></pre></td></tr></table></figure></li>
+<li>执行<code>source ~/.bashrc</code>使设置生效，并查看<code>hadoop</code>是否安装成功 <img data-src="hadoopinstallsuccess.png"></li>
+</ul>
+<h3 id="伪分布配置">伪分布配置</h3>
+<ul>
+<li><code>Hadoop</code>可以在单节点上以伪分布式的方式运行，<code>Hadoop</code>进程以分离的<code>Java</code>进程来运行，节点既作为<code>NameNode</code>也作为 <code>DataNode</code>，同时，读取的是<code>HDFS</code>中的文件</li>
+<li><code>Hadoop</code>的配置文件位于<code>/usr/local/hadoop/etc/hadoop/</code>中，伪分布式需要修改2个配置文件<code>core-site.xml</code>和<code>hdfs-site.xml</code></li>
+<li><code>Hadoop</code>的配置文件是<code>xml</code>格式，每个配置以声明<code>property</code> 的<code>name</code>和<code>value</code>的方式来实现</li>
+</ul>
+<h4 id="修改hadoop-env.sh文件">修改hadoop-env.sh文件</h4>
+<ul>
+<li><p>首先将jdk1.8的路径添(<code>export JAVA_HOME=/usr/lib/jvm/java</code>)加到<code>hadoop-env.sh</code>文件，路径为<code>cd /usr/local/hadoop/etc/hadoop/</code></p>
+<p><img data-src="hadoopenv.png" width=70%></p></li>
+</ul>
+<h4 id="修改core-site.xml文件">修改core-site.xml文件</h4>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">  	      <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.tmp.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:/usr/local/hadoop/tmp<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">description</span>&gt;</span>Abase for other temporary directories.<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://localhost:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img data-src="core-site.png"></p>
+<h4 id="配置hdfs-site.xml文件">配置hdfs-site.xml文件</h4>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">value</span>&gt;</span>1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.name.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:/usr/local/hadoop/tmp/dfs/name<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.datanode.data.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:/usr/local/hadoop/tmp/dfs/data<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img data-src="hdfs-site.png"></p>
+<ul>
+<li><p><code>Hadoop</code>配置文件参数</p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 46%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>参数</th>
+<th>属性值</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>fs.defaultFS</td>
+<td>NameNode URI The name of the default file system. A URI whose scheme and authority determine the FileSystem implementation. The uri's scheme determines the config property (fs.SCHEME.impl) naming the FileSystem implementation class. The uri's authority is used to determine the host, port, etc. for a filesystem.</td>
+<td>hdfs://host:port/</td>
+</tr>
+<tr class="even">
+<td>dfs.namenode.name.dir</td>
+<td>Determines where on the local filesystem the DFS name node should store the name table(fsimage) 在本地文件系统所在的NameNode的存储空间和持续化处理日志</td>
+<td>如果这是一个以逗号分隔的目录列表，然后将名称表被复制的所有目录，以备不时需</td>
+</tr>
+<tr class="odd">
+<td>dfs.datanode.data.dir</td>
+<td>Determines where on the local filesystem an DFS data node should store its blocks 逗号分隔的一个DataNode上，它应该保存它的块的本地文件系统的路径列表</td>
+<td>如果这是一个以逗号分隔的目录列表，那么数据将被存储在所有命名的目录，通常在不同的设备</td>
+</tr>
+</tbody>
+</table></li>
+<li><p><code>Hadoop</code>的运行方式是由配置文件决定的(运行<code>Hadoop</code>时会读取配置文件)</p></li>
+<li><p>因此如果需要从伪分布式模式切换回非分布式模式，需要删除 <code>core-site.xml</code>中的配置项</p></li>
+<li><p>伪分布式虽然只需要配置<code>fs.defaultFS</code>和<code>dfs.replication</code>就可以运行（可参考官方教程）</p></li>
+<li><p>若没有配置<code>hadoop.tmp.dir</code>参数，则默认使用的临时目录为 <code>/tmp/hadoo-hadoop</code>，而这个目录在重启时有可能被系统清理掉，导致必须重新执行<code>format</code>。所以同时也指定<code>dfs.namenode.name.dir</code>和<code>dfs.datanode.data.dir</code>，否则在接下来的步骤中可能会出错。</p></li>
+<li><p>配置完成后，执行 NameNode 的格式化 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;hadoop&#x2F;</span><br><span class="line">.&#x2F;bin&#x2F;hdfs namenode –format</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="namenode-format.png"></p>
+<p><img data-src="format-success.png"></p></li>
+<li><p>启动<code>namenode</code>和<code>datanode</code>进程，并查看启动结果 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;sbin&#x2F;start-dfs.sh</span><br><span class="line">$ jps</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>启动完成后，可以通过命令<code>jps</code>来判断是否成功启动，若成功启动则会列出如下进程: <code>NameNode</code>、<code>DataNode</code> 和 <code>SecondaryNameNode</code> <img data-src="start-namenode-datanode.png"></li>
+</ul></li>
+<li><p>Hadoop出现错误：<code>WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable</code>，解决方案是在文件<code>hadoop-env.sh</code>中增加：<code>export HADOOP_OPTS="-Djava.library.path=${HADOOP_HOME}/lib/native"</code></p>
+<p><img data-src="hadoop-warn.png"></p></li>
+<li><p>出现<code>ssh: connect to host master port 22: Connection timed out</code></p>
+<p><img data-src="hdfs-ssh-timeout.png"></p>
+<ul>
+<li><a href="https://www.itread01.com/content/1548390616.html" target="_blank" rel="noopener">解决方法：</a>
+<ul>
+<li><p>查看防火墙</p></li>
+<li><p>查看ssh是否开启，22端口是否监听</p></li>
+<li><p><code>sudo vi /etc/hosts</code></p>
+<p><img data-src="etc-host.png"></p>
+<ul>
+<li>127.0.0.1和127.0.1.1都是本地回路/回环地址（区别搜索）</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p>有可能出现要求输入localhost密码的情况，如果此时明明输入的是正确的密码却仍无法登入，其原因是由于如果不输入用户名的时候默认的是root用户，但是ssh服务默认没有开root用户的ssh权限</p>
+<ul>
+<li>输入指令：<code>$vim /etc/ssh/sshd_config</code></li>
+<li>PermitRootLogin yes</li>
+<li>之后输入下列代码重启SSH服务：<code>$ /etc/init.d/sshd restart</code>，即可正常登入（免密码登录参考前文）</li>
+<li>注：Ubuntu 16.04若安装openssh-server，是无法找到/etc/init.d/sshd文件的，但是可以启动/etc/init.d/ssh</li>
+</ul></li>
+<li><p><a href="https://blog.csdn.net/sinat_19628145/article/details/56494337" target="_blank" rel="noopener">secondarynamenode没有启动</a></p></li>
+<li><p><a href="https://blog.csdn.net/weixin_38750084/article/details/82856211" target="_blank" rel="noopener">NameNode和SecondaryNameNode的区别</a></p></li>
+</ul>
+<h4 id="访问web界面">访问web界面</h4>
+<ul>
+<li><p>成功启动后，如果是在桌面版linux上安装的，也可以访问 Web 界面 http://localhost:9870（老版本为50070） 查看NameNode 和 Datanode 信息，还可以在线查看 HDFS 中的文件。</p></li>
+<li><p>如果是在服务器版linux上安装的hadoop, 为了进行浏览器访问，需要配置一个桌面版的虚拟机来进行，输入用IP地址代替localhost）</p></li>
+<li><p>此处配置了静态ip地址为<code>192.18.50.129</code>，在宿主机上输入<code>http://192.168.50.129:9870</code></p>
+<p><img data-src="hadoopweb.png"></p></li>
+</ul>
+<h4 id="注意">注意</h4>
+<ul>
+<li>DFS文件系统格式化时，会在namenode数据文件夹（即配置文件中dfs.namenode.name.dir在本地系统的路径）中保存一个current/VERSION文件，记录clusterID，标识了所格式化的 namenode的版本</li>
+<li>如果频繁的格式化namenode，那么datanode中保存（即配置文件中dfs.data.dir在本地系统的路径）的current/VERSION文件只是你第一次格式化时保存的namenode的ID，因此就会造成datanode与namenode之间的 id 不一致。可能导致datanode无法启动</li>
+</ul>
+<h4 id="例子">例子</h4>
+<ul>
+<li><p>创建执行MapReduce作业所需的 DFS 目录: <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ bin&#x2F;hdfs dfs -mkdir &#x2F;user</span><br><span class="line">$ bin&#x2F;hdfs dfs -mkdir &#x2F;user&#x2F;&lt;username&gt;  #&lt;username&gt; 问用户名，如hadoop</span><br></pre></td></tr></table></figure></p></li>
+<li><p>拷贝输入文件到分布式文件系统: <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ bin&#x2F;hdfs dfs -put etc&#x2F;hadoop input</span><br></pre></td></tr></table></figure></p></li>
+<li><p>运行一些例子 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin&#x2F;hadoop jar share&#x2F;hadoop&#x2F;mapreduce&#x2F;hadoop-mapreduce-examples-3.2.1.jar grep input output &#39;dfs[a-z.]+&#39;</span><br></pre></td></tr></table></figure></p></li>
+<li><p>查看输出的文件(files): 从分布式文件系统中拷贝文件到本地文件系统并查看: <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin&#x2F;hdfs dfs -get output output</span><br><span class="line">cat output&#x2F;*</span><br></pre></td></tr></table></figure> 或者直接在分布式文件系统上查看:</p>
+<p><code>$ bin/hdfs dfs -cat output/*</code></p>
+<p>我也不知道对不对</p>
+<p><img data-src="mapreduce-output.png"></p></li>
+<li><p>结束运行<code>sbin/stop-dfs.sh</code></p></li>
+</ul>
+<h4 id="yarn单机配置">YARN单机配置</h4>
+<ul>
+<li><p>通过设置几个参数并运行ResourceManager daemon and NodeManager daemon，可以在YARN上以伪分布模式运行MapReduce job</p>
+<p>配置mapred-site.xml(cd /usr/local/hadoop/etc/hadoop)如下:</p>
+<p><img data-src="mapred-site.png"></p>
+<p>配置yarn-site.xml如下：</p>
+<p><img data-src="yarn-site.png"></p></li>
+<li><p>启动ResourceManager daemon 和 NodeManager daemon:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;hadoop</span><br><span class="line">sbin&#x2F;start-yarn.sh</span><br><span class="line"></span><br><span class="line"># 输出如下</span><br><span class="line">Starting resourcemanager</span><br><span class="line">Starting nodemanagers</span><br><span class="line"></span><br><span class="line">sbin&#x2F;stop-yarn.sh # 关闭</span><br></pre></td></tr></table></figure></li>
+<li><p>如果是在桌面版linux上安装的, 可以用浏览器打开资源管理器端口，默认为：ResourceManager - http://localhost:8088/ （如果是在服务器版linux上安装的hadoop, 为了进行浏览器访问，需要配置一个桌面版的虚拟机来进行，输入用IP地址代替localhost） - 同上 <img data-src="start-yarn.png"></p></li>
+</ul>
+<h3 id="安装hbase和简单使用">安装Hbase和简单使用</h3>
+<h4 id="安装">安装</h4>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 解压安装包hbase-1.2.11-bin.tar.gz至路径 &#x2F;usr&#x2F;local</span><br><span class="line">$ sudo tar -zxvf  hbase-1.2.11-bin.tar.gz -C &#x2F;usr&#x2F;local</span><br><span class="line"># 将解压的文件名hbase-1.2.11改为hbase，以方便使用</span><br><span class="line">$ sudo mv &#x2F;usr&#x2F;local&#x2F;hbase-1.2.11  &#x2F;usr&#x2F;local&#x2F;hbase</span><br><span class="line">cd &#x2F;usr&#x2F;local</span><br><span class="line">$ sudo chown -R hadoop .&#x2F;hbase  # 将hbase下的所有文件的所有者改为hadoop，hadoop是当前用户的用户名。</span><br></pre></td></tr></table></figure>
+<h4 id="配置环境变量">配置环境变量</h4>
+<ul>
+<li><p>给hbase配置环境变量，将下面代码添加到.bashrc文件<code>:export PATH=$PATH:/usr/local/hbase</code></p>
+<p><img data-src="hbase-env.png"></p></li>
+<li><p>执行source ~/.bashrc使设置生效，并查看hbase是否安装成功<code>/usr/local/hbase/bin/hbase version</code>或者直接<code>hbase -version</code></p>
+<p><img data-src="hbase-success.png"></p></li>
+</ul>
+<h4 id="hbase单机配置">hBase单机配置</h4>
+<ul>
+<li><p>单机配置（可能需要配置JAVA_HOME环境变量，由于本实验指南在HADOOP安装时已配置，故省略）</p></li>
+<li><p>配置<code>/usr/local/hbase/conf/hbase-site.xml</code>如下</p>
+<p><img data-src="hbase-site.png"></p></li>
+<li><p>采用如下命令启动服务、查看进程和启动客户端 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd &#x2F;usr&#x2F;local&#x2F;hbase</span><br><span class="line">$ bin&#x2F;start-hbase.sh</span><br><span class="line">$ jps</span><br><span class="line">$ bin&#x2F;hbase shell</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="hbase-start.png"></p></li>
+</ul>
+<h4 id="配置伪分布模式的指南">配置伪分布模式的指南</h4>
+<ul>
+<li>配置分布模式方法请查阅官方文档</li>
+</ul>
+<h5 id="配置hbase-env.sh">配置hbase-env.sh</h5>
+<ul>
+<li><p><code>cd /usr/local/hbase/conf</code>修改<code>hbase-site.xml</code>文件</p>
+<p><img data-src="modify-hbase-site.png"></p>
+<p>将HBase的数据存储到之前的Hadoop的HDFS上，hbase.rootdir的值便是HDFS上HBase数据存储的位置，值中的主机名和端口号要和之前Hadoop的core-site.xml中的fs.default.name的值相同</p></li>
+<li><p>启动hBase <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 先stop-hbase.sh</span><br><span class="line">$ start-dfs.sh</span><br><span class="line">$ cd &#x2F;usr&#x2F;local&#x2F;hbase&#x2F;bin</span><br><span class="line">$ .&#x2F;start-hbase.sh</span><br></pre></td></tr></table></figure></p></li>
+<li><p>hbase集群在启动的时候报错：JAVA_HOME is not set and Java could not be found出现这种错误，一般应该是hbase下conf文件下的hbase-env.sh文件中的java_home的环境变量没有配置或者是被注释了</p>
+<p><img data-src="java_homeisnotset.png"></p>
+<p>解决方法： <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;hbase&#x2F;conf</span><br><span class="line">vi hbase-env.sh</span><br><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="java_home.png"></p></li>
+<li><p>正确顺序：启动Hadoop—&gt;启动HBase—&gt;关闭HBase—&gt;关闭Hadoop</p></li>
+<li><p>注：执行jps命令，如果在Hadoop进程的基础上新增加了如下三个进程则表示HBase启动成功：1. HMaster，2. HRegionServer，3. HQuorumpeer</p></li>
+</ul>
+<h5 id="查看dfs中hbase-目录自动创建">查看DFS中Hbase 目录，自动创建</h5>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd ~</span><br><span class="line">hdfs dfs -ls &#x2F;hbase</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>hadoop@zizi:~$ hdfs dfs -ls /hbase ls: Call From zizi/127.0.1.1 to localhost:9000 failed on connection exception: java.net.ConnectException: Connection refused; For more details see: http://wiki.apache.org/hadoop/ConnectionRefused 该问题一般由于没有start dfs 和 yarn造成的</p>
+</blockquote>
+<p><img data-src="hdfs-dfs.png"></p>
+<ul>
+<li><p>仅仅为了测试和学习，生产环境不会在一台机器上启动备份master</p></li>
+<li><p>HMaster服务器控制HBase集群，图中的指令启动三个<strong>备份</strong>HMaster，体现了<strong>伪分布式</strong>(在一个机器上多个备份HMaster服务器)，一个HMaster没了，其他的还可以使用</p>
+<p><img data-src="master-backup-start.png"></p>
+<p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">The HMaster server controls the HBase cluster. You can start up to 9 backup HMaster servers, which makes 10 total HMasters, counting the primary. </span><br><span class="line">To start a backup HMaster, use the local-master-backup.sh. </span><br><span class="line">For each backup master you want to start, add a parameter representing the port offset for that master. </span><br><span class="line">Each HMaster uses two ports (16000 and 16010 by default). </span><br><span class="line">The port offset is added to these ports, so using an offset of 2, the backup HMaster would use ports 16002 and 16012. </span><br><span class="line">The following command starts 3 backup servers using ports 16002&#x2F;16012, 16003&#x2F;16013, and 16005&#x2F;16015.</span><br></pre></td></tr></table></figure></p></li>
+<li><p>如：start 1 <img data-src="master-backup-1.png"></p></li>
+<li><p>http://192.168.50.129:16010/master-status可以访问，port=16000无法访问，port=16011可以访问</p>
+<p><img data-src="master-status1.png"></p></li>
+<li><p>启动和停止附加区域服务器RegionServers</p>
+<p><img data-src="regionalserver.png"></p></li>
+<li><p>关闭刚才开启的备份HMaster服务：<code>local-master-backup.sh stop 1</code></p></li>
+</ul>
+<h5 id="建表">建表</h5>
+<ul>
+<li><p>进入交互界面<code>$ hbase shell</code></p>
+<p><img data-src="hbase-shell.png"></p></li>
+<li><p>使用create命令创建一个新表，必须规定表名和列族名</p>
+<p>使用list 命令可以显示表信息</p>
+<p>使用 describe 命令显示表的详细信息，此时表中的VERSIONS默认设置为1</p>
+<p><img data-src="create-list-describe.png"></p></li>
+<li><p>向表中加入数据，使用 put 命令</p>
+<p>使用scan命令扫描整个表取得数据</p>
+<p>取一行数据，使用get指令</p>
+<p><img data-src="put-scan-get.png"></p></li>
+<li><p>修改表模式，使用alter命令，如修改存储版本数，为5个版本</p>
+<p><img data-src="alter-version.png"></p></li>
+</ul>
+<h2 id="实验总结">实验总结</h2>
+<ol type="1">
+<li><p>请问伪分布和分布式的含义有何不同？就本实验，你是如何理解在一台计算机上做到“伪分布”的？</p>
+<ul>
+<li>伪分布式模式是一个相对简单的分布式模式，用来测试</li>
+<li>不能把这个模式用于生产环节，也不能用于测试性能。</li>
+<li>多个HMaster备份节点在一台机器上工作</li>
+</ul></li>
+<li><p>在1.2小节进行安装SSH并设置SSH无密码登陆，请问这个安装的目的是什么？ &gt; ssh must be installed and sshd must be running to use the Hadoop scripts that manage remote Hadoop daemons if the optional start and stop scripts are to be used. Additionally, it is recommmended that pdsh also be installed for better ssh resource management.</p>
+<ul>
+<li>ssh必须安装，sshd必须运行，Hadoop的脚本才可以远程操控其他的Hadoop和HBase进程</li>
+<li>ssh之间必须都打通，远程登录、自动登录、免密登录</li>
+</ul></li>
+<li><p>如果继续向Hbase的test表中put行键为”row1”，值为其它字符串的数据，put 'test' ,'row1', 'cf:a', 'value6'，会发生什么？如果采用语句get 'test', 'row1', {COLUMN=&gt;'cf:a', VERSIONS=&gt;3} 进行查询，分析你得到的结果。put与关系数据库的插入有何不同？</p>
+<p><img data-src="put.png"></p>
+<ul>
+<li>VERSIONS的作用
+<ul>
+<li>当想要用HBase存储历史几个版本的数据是（达到类似于git的效果时）可以设定版本号，版本号为几就是存储几个版本的数据</li>
+<li>最开始，没有设定VERSION，则为VERSIONS为1，也就是说，默认情况只会存取一个版本的列数据，当再次插入的时候，后面的值会覆盖前面的值</li>
+<li>后面修改表结构，让Hbase表支持存储5个VERSIONS的版本列数据 alter 'test', NAME=&gt;'cf',VERSIONS=&gt;5</li>
+<li>解析：一开始row1只有一条数据，然后又插入了第二条数据，虽然scan 'test'只返回最新的数据，但是用get那条语句能够返回历史版本，所以返回两条数据 <img data-src="versions.png"></li>
+</ul></li>
+</ul></li>
+</ol>
+<h2 id="错误与解决">错误与解决</h2>
+<ul>
+<li>如何执行shell脚本！！！-牢记 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hadoop@zizi:&#x2F;usr&#x2F;local&#x2F;hbase&#x2F;bin$ local-master-backup.sh start 2 3 5</span><br><span class="line">local-master-backup.sh: command not found</span><br></pre></td></tr></table></figure></li>
+<li><a href="https://blog.csdn.net/tiankong_12345/article/details/93585463" target="_blank" rel="noopener">Hbase启动警告：Java HotSpot(TM) 64-Bit Server VM warning: ignoring option PermSize=128m;</a></li>
+<li>hBase中get和scan的区别和总结</li>
+</ul>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://www.jianshu.com/p/6aeceb5d49cf" target="_blank" rel="noopener">HBase入门精要-百闻不如一Run</a></li>
+<li><a href="https://www.jianshu.com/p/b23800d9b227" target="_blank" rel="noopener">入门HBase，看这一篇就够了</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>DataBase</category>
+      </categories>
+      <tags>
+        <tag>Hadoop</tag>
+        <tag>Hbase</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Number Theory</title>
+    <url>/2020/04/12/Number-Theory/</url>
+    <content><![CDATA[<ul>
+<li>质数</li>
+<li>因子分解</li>
+<li>欧拉降幂</li>
+<li>RAS</li>
+<li>拓展中国剩余定理</li>
+</ul>
+<a id="more"></a>
+<h1 id="质数">质数</h1>
+<h2 id="素数间隔-prime-gap">素数间隔-Prime gap</h2>
+<ul>
+<li>The first 60 prime gaps are: 1, 2, 2, 4, 2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 6, 6, 2, 6, 4, 2, 6, 4, 6, 8, 4, 2, 4, 2, 4, 14, 4, 6, 2, 10, 2, 6, 6, 4, 6, 6, 2, 10, 2, 4, 2, 12, 12, 4, 2, 4, 6, 2, 10, 6, 6, 6, 2, 6, 4, 2</li>
+<li>有无穷对素数，之间存在着一定的间隔。间隔从被证明为7000万以内，一直到如今的246。如果该常数改进到2，相当于证明孪生素数猜想</li>
+<li>素数之间间隔可以有多远，<a href="https://en.wikipedia.org/wiki/Prime_gap" target="_blank" rel="noopener">The 80 known maximal prime gaps</a></li>
+</ul>
+<h2 id="素数定理-prime-number-theorem">素数定理-Prime Number Theorem</h2>
+<ul>
+<li><p>质数分布密度，数的总数π(x)近似于x/ln(x)</p></li>
+<li><p>π(2)=1，π(3.5)=2，π(10)=4</p>
+<p><img data-src="https://cdn.britannica.com/14/77714-004-D28E8805/Prime-number-theorem.jpg" width=70%></p></li>
+</ul>
+<h2 id="素数筛法">素数筛法</h2>
+<ul>
+<li><p>求<span class="math inline">\(1\)</span>到<span class="math inline">\(n\)</span>之间内的所有素数</p>
+<table>
+<thead>
+<tr class="header">
+<th>方法</th>
+<th>时间复杂度</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(sqrt(n)\)</span>的判别</td>
+<td><span class="math inline">\(O(n*sqrt(n))\)</span></td>
+</tr>
+<tr class="even">
+<td>普通筛 / 埃氏筛法</td>
+<td><span class="math inline">\(O(nloglogn)\)</span></td>
+</tr>
+<tr class="odd">
+<td>线性筛 / 欧拉筛法</td>
+<td><span class="math inline">\(O(n)\)</span></td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+<h2 id="素数测试-miller-rabin">素数测试-Miller Rabin</h2>
+<ul>
+<li>哥德巴赫猜想：任何大于2的偶数都能够写成两个质数相加的形式</li>
+<li>当题目给出的偶数达到<span class="math inline">\(10^{18}\)</span>，此时的质数可能非常大，用上述的筛法可能会超时，用Miller Rabin快速判断一个<span class="math inline">\(&lt;2^{63}\)</span>的数是不是素数</li>
+<li>时间复杂度：<span class="math inline">\(O(klog_2(n))\)</span>，<span class="math inline">\(n\)</span>为检测的数值，<span class="math inline">\(k\)</span>为自己设定的检测的次数</li>
+<li>不确定算法，单次测试有不超过<span class="math inline">\(\frac{1}{4}\)</span>的概率会将一个合数误判为一个素数</li>
+</ul>
+<hr />
+<ul>
+<li>依据
+<ul>
+<li><p>费马小定理：</p>
+<p><span class="math inline">\(若p是质数，则对于任意0&lt;a&lt;p，\)</span></p>
+<p><span class="math inline">\(有a^{p−1}≡1(modp)\)</span></p></li>
+<li><p>二次探测定理：</p>
+<p><span class="math inline">\(若p是质数，且x^2≡1(modp)，\)</span></p>
+<p><span class="math inline">\(那么x≡1 (modp)和x≡p−1(modp)中有一个成立\)</span></p></li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li>算法过程
+<ol type="1">
+<li>偶数、0、1、2直接判断</li>
+<li>假设要测试的数为<span class="math inline">\(n\)</span>，选取整数<span class="math inline">\(r\)</span>和奇数<span class="math inline">\(d\)</span>，满足<span class="math inline">\(n-1=2^rd\)</span></li>
+<li>选取<span class="math inline">\(a \in (1,...,n-1)\)</span></li>
+<li>如果<span class="math inline">\(a^d=1(modn)\)</span>或者<span class="math inline">\(a^d=n-1(modn)\)</span>，即满足二次探测定理，则调回Step 3继续验证</li>
+<li>对于<span class="math inline">\(i=0,...,r-1\)</span>，验证<span class="math inline">\(a^{2^id}\)</span>是否满足<span class="math inline">\(a^{2^id}=n-1(modn)\)</span>，满足则跳回Step 3继续验证，不满足则<span class="math inline">\(n\)</span>为合数</li>
+<li>经过<span class="math inline">\(k\)</span>次验证后，<span class="math inline">\(n\)</span>可能是素数</li>
+</ol></li>
+</ul>
+<hr />
+<p>伪码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input #1: n &gt; 3, an odd integer to be tested for primality</span><br><span class="line">Input #2: k, the number of rounds of testing to perform</span><br><span class="line">Output: “composite” if n is found to be composite, “probably prime” otherwise</span><br><span class="line"></span><br><span class="line">write n as 2^r·d + 1 with d odd (by factoring out powers of 2 from n − 1)</span><br><span class="line">WitnessLoop: repeat k times:</span><br><span class="line">pick a random integer a in the range [2, n − 2]</span><br><span class="line">x ← a^d mod n</span><br><span class="line">if x &#x3D; 1 or x &#x3D; n − 1 then</span><br><span class="line">    continue WitnessLoop</span><br><span class="line">repeat r − 1 times:</span><br><span class="line">    x ← x^2 mod n</span><br><span class="line">    if x &#x3D; n − 1 then</span><br><span class="line">        continue WitnessLoop</span><br><span class="line">return “composite”</span><br><span class="line">return “probably prime”</span><br></pre></td></tr></table></figure>
+<hr />
+<p>模板</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="comment">//typedef long long ll;</span></span><br><span class="line"><span class="comment">//ll*ll可能会溢出，所以乘法化加法</span></span><br><span class="line"><span class="comment">/* *************************************************</span></span><br><span class="line"><span class="comment">* Miller_Rabin 算法进行素数测试</span></span><br><span class="line"><span class="comment">* 速度快可以判断一个 &lt; 2^63 的数是不是素数</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">**************************************************/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> S = <span class="number">8</span>; <span class="comment">//随机算法判定次数一般 8～10 就够了</span></span><br><span class="line"><span class="comment">// 计算 ret = (a*b)%c a,b,c &lt; 2^63</span></span><br><span class="line"><span class="function">ll <span class="title">mult_mod</span><span class="params">(ll a,ll b,ll c)</span></span>&#123;</span><br><span class="line">	a%=c;</span><br><span class="line">	b%=c;</span><br><span class="line">	ll ret=<span class="number">0</span>;</span><br><span class="line">	ll tmp=a;</span><br><span class="line">	<span class="keyword">while</span>(b)&#123;</span><br><span class="line">		<span class="keyword">if</span>(b&amp;<span class="number">1</span>)&#123;</span><br><span class="line">			ret+=tmp;</span><br><span class="line">			<span class="keyword">if</span>(ret&gt;c)ret-=c;<span class="comment">//直接取模慢得多 </span></span><br><span class="line">		&#125;</span><br><span class="line">		tmp&lt;&lt;=<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">if</span>(tmp&gt;c)tmp-=c;</span><br><span class="line">		b&gt;&gt;=<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 计算 ret = (a^n)%mod</span></span><br><span class="line"><span class="function">ll <span class="title">pow_mod</span><span class="params">(ll a,ll n,ll mod)</span></span>&#123;</span><br><span class="line">	ll ret=<span class="number">1</span>;</span><br><span class="line">	ll tmp=a%mod;</span><br><span class="line">	<span class="keyword">while</span>(n)&#123;</span><br><span class="line">		<span class="keyword">if</span>(n&amp;<span class="number">1</span>)ret=mult_mod(ret,tmp,mod);</span><br><span class="line">		tmp=mult_mod(tmp,tmp,mod);</span><br><span class="line">		n&gt;&gt;=<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 通过 a^(n-1)=1(modn)来判断 n 是不是素数</span></span><br><span class="line"><span class="comment">// n - 1 = x * (2^t)</span></span><br><span class="line"><span class="comment">// 中间使用二次判断</span></span><br><span class="line"><span class="comment">// 是合数返回 true, 不一定是合数返回 false</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">check</span><span class="params">(ll a,ll n,ll x,ll t)</span></span>&#123;</span><br><span class="line">	ll ret = pow_mod(a,x,n);</span><br><span class="line">	ll last = ret;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i &lt;= t;i++)&#123;</span><br><span class="line">		ret = mult_mod(ret,ret,n);</span><br><span class="line">		<span class="keyword">if</span>(ret == <span class="number">1</span> &amp;&amp; last != <span class="number">1</span> &amp;&amp; last != n<span class="number">-1</span>)<span class="keyword">return</span> <span class="literal">true</span>;<span class="comment">//合数</span></span><br><span class="line">		last = ret;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(ret != <span class="number">1</span>)<span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// 费马小定理</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//**************************************************</span></span><br><span class="line"><span class="comment">// Miller_Rabin 算法</span></span><br><span class="line"><span class="comment">// 是素数返回 true,(可能是伪素数)</span></span><br><span class="line"><span class="comment">// 不是素数返回 false</span></span><br><span class="line"><span class="comment">//**************************************************</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Miller_Rabin</span><span class="params">(ll n)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>( n &lt; <span class="number">2</span>)<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	<span class="keyword">if</span>( n == <span class="number">2</span>)<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	<span class="keyword">if</span>( (n&amp;<span class="number">1</span>) == <span class="number">0</span>)<span class="keyword">return</span> <span class="literal">false</span>;<span class="comment">//偶数</span></span><br><span class="line">	ll x = n - <span class="number">1</span>;</span><br><span class="line">	ll t = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>( (x&amp;<span class="number">1</span>)==<span class="number">0</span> )&#123;x &gt;&gt;= <span class="number">1</span>; t++;&#125;</span><br><span class="line">	</span><br><span class="line">	srand(time(<span class="literal">NULL</span>));<span class="comment">/* *************** */</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; S;i++)&#123;</span><br><span class="line">		ll a = rand()%(n<span class="number">-1</span>) + <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">if</span>( check(a,n,x,t) )</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="大数的质因子分解-pollard-rho">大数的质因子分解-Pollard Rho</h2>
+<ul>
+<li><span class="math inline">\(O(n^{\frac{1}{4}})\)</span>的期望时间复杂度内计算合数<span class="math inline">\(n\)</span>的某个非平凡因子(平凡因子指<span class="math inline">\(1\)</span>和<span class="math inline">\(n\)</span>，非平凡因子指<span class="math inline">\(x \in [2,n-1]，n mod x=0\)</span>)</li>
+<li>试除法：<span class="math inline">\(n\)</span>的因数对称分布，遍历区间<span class="math inline">\([1,\sqrt N]\)</span>，时间复杂度为<span class="math inline">\(O(\sqrt N)\)</span></li>
+<li>不直接寻找因子，而是寻找因子的倍数，然后通过GCD找到因子本身</li>
+</ul>
+<h2 id="思路">思路</h2>
+<ol type="1">
+<li>对于<span class="math inline">\(N⩾10^{18}\)</span>，使用<strong>随机算法</strong>-猜因数</li>
+<li>组合随机采样-生日悖论：满足答案的组合比单个个体要多一些。假如一个班上有<span class="math inline">\(k\)</span>个人，如果找到一个人的生日是x月x日，这个概率会相当低；如果想找两个生日相同，当<span class="math inline">\(k=23\)</span>，两个人在同一天生日的概率至少有<span class="math inline">\(50\%\)</span>，<span class="math inline">\(k=60\)</span>时，生日有重复的现象的概率<span class="math inline">\(\text{P}(k) ≈0.9999\)</span></li>
+</ol>
+<hr />
+<ol start="3" type="1">
+<li>最大公约数一定是某个数的约数。通过选择适当的<span class="math inline">\(k\)</span>使得<span class="math inline">\(\gcd(k,n)&gt;1\)</span>，则求得的<span class="math inline">\(\gcd(k,n)\)</span>是<span class="math inline">\(n\)</span>的约数。则选取一组数<span class="math inline">\(x_1,x_2,x_3,...x_n\)</span>，若有<span class="math inline">\(gcd(|x_i-x_j|,n)&gt;1\)</span>，则称<span class="math inline">\(gcd(|x_i-x_j|,n)\)</span>是<span class="math inline">\(n\)</span>的一个因子</li>
+<li>构造一个<strong>伪随机数序列</strong>，然后取相邻的两项来求gcd。Pollard设计了一个函数: <span class="math inline">\(f(x)=(x^2+c)\mod N\)</span> 其中c是一个随机的常数。选取<span class="math inline">\(x_1\)</span>，令<span class="math inline">\(x_2=f(x_1),x_3=f(x_2),...,x_i=f(x_{i-1})\)</span></li>
+</ol>
+<hr />
+<ol start="5" type="1">
+<li>Floyd判圈：在一定范围内，这个数列是随机的；但也有死循环的情况。龟兔赛跑：兔子比乌龟快一倍，同起点同时开始，当兔子“追上”乌龟时，兔子一定跑了刚好一圈。</li>
+</ol>
+<p><img data-src="https://img-blog.csdn.net/20150503163841553" width=30%></p>
+<ol start="6" type="1">
+<li><a href="https://www.cnblogs.com/book-book/p/6349362.html" target="_blank" rel="noopener">brent判环(更高效)</a></li>
+</ol>
+<hr />
+<p>kuangbin的模板 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//**************************************************</span></span><br><span class="line"><span class="comment">// Miller_Rabin 算法</span></span><br><span class="line"><span class="comment">// 是素数返回 true,(可能是伪素数)</span></span><br><span class="line"><span class="comment">// 不是素数返回 false</span></span><br><span class="line"><span class="comment">//**************************************************</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Miller_Rabin</span><span class="params">(ll n)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>( n &lt; <span class="number">2</span>)<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	<span class="keyword">if</span>( n == <span class="number">2</span>)<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	<span class="keyword">if</span>( (n&amp;<span class="number">1</span>) == <span class="number">0</span>)<span class="keyword">return</span> <span class="literal">false</span>;<span class="comment">//偶数</span></span><br><span class="line">	ll x = n - <span class="number">1</span>;</span><br><span class="line">	ll t = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>( (x&amp;<span class="number">1</span>)==<span class="number">0</span> )&#123;x &gt;&gt;= <span class="number">1</span>; t++;&#125;</span><br><span class="line">	</span><br><span class="line">	srand(time(<span class="literal">NULL</span>));<span class="comment">/* *************** */</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; S;i++)&#123;</span><br><span class="line">		ll a = rand()%(n<span class="number">-1</span>) + <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">if</span>( check(a,n,x,t) )</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//**********************************************</span></span><br><span class="line"><span class="comment">// pollard_rho 算法进行质因素分解</span></span><br><span class="line"><span class="comment">//*********************************************</span></span><br><span class="line">ll factor[<span class="number">100</span>];<span class="comment">//质因素分解结果（刚返回时时无序的）</span></span><br><span class="line"><span class="keyword">int</span> tol;<span class="comment">//质因素的个数，编号 0～tol-1</span></span><br><span class="line"><span class="function">ll <span class="title">gcd</span><span class="params">(ll a,ll b)</span></span>&#123;</span><br><span class="line">	ll t;</span><br><span class="line">	<span class="keyword">while</span>(b)&#123;</span><br><span class="line">		t = a;</span><br><span class="line">		a = b;</span><br><span class="line">		b = t%b;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(a &gt;= <span class="number">0</span>)<span class="keyword">return</span> a;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">return</span> -a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//找出一个因子</span></span><br><span class="line"><span class="function">ll <span class="title">pollard_rho</span><span class="params">(ll x,ll c)</span></span>&#123;</span><br><span class="line">	ll i = <span class="number">1</span>, k = <span class="number">2</span>;</span><br><span class="line">	srand(time(<span class="literal">NULL</span>));</span><br><span class="line">	ll x0 = rand()%(x<span class="number">-1</span>) + <span class="number">1</span>;</span><br><span class="line">	ll y = x0;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">		i++;</span><br><span class="line">		x0 = (mult_mod(x0,x0,x) + c)%x;<span class="comment">//不断调整x2 </span></span><br><span class="line">		ll d = gcd(y - x0,x);</span><br><span class="line">		<span class="keyword">if</span>( d != <span class="number">1</span> &amp;&amp; d != x)<span class="keyword">return</span> d;<span class="comment">//找到因子，返回 </span></span><br><span class="line">		<span class="keyword">if</span>(y == x0)<span class="keyword">return</span> x;<span class="comment">//判圈 出现循环，返回 </span></span><br><span class="line">		<span class="keyword">if</span>(i == k)&#123;y = x0; k += k;&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 对 n 进行素因子分解，存入 factor. k 设置为 107 左右即可</span></span><br><span class="line"><span class="comment">// 如果n 本身就是素数，那么将 n 存放在 factor 便可结束并返回</span></span><br><span class="line"><span class="comment">// 如果 n 不是素数，那么通过 pollard_rho()函数 找到 n 的一个因子 p(不一定是素因子)，递归 findFac(p)和 findFac(n/p)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">findfac</span><span class="params">(ll n,<span class="keyword">int</span> k)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(n == <span class="number">1</span>)<span class="keyword">return</span>;<span class="comment">//递归出口 </span></span><br><span class="line">	<span class="keyword">if</span>(Miller_Rabin(n))</span><br><span class="line">	&#123;</span><br><span class="line">		factor[tol++] = n;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	ll p = n;</span><br><span class="line">	<span class="keyword">int</span> c = k;</span><br><span class="line">	<span class="comment">//值变化，防止死循环</span></span><br><span class="line">	<span class="keyword">while</span>( p &gt;= n) <span class="comment">// 改变常数c，不断找因子，返回n说明没找到 </span></span><br><span class="line">		p = pollard_rho(p,c--);</span><br><span class="line">	findfac(p,k);</span><br><span class="line">	findfac(n/p,k);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://www.luogu.com.cn/problem/P4718" target="_blank" rel="noopener">洛谷 P4718【模板】Pollard-Rho算法</a> - TLE的原因</p>
+<h1 id="欧拉降幂">欧拉降幂</h1>
+<hr />
+<p>给三个正整数，<span class="math inline">\(a,m,b\)</span>，需要求：<span class="math inline">\(a^b mod m\)</span></p>
+<p><span class="math inline">\(1\le a \le 10^9，1\le b \le 10^{20000000}，1\le m \le 10^8\)</span></p>
+<p><strong>指数爆炸</strong></p>
+<hr />
+<ul>
+<li><p>欧拉定理：<span class="math inline">\(a^{\varphi(p)}≡1 \ mod \ p，a和p互质\)</span></p></li>
+<li><p>拓展欧拉降幂</p>
+<p><span class="math inline">\(a^b\equiv \begin{cases} a^{b\bmod\varphi(p)},&amp;\gcd(a,p)=1\\ a^b,&amp;\gcd(a,p)\ne1,b&lt;\varphi(p)\\ a^{b\bmod\varphi(p)+\varphi(p)},&amp;\gcd(a,p)\ne1,b\ge\varphi(p) \end{cases} \pmod p\)</span></p></li>
+<li><p>假设<span class="math inline">\(k=\frac{b}{\varphi(p)},h=bmod\varphi(p)\)</span>，则<span class="math inline">\(a^b=a^{k*\varphi(p)+h}=(a^{\varphi(p)})^k*a^h=a^h(modp)\)</span></p></li>
+<li><p><a href="https://blog.csdn.net/weixin_38686780/article/details/81272848" target="_blank" rel="noopener">欧拉降幂公式的证明</a></p></li>
+</ul>
+<hr />
+<p>求单个数的欧拉函数</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">eular</span><span class="params">(<span class="keyword">long</span> <span class="keyword">long</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>;i*i &lt;= n;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(n % i == <span class="number">0</span>)&#123;</span><br><span class="line">            ans -= ans/i;</span><br><span class="line">            <span class="keyword">while</span>(n % i == <span class="number">0</span>)n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(n &gt; <span class="number">1</span>)ans −= ans/n;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<ul>
+<li>拓展欧拉函数
+<ul>
+<li>以字符串形式读入大数，处理得到<span class="math inline">\(bmod\varphi(p)\)</span></li>
+<li>需要判断<span class="math inline">\(b\)</span>和<span class="math inline">\(\varphi(p)\)</span>的大小，否则会出错 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// char b[maxn]</span></span><br><span class="line">ll ans=<span class="number">0</span>;</span><br><span class="line">c=eular(p);</span><br><span class="line">ll len = <span class="built_in">strlen</span>(b);</span><br><span class="line"><span class="keyword">int</span> flg=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(ll i = <span class="number">0</span>;i &lt; len; i++)&#123;</span><br><span class="line">    ans = (ans*<span class="number">10</span> + b[i]-<span class="string">'0'</span>);</span><br><span class="line">    <span class="keyword">if</span>(ans&gt;=p)&#123;</span><br><span class="line">        flg=<span class="number">1</span>;</span><br><span class="line">        ans%=p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(flg)ans+=p;</span><br><span class="line"><span class="comment">// 快速幂计算 a是底数，ans是指数，p是模数</span></span><br><span class="line">qPow(a,ans,p);</span><br></pre></td></tr></table></figure></li>
+</ul></li>
+<li><a href="https://www.luogu.com.cn/problem/P5091" target="_blank" rel="noopener">洛谷 P5091 模板题</a></li>
+</ul>
+<h2 id="欧拉函数常用性质和公式">欧拉函数常用性质和公式</h2>
+<ul>
+<li><span class="math inline">\(对于质数p，\varphi(p)=p-1\)</span></li>
+<li><span class="math inline">\(\sum_{d|n}\varphi(d)=n\quad，包括1和n本身\)</span></li>
+<li><span class="math inline">\(\sum_{gcd(d,n)==1}d=\varphi(n)*n/2\)</span></li>
+<li><span class="math inline">\(\sum_{i=1}^{n-1}gcd(i,n)=\sum_{d|n}d\varphi(n|d)\)</span></li>
+<li><span class="math inline">\(若p为质数，n=p^k,\varphi(n)=p^k-p^{k-1}\)</span></li>
+<li><span class="math inline">\(积性性质：若m,n互质，\varphi(m*n)=\varphi(m)*\varphi(n)\)</span></li>
+</ul>
+<h1 id="rsa">RSA</h1>
+<h2 id="算法流程">算法流程</h2>
+<ul>
+<li>公钥密码算法</li>
+<li><span class="math inline">\(随机选择两个不相等的质数p和q\)</span></li>
+<li><span class="math inline">\(计算p和q的乘积n\)</span></li>
+<li><span class="math inline">\(计算n的欧拉函数φ(n)=(p-1)(q-1)\)</span></li>
+<li><span class="math inline">\(随机选择一个整数e，满足1&lt;e&lt;φ(n)，且e与φ(n)互质\)</span></li>
+<li><span class="math inline">\(求出整数d，使得ed ≡ 1 (mod φ(n))\)</span></li>
+<li><span class="math inline">\((n,e)为公钥，d为私钥\)</span></li>
+<li><span class="math inline">\(加密：明文消息m，满足0&lt;m&lt;n，密文c=m^e mod n\)</span></li>
+<li><span class="math inline">\(解密：接受到密文消息为c，解密明文消息m=c^d mod n\)</span></li>
+</ul>
+<h2 id="知识点">知识点</h2>
+<ul>
+<li><p>逆元(欧拉定理)+快速幂</p>
+<blockquote>
+<p>若(a*x)%mod=1，则x是正整数a在模mod下的逆元</p>
+</blockquote></li>
+</ul>
+<hr />
+<table>
+<thead>
+<tr class="header">
+<th>方法</th>
+<th>限定</th>
+<th>时间复杂度</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>线性打表法</td>
+<td>只要求mod是质数</td>
+<td>O(n)</td>
+</tr>
+<tr class="even">
+<td>费马小定理</td>
+<td>mod是质数且与a互质，快速幂优化</td>
+<td>O(log(n))</td>
+</tr>
+<tr class="odd">
+<td>欧拉定理</td>
+<td>只要求a与mod互质，需要欧拉函数与快速幂</td>
+<td>O(sqrt(n)+log(n))</td>
+</tr>
+<tr class="even">
+<td>拓展欧几里德</td>
+<td>只要求a与mod互质</td>
+<td>O(log(n))</td>
+</tr>
+</tbody>
+</table>
+<h1 id="拓展中国剩余定理">拓展中国剩余定理</h1>
+<h2 id="中国剩余定理">中国剩余定理</h2>
+<p>韩信点兵，三三一排少1人，五五一排少1人，七七一排少1个人</p>
+<hr />
+<blockquote>
+<p><span class="math inline">\(对于一组同余方程\)</span></p>
+<p><span class="math inline">\(x≡a_1 (mod n_1)\)</span></p>
+<p><span class="math inline">\(x≡a_2 (mod n_2)\)</span></p>
+<p><span class="math inline">\(...\)</span></p>
+<p><span class="math inline">\(x≡a_k (mod n_k)\)</span></p>
+<p><span class="math inline">\(模数n_1,n_2...n_k两两互质，求最小的x\)</span></p>
+</blockquote>
+<hr />
+<ol type="1">
+<li><p><span class="math inline">\(计算N=n_1×n_2×⋯×n_k\)</span></p></li>
+<li><p><span class="math inline">\(对于i=1,2,…,k，\)</span></p>
+<p><span class="math inline">\(计算y_i=\frac{N}{n_i}=n_1n_2...n_{i-1}n_{i+1}...n_k\)</span></p></li>
+<li><p><span class="math inline">\(对于i=1,2,…,k，计算z_i=y_i^{-1}(modn_i)，\)</span></p>
+<p><span class="math inline">\(即计算y_i在模n_i下的逆元\)</span></p></li>
+<li><p><span class="math inline">\(x=\sum_{i=1}^ka_iy_iz_i，\)</span></p>
+<p><span class="math inline">\(最后计算x=x(modN)得到结果\)</span></p></li>
+</ol>
+<h2 id="模数两两不互质">模数两两不互质</h2>
+<ul>
+<li><p>思路</p>
+<ol type="1">
+<li><span class="math inline">\(通过先解出前两个方程的解，如将前两个方程\)</span></li>
+<li><span class="math inline">\(x≡a_1 (mod n_1)，x≡a_2 (mod n_2)化为x≡A(mod N)\)</span></li>
+<li><span class="math inline">\(将此方程和x≡a_3 (mod n_3)\)</span></li>
+<li><span class="math inline">\(继续联立求解，直到最后一个方程解完为止\)</span></li>
+</ol></li>
+<li><p><a href="https://www.luogu.com.cn/problem/P4777" target="_blank" rel="noopener">洛谷 P4777 模板题</a></p></li>
+</ul>
+<hr />
+<blockquote>
+<p><span class="math inline">\(x≡a_1 (mod n_1)\)</span></p>
+<p><span class="math inline">\(x≡a_2 (mod n_2)\)</span></p>
+</blockquote>
+<ul>
+<li><p><span class="math inline">\(可化为 x=a_1+k_1*n_1 ①; x=a_2+k_2*n_2;\)</span></p></li>
+<li><p><span class="math inline">\(消x，可得a_1+k_1*n_1=a_2+k_2*n_2\)</span></p>
+<p><span class="math inline">\(移项得到k_1*n_1+(-k_2)*n_2=a_2-a_1\)</span></p></li>
+<li><p><span class="math inline">\(令d=a_2-a_1, x=k_1, y=-k_2;\)</span></p>
+<p><span class="math inline">\(上式化为 x*n_1+y*n_2=d ③\)</span></p></li>
+<li><p><span class="math inline">\(令g=gcd(n_1,n_2),用拓展欧几里得解线性方程\)</span></p>
+<p><span class="math inline">\((此处求解x_1，y_1)，x_1*n_1+y_1*n_2=g\)</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p><span class="math inline">\(③式可化为 x_1*(d/g)*n_1+y_1*(d/g)*n_2 = g*(d/g)\)</span></p></li>
+<li><p><span class="math inline">\(即x=x_1*(d/g)=k_1 ; y=y_1*(d/g)=-k_2;\)</span></p>
+<p><span class="math inline">\(即k_1=x_1*(d/g); k_2=-y_1*(d/g)\)</span></p></li>
+<li><p><span class="math inline">\(一组通解为 k_1=k_1+(n_2/g)*T; k_2=k_2-(n_1/g)*T\)</span></p></li>
+<li><p><span class="math inline">\(要求使所求得的解最小且为正整数，\)</span></p>
+<p><span class="math inline">\(则可以根据 k_1的通解形式求得(消掉T的影响)\)</span></p></li>
+<li><p><span class="math inline">\(k_1=(k_1 mod (n_2/g)+(n_2/g)) mod (n_2/g) ②，\)</span></p>
+<p><span class="math inline">\(即k_1=((x_1*(d/g)) mod (n_2/g)+(n_2/g)) mod (n_2/g)\)</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p><span class="math inline">\(将求出的k_1带入①，可得x的解，\)</span></p>
+<p><span class="math inline">\(作为下一次的A，N为lcm(n1,n2)，\)</span></p>
+<p><span class="math inline">\(即A为合并后的a，N为合并后的n\)</span></p></li>
+</ul>
+<hr />
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="function">ll <span class="title">exgcd</span><span class="params">(ll a,ll b,ll &amp;x,ll &amp;y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(a==<span class="number">0</span>&amp;&amp;b==<span class="number">0</span>)<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">if</span>(b==<span class="number">0</span>)&#123;x=<span class="number">1</span>;y=<span class="number">0</span>;<span class="keyword">return</span> a;&#125;</span><br><span class="line">    ll d=exgcd(b,a%b,y,x);</span><br><span class="line">    y-=a/b*x;</span><br><span class="line">    <span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">excrt</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ll a1=b[<span class="number">0</span>],n1=a[<span class="number">0</span>],a2,n2,d,x,y,gcd;<span class="comment">//余数 b[] 除数 a[]</span></span><br><span class="line">    <span class="comment">// 返回的是最小非负整数解，有些题目需要特判</span></span><br><span class="line">    <span class="comment">//若当余数为0的时候 题目要求求正整数 所以0不算在内，应该加上下面的注释，即余数等于除数，同理后面的板子</span></span><br><span class="line">    <span class="comment">//if(a1==0)a1=a[0]</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;n;i++)&#123;</span><br><span class="line">        a2=b[i];n2=a[i];</span><br><span class="line">        d=a2-a1;</span><br><span class="line">        gcd=exgcd(n1,n2,x,y);</span><br><span class="line">        <span class="keyword">if</span>(d%gcd)<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        x=((x*d/gcd)%(n2/gcd)+(n2/gcd))%(n2/gcd);</span><br><span class="line">        a1=x*n1+a1;</span><br><span class="line">        n1=n1*n2/gcd;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="定理猜想公式">定理&amp;猜想&amp;公式</h1>
+<hr />
+<ul>
+<li><p>费马大定理：</p>
+<p><span class="math inline">\(当整数n &gt;2时，\)</span></p>
+<p><span class="math inline">\(关于x, y, z的方程 x^n + y^n = z^n 没有正整数解\)</span></p></li>
+<li><p>实数域不可拆分多项式：</p>
+<p><span class="math inline">\(一次多项式和二次多项式(b^2&lt;4ac)\)</span></p>
+<ul>
+<li>艾森斯坦因判别法：有理数域不可约，即一定要整数解</li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li>勾股数
+<ul>
+<li>任意大于2的整数都可以找出另外两个数构成勾股数</li>
+<li>本原勾股数</li>
+</ul></li>
+<li>四色猜想</li>
+<li>康威常数</li>
+<li>日期转化成星期
+<ul>
+<li>蔡勒公式</li>
+<li>基姆拉尔森计算公式</li>
+</ul></li>
+<li>斯特林公式 - 阶乘</li>
+</ul>
+]]></content>
+      <categories>
+        <category>ACM</category>
+      </categories>
+      <tags>
+        <tag>数论</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>部署MySQL Cluster集群系统</title>
+    <url>/2020/03/25/MySQL-Cluster-set-up-configuration/</url>
+    <content><![CDATA[<blockquote>
+<p>MySQL Cluster is a technology providing <strong>shared-nothing</strong> clustering and auto-sharding for the MySQL database management system. It is designed to provide high availability and high throughput with low latency, while allowing for near linear scalability A MySQL Cluster consists of one or more management nodes (ndb_mgmd) that store the cluster’s configuration and control the data nodes (ndbd), where cluster data is stored. After communicating with the management node, clients (MySQL clients, servers, or native APIs) connect directly to these data nodes. With MySQL Cluster there is typically no replication of data, but instead data node synchronization. For this purpose a special data engine must be used — NDBCluster (NDB)</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="实验环境">1 实验环境</h2>
+<ul>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-multi-node-mysql-cluster-on-ubuntu-18-04" target="_blank" rel="noopener">英文指南(18.04&amp;16.04)</a></li>
+<li>VMware Workstation Pro 12</li>
+<li>2台Linux虚拟机，Ubuntu 16.04 Server</li>
+<li><a href="http://dev.mysql.com/downloads/cluster/" target="_blank" rel="noopener">MySQL-Cluster的安装包</a>：mysql-cluster_8.0.19-1ubuntu16.04_amd64.deb-bundle.tar</li>
+<li>设置windows主机和Linux虚拟机共享文件夹</li>
+<li>方便编辑配置文件，安装vim <code>sudo apt-get install vim</code></li>
+</ul>
+<h2 id="实验过程">2 实验过程</h2>
+<h3 id="前提">2.1 前提</h3>
+<ul>
+<li><a href="#%e9%9b%86%e7%be%a4%e9%85%8d%e7%bd%ae">在VMware下安装Ubuntu虚拟机</a></li>
+<li>VMware的克隆，右键虚拟机-&gt;管理-&gt;克隆，创建完整克隆
+<ul>
+<li><p>两个不同的虚拟机如果是用同一个镜像报错内部错误 -&gt; 就像virtualbox中的多重加载</p></li>
+<li><p>所以用一个iso安装好一个虚拟机后，将使用ISO映像文件去掉，选择使用物理驱动器。再用这个iso装另外的机器。克隆同理。</p>
+<p><img data-src="iso.png"></p></li>
+</ul></li>
+<li><a href="https://blog.csdn.net/happysunshineguy/article/details/77158993?utm_source=copy" target="_blank" rel="noopener">虚拟机与宿主机共享</a>
+<ul>
+<li>注意用<code>cp</code>而不是<code>mv</code>将vmware tools安装包移动到可以进行解压<code>gunzip</code>的目录，如'/root'。因为该安装包只读，所以无法在该文件夹下进行解压和<code>mv</code>命令</li>
+<li>tar格式(tar是打包，不是压缩) <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">打包:tar cvf 目录文件名.tar 目录文件名</span><br><span class="line">解包:tar xvf 目录文件名.tar</span><br></pre></td></tr></table></figure></li>
+<li>tar.gz格式： <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">压缩:tar -zcvf 目录文件名.tar.gz 目录文件名</span><br><span class="line">解压:tar -zxvf 目录文件名.tar.gz</span><br></pre></td></tr></table></figure></li>
+</ul></li>
+</ul>
+<h3 id="设置静态ip">2.2 设置静态IP</h3>
+<h4 id="vmware配置网络环境">2.2.1 VMware配置网络环境</h4>
+<ul>
+<li><p>按要求给一台机器设置静态ip为：192.168.50.128，另一台机器的静态ip为：192.168.50.129。</p></li>
+<li><p>使用NAT，虚拟机在一个子网中，通过物理机的IP上网。</p>
+<p><img data-src="delete-VMnet01.png" width=80%></p></li>
+<li><p>去掉<code>使用本地DHCP服务将IP地址分配给虚拟机</code>，并且设置子网IP为：192.168.50.0，子网掩码为：255.255.255.0。因此，在Ubuntu中，设置IP地址的时候，可以设置为192.168.50.x，x可以为1~255。</p>
+<p><img data-src="dhcp-ipaddress.png" width=80%></p></li>
+<li><p>选择<code>NAT设置</code>，打开NAT设置面板，查看网关地址。</p>
+<p><img data-src="gatewayaddress.png"></p></li>
+<li><p>在VMWare的虚拟机管理界面，选择Ubuntu的<code>编辑虚拟机设置</code>，打开Ubuntu这个虚拟的设置界面。选择网络适配器，然后确定网络连接选中的是<code>自定义</code>中的VMnet8(NAT模式)。</p>
+<p><img data-src="VMnet8.png"></p></li>
+</ul>
+<h4 id="为ubuntu设置静态ip地址">2.2.2 为Ubuntu设置静态IP地址</h4>
+<h5 id="通过terminal命令行来设置ip地址">通过Terminal命令行来设置IP地址</h5>
+<ul>
+<li><p>在命令行输入 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vi &#x2F;etc&#x2F;network&#x2F;interfaces </span><br><span class="line"></span><br><span class="line"># 在打开的文件中，若有内容，先全部删除</span><br><span class="line"># 然后输入如下代码</span><br><span class="line"># ip a查看网卡信息是ens33</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet loopback</span><br><span class="line">auto ens33</span><br><span class="line">iface ens33 inet static</span><br><span class="line">address 192.168.50.128</span><br><span class="line">netmask 255.255.255.0</span><br><span class="line">gateway 192.168.50.2</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="configureIPaddress.png"></p></li>
+<li><p>配置DNS服务器 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vi &#x2F;etc&#x2F;resolv.conf</span><br><span class="line"></span><br><span class="line"># 在里面填入阿里的DNS：223.5.5.5</span><br><span class="line">nameserver 223.5.5.5</span><br><span class="line"></span><br><span class="line"># 在命令行中输入：</span><br><span class="line">sudo &#x2F;etc&#x2F;init.d&#x2F;networking restart</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="configuredns.png"></p></li>
+<li><p>重复以上步骤，配置第二个虚拟机的静态IP地址。</p></li>
+</ul>
+<h3 id="集群配置">2.3 集群配置</h3>
+<h4 id="集群配置要求">2.3.1 集群配置要求</h4>
+<ul>
+<li><p>拓扑图</p>
+<p><img data-src="MySQLCluster.png"></p></li>
+<li><p>集群配置要求 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># ndbd：MySQL data nodes</span><br><span class="line"># ndb_mgmd：server for the Cluster Manager</span><br><span class="line"># mysqld and mysql：MySQL server&#x2F;client</span><br></pre></td></tr></table></figure></p>
+<table>
+<thead>
+<tr class="header">
+<th>节点</th>
+<th>IP address</th>
+<th>运行实例</th>
+<th>nodeID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>数据节点1</td>
+<td>192.168.50.128</td>
+<td>ndbd</td>
+<td>11</td>
+</tr>
+<tr class="even">
+<td>数据节点2</td>
+<td>192.168.50.129</td>
+<td>ndbd</td>
+<td>12</td>
+</tr>
+<tr class="odd">
+<td>管理节点</td>
+<td>192.168.50.129</td>
+<td>ndb_mgmd</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>sql节点1</td>
+<td>192.168.50.129</td>
+<td>mysqld</td>
+<td>13</td>
+</tr>
+<tr class="odd">
+<td>sql节点2</td>
+<td>192.168.50.128</td>
+<td>mysqld</td>
+<td>14</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>一般配置，数据节点和管理节点分离(需要3台虚拟机模拟实现)。由于此处只用了2台虚拟机。</p>
+<p><img data-src="common.png"></p></li>
+</ul></li>
+<li><p><a href="http://dev.mysql.com/downloads/cluster/" target="_blank" rel="noopener">MySQL-Cluster的安装包下载</a>，根据linux操作系统选择正确的版本</p></li>
+<li><p>若之前安装过mysql-server，需要将mysql-server卸载 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 执行以下指令卸载mysql</span><br><span class="line">sudo apt-get autoremove --purge mysql-server</span><br><span class="line">sudo apt-get remove mysql-server</span><br><span class="line">sudo apt-get autoremove mysql-server</span><br><span class="line">sudo apt-get remove mysql-common</span><br></pre></td></tr></table></figure></p></li>
+</ul>
+<h4 id="准备阶段">2.3.2 准备阶段</h4>
+<ul>
+<li><p>针对<code>192.168.50.129</code>，安装 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在命令行下</span><br><span class="line">sudo adduser mysql</span><br><span class="line">sudo usermod -aG sudo mysql</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="adduser.png"></p>
+<p><img data-src="usermod.png"></p></li>
+<li><p>把下载的mysql-cluster_8.0.19-1ubuntu16.04_amd64.deb-bundle.tar从windows共享给虚拟机(通过共享文件夹)</p></li>
+<li><p>将MySQL-Cluster的安装包放入虚拟机的指定目录install文件夹，操作如下： <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在命令行的根目录下</span><br><span class="line">mkdir install</span><br><span class="line"># 通过共享文件夹</span><br><span class="line">tar -xvf &#x2F;mnt&#x2F;hgfs&#x2F;xxx&#x2F;mysql-cluster_8.0.19-1ubuntu16.04_amd64.deb-bundle.tar -C install&#x2F;</span><br><span class="line">cd install</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="install.png"></p></li>
+<li><p>安装<code>MySQL server binary</code> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 安装依赖包</span><br><span class="line">sudo apt update</span><br><span class="line"># sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br><span class="line"></span><br><span class="line">sudo apt-get install libaio1 libmecab2</span><br></pre></td></tr></table></figure></p></li>
+</ul>
+<h4 id="安装配置集群管理器">2.3.3 安装配置集群管理器</h4>
+<ul>
+<li><p>用dpkg指令在Cluster Manager 服务器(为<strong>192.168.50.129</strong>)上安装ndb_mgmd <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 进入install目录</span><br><span class="line">sudo dpkg -i mysql-cluster-community-management-server_8.0.19-1ubuntu16.04_amd64.deb</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="dpkg.png"></p></li>
+<li><p>在第一次运行ndb_mgmd前需要对其进行配置，正确配置是保证数据节点正确同步和负载分配的前提。</p></li>
+<li><p>Cluster Manager 应该是MySQL Cluster 第一个启动的组件.它需要一个配置文件来加载参数. 我门创建配置文件: /var/lib/mysql-cluster/config.ini. <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 从Windows编辑config.ini可能会报错，需要在Linux系统下编辑</span><br><span class="line"># 在Cluster Manager 所在机器上创建 &#x2F;var&#x2F;lib&#x2F;mysql-cluster目录:</span><br><span class="line">sudo mkdir &#x2F;var&#x2F;lib&#x2F;mysql-cluster</span><br><span class="line"></span><br><span class="line">sudo vim &#x2F;var&#x2F;lib&#x2F;mysql-cluster&#x2F;config.ini</span><br><span class="line"></span><br><span class="line"># 内容如下</span><br><span class="line">[ndbd default]</span><br><span class="line"># Options affecting ndbd processes on all data nodes:</span><br><span class="line">NoOfReplicas&#x3D;2  # Number of replicas</span><br><span class="line"></span><br><span class="line">[ndb_mgmd]</span><br><span class="line"># Management process options:</span><br><span class="line">hostname&#x3D;192.168.50.129  # Hostname of the manager</span><br><span class="line">NodeId&#x3D;1</span><br><span class="line">datadir&#x3D;&#x2F;var&#x2F;lib&#x2F;mysql-cluster  # Directory for the log files</span><br><span class="line"></span><br><span class="line">[ndbd]</span><br><span class="line">hostname&#x3D;192.168.50.128 # Hostname&#x2F;IP of the first data node</span><br><span class="line">NodeId&#x3D;11            # Node ID for this data node</span><br><span class="line">datadir&#x3D;&#x2F;usr&#x2F;local&#x2F;mysql&#x2F;data   # Remote directory for the data files</span><br><span class="line"></span><br><span class="line">[ndbd]</span><br><span class="line">hostname&#x3D;192.168.50.129 # Hostname&#x2F;IP of the second data node</span><br><span class="line">NodeId&#x3D;12            # Node ID for this data node</span><br><span class="line">datadir&#x3D;&#x2F;usr&#x2F;local&#x2F;mysql&#x2F;data   # Remote directory for the data files</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line"># SQL node options:</span><br><span class="line">hostname&#x3D;192.168.50.129 # MySQL server&#x2F;client i manager</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line"># SQL node options:</span><br><span class="line">hostname&#x3D;192.168.50.128 # MySQL server&#x2F;client i manager</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>[NDB_MGMD] 表示管理节点的配置，只能有一个</li>
+<li>[NDBD DEFAULT] 表示每个数据节点的默认配置，在每个节点的[NDBD]中不用再写这些选项，只能有一个</li>
+<li>[NDBD] 表示每个数据节点的配置，可以有多个</li>
+<li>[MYSQLD] 表示SQL节点的配置，可以有多个，分别写上不同的SQL节点的ip地址；如不写，只保留一个空节点，表示任意一个ip地址都可以进行访问。此节点的个数表明了可以用来连接数据节点的SQL节点总数</li>
+<li>每个节点都有一个独立的id号，可以填写，比如nodeid=2，老版本使用id，新版本已经不使用id标识了。不填写，系统会按照配置文件的填写顺序自动分配</li>
+</ul>
+<p><img data-src="config-ini.png"></p></li>
+<li><p>如果是生产环境，应该根据实际情况调整配置参数，参考MySQL Cluster. 你还可以增加 data nodes (ndbd) 或 MySQL server nodes (mysqld).</p></li>
+<li><p>启动管理器 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看是否有正在运行的服务进程</span><br><span class="line">ps -aux | grep ndb_mgmd</span><br><span class="line"></span><br><span class="line"># 在启动服务前，可能需要杀掉正在运行的服务:</span><br><span class="line">sudo pkill -f ndb_mgmd</span><br><span class="line"></span><br><span class="line"># 启动服务</span><br><span class="line">sudo ndb_mgmd -f &#x2F;var&#x2F;lib&#x2F;mysql-cluster&#x2F;config.ini</span><br><span class="line"></span><br><span class="line">#检查ndb_mgmd 使用的端口 1186</span><br><span class="line">sudo netstat -plntu</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="startndb_mgmd.png"></p></li>
+<li><p>配置<strong>自动加载服务</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在Ubuntu虚拟机下</span><br><span class="line"># 打开并编辑下面 systemd Unit 文件</span><br><span class="line">sudo vim &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;ndb_mgmd.service</span><br><span class="line"></span><br><span class="line"># 键入以下内容，保存并关闭</span><br><span class="line">[Unit]</span><br><span class="line">Description&#x3D;MySQL NDB Cluster Management Server</span><br><span class="line">After&#x3D;network.target auditd.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type&#x3D;forking</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;sbin&#x2F;ndb_mgmd -f &#x2F;var&#x2F;lib&#x2F;mysql-cluster&#x2F;config.ini</span><br><span class="line">ExecReload&#x3D;&#x2F;bin&#x2F;kill -HUP $MAINPID</span><br><span class="line">KillMode&#x3D;process</span><br><span class="line">Restart&#x3D;on-failure</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br><span class="line"></span><br><span class="line"># 上面只是加入了如何启动、停止和重启动ndb_mgmd进程的最小选项集合</span><br><span class="line"># more information，参阅[systemd manual](https:&#x2F;&#x2F;www.freedesktop.org&#x2F;software&#x2F;systemd&#x2F;man&#x2F;systemd.service.html).</span><br></pre></td></tr></table></figure>
+<p><img data-src="ndbmgmdservice.png"></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># reload systemd’s manager configuration using daemon-reload</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line"></span><br><span class="line"># enable the service we just created</span><br><span class="line"># MySQL Cluster Manager starts on reboot</span><br><span class="line">sudo systemctl enable ndb_mgmd</span><br><span class="line"></span><br><span class="line"># start the service</span><br><span class="line">sudo systemctl start ndb_mgmd</span><br><span class="line"></span><br><span class="line"># verify that the NDB Cluster Management service is running</span><br><span class="line">sudo systemctl status ndb_mgmd</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>ndb_mgmd</code>MySQL Cluster Management server作为一个系统服务正在运行</li>
+</ul>
+<p><img data-src="systemctlenablendbmgmd.png"></p></li>
+<li><p>设置<code>Cluster Manager</code>允许其它<code>MySQL Cluster</code>节点连入</p>
+<ul>
+<li>如果出现连接问题，则需要设置<code>ufw</code>防火墙，添加允许数据节点连入的规则 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo ufw allow from 192.168.50.128</span><br><span class="line">sudo ufw allow from 192.168.50.129</span><br></pre></td></tr></table></figure></li>
+<li>会见到如下输出。此时<code>Cluster Manager</code>应该启动运行了，并且能够通过局域网与集群其它节点通信了。 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Rule added</span><br><span class="line"></span><br><span class="line"># 因为我之前配置过，所以会显示</span><br><span class="line">Rule updated</span><br></pre></td></tr></table></figure></li>
+</ul></li>
+</ul>
+<h4 id="配置数据节点">2.3.4 配置数据节点</h4>
+<ul>
+<li><p>假定在192.168.50.129上进行(同理另一个节点)</p></li>
+<li><p>安装依赖包 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 修复损坏的软件包，尝试卸载出错的包，重新安装正确版本的</span><br><span class="line">sudo apt-get –f install </span><br><span class="line">sudo apt install libclass-methodmaker-perl</span><br></pre></td></tr></table></figure></p></li>
+<li><p>安装数据节点包 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 进入install文件夹</span><br><span class="line">sudo dpkg -i mysql-cluster-community-data-node_8.0.19-1ubuntu16.04_amd64.deb</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="dpkg-data.png"></p></li>
+<li><p>数据节点将从固定位置/etc/my.cnf获取配置文件.创建文件并编辑 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vim &#x2F;etc&#x2F;my.cnf</span><br><span class="line"></span><br><span class="line"># 写入以下内容 两个虚拟机都一样</span><br><span class="line">[mysql_cluster]</span><br><span class="line"># Options for NDB Cluster processes:</span><br><span class="line">ndb-connectstring&#x3D;192.168.50.129  # location of cluster manager</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="myconf.png"></p></li>
+<li><p>本配置设定在管理器配置数据目录为<code>/usr/local/mysql/data</code>。运行服务前要创建相关目录<code>sudo mkdir -p /usr/local/mysql/data</code>。在成功启动数据节点的时候，会向该文件夹中写入数据，如下图所示。</p>
+<p><img data-src="data.png"></p></li>
+<li><p>启动服务<code>sudo ndbd</code>，NDB 数据节点守护程序成功启动</p>
+<p><img data-src="ndbstartsuccess.png"></p>
+<p>同理见<code>192.168.50.128</code>(192.168.50.129机器上的管理器服务要打开)</p>
+<p><img data-src="ndbstartsuccess1.png"></p></li>
+<li><p>如果出现连接问题，请打开防火墙： <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo ufw allow from 192.168.50.129</span><br><span class="line">sudo ufw allow from 192.168.50.128</span><br></pre></td></tr></table></figure></p></li>
+<li><p>同配置集群管理器类似，配置数据节点服务自启动 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 打开并编辑如下 systemd Unit 文件</span><br><span class="line">sudo vim &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;ndbd.service</span><br><span class="line"></span><br><span class="line"># 内容如下：</span><br><span class="line">[Unit]</span><br><span class="line">Description&#x3D;MySQL NDB Data Node Daemon</span><br><span class="line">After&#x3D;network.target auditd.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type&#x3D;forking</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;sbin&#x2F;ndbd</span><br><span class="line">ExecReload&#x3D;&#x2F;bin&#x2F;kill -HUP $MAINPID</span><br><span class="line">KillMode&#x3D;process</span><br><span class="line">Restart&#x3D;on-failure</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br><span class="line"></span><br><span class="line"># 采用daemon-reload重新加载systemd’s manager配置</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line"></span><br><span class="line"># 让我们刚创建的服务生效，使data node daemon可以开机执行</span><br><span class="line">sudo systemctl enable ndbd</span><br><span class="line"></span><br><span class="line"># 启动服务</span><br><span class="line">sudo systemctl start ndbd</span><br><span class="line"></span><br><span class="line"># 禁止服务</span><br><span class="line">sudo systemctl stop ndbd</span><br><span class="line"></span><br><span class="line"># 验证NDB Cluster Management service服务正在执行</span><br><span class="line">sudo systemctl status ndbd</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="systemctlenablendbd.png"></p></li>
+</ul>
+<h4 id="配置并运行mysql-server和client">2.3.5 配置并运行MySQL Server和Client</h4>
+<ul>
+<li><p>标准的MySQL server不支持 MySQL Cluster 引擎 NDB。这意味着我们需要安装含有定制的SQL服务器 MySQL Cluster软件。</p></li>
+<li><p><code>192.168.50.129</code>和<code>192.168.50.128</code>都作为<code>MySQL Server node</code></p></li>
+<li><p>进入包含MySQL Cluster组件的目录<code>cd install</code></p></li>
+<li><p>在安装MySQL server 前，需要安装两个依赖库（如果已经安装过可忽略） <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install libaio1 libmecab2</span><br></pre></td></tr></table></figure></p></li>
+<li><p>安装解压在install目录的软件包中的一些MySQL Cluster依赖包 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;install&#x2F;</span><br><span class="line">sudo dpkg -i mysql-common_8.0.19-1ubuntu16.04_amd64.deb</span><br><span class="line">sudo dpkg -i mysql-cluster-community-client-core_8.0.19-1ubuntu16.04_amd64.deb</span><br><span class="line">sudo dpkg -i mysql-cluster-community-client_8.0.19-1ubuntu16.04_amd64.deb</span><br><span class="line">sudo dpkg -i mysql-client_8.0.19-1ubuntu16.04_amd64.deb</span><br><span class="line">sudo dpkg -i mysql-cluster-community-server-core_8.0.19-1ubuntu16.04_amd64.deb</span><br><span class="line">sudo dpkg -i mysql-cluster-community-server_8.0.19-1ubuntu16.04_amd64.deb</span><br><span class="line"></span><br><span class="line"># 此处若是出现依赖问题，输入以下命令，再重新执行一遍上面语句 </span><br><span class="line">sudo apt-get -f install</span><br><span class="line"># 或者把依赖包删除 重装一遍</span><br><span class="line">sudo apt-get purge libaio1 </span><br><span class="line">sudo apt-get purge libmecab2</span><br></pre></td></tr></table></figure></p></li>
+<li><p>当安装mysql-cluster-community-server时，会出现配置提示，请求为mysql数据库root用户设置密码。在后面选项选择使用<strong>强安全密码</strong></p>
+<p><img data-src="password.png"></p>
+<p><img data-src="strongpw.png"></p></li>
+<li><p>安装MySQL server:<code>sudo dpkg -i mysql-server_8.0.19-1ubuntu16.04_amd64.deb</code></p>
+<p><img data-src="installmysqlserver.png"></p></li>
+<li><p>配置MySQL server <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 打开MySQL Server 配置文件默认</span><br><span class="line">sudo vim &#x2F;etc&#x2F;mysql&#x2F;my.cnf</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>可看到下列文本</p>
+<p><img data-src="mycnf.png"></p></li>
+<li><p>往文本后追加(192.168.50.128填写的相同)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line"># Options for mysqld process:</span><br><span class="line">ndbcluster  # run NDB storage engine</span><br><span class="line"></span><br><span class="line">[mysql_cluster]</span><br><span class="line"># Options for NDB Cluster processes:</span><br><span class="line">ndb-connectstring&#x3D;192.168.50.129  # location of management server</span><br></pre></td></tr></table></figure></li>
+</ul></li>
+<li><p>重启MySQL server，使上面的变化生效:<code>sudo systemctl restart mysql</code></p></li>
+<li><p>MySQL默认开机自动启动。如果不能启动，下述命令可以修复:<code>sudo systemctl enable mysql</code></p></li>
+</ul>
+<h4 id="验证mysql-cluster安装">2.3.6 验证MySQL Cluster安装</h4>
+<ul>
+<li><p>为了验证MySQL Cluster正确安装, 登陆Cluster Manager / SQL Server节点，为192.168.50.129/192.168.50.128。</p></li>
+<li><p>打开MySQL客户端连接到root账号：<code>mysql -u root -p</code></p>
+<p><img data-src="startmysql.png"></p></li>
+<li><p>在MySQL客户端中, 运行下列命令: <code>SHOW ENGINE NDB STATUS \G</code>，系统会显示NDB引擎的相关信息，表示成功连入MySQL Cluster</p>
+<p><img data-src="NDB.png"></p></li>
+<li><p><code>number of ready_data_nodes= 2</code></p>
+<ul>
+<li>如果一个数据节点挂了（本例中必须是那个没有安装MySQL Cluster管理器的节点），MySQL cluster还是可以继续工作</li>
+<li>测试cluster的稳定性
+<ul>
+<li><p>shutting down非管理器节点（192.168.50.128），在整个过程中看到<code>number_of_ready_data_nodes</code>从2变为1。</p>
+<p><img data-src="numberofreadydatanodes.gif"></p></li>
+<li><p>再次开启服务，又由1变为2(这个变化过程有延迟，需要等待一会)。同理停止管理器节点上的ndbd服务。</p>
+<p><img data-src="fullprocess.gif"></p></li>
+</ul></li>
+</ul></li>
+<li><p>在集群管理器控制台上查看集群信息，命令为：<code>ndb_mgm</code>。然后在集群管理器控制台输入<code>SHOW</code>，输出信息如下：</p>
+<ul>
+<li><p>192.168.50.128的数据节点ndbd断开连接的情况</p>
+<p><img data-src="ndbmgm.png"></p></li>
+<li><p>192.168.50.128的数据节点ndbd未断开连接的情况</p>
+<p><img data-src="ndbmgm1.png"></p>
+<p>192.168.50.128的mysql服务器启动</p>
+<p><img data-src="mysqldallconnect.png"></p></li>
+</ul></li>
+<li><p>退出MySQL客户端，使用quit或按CTRL-D</p></li>
+<li><p>管理控制台功能很多，有很多其他的管理命令来管理集群和数据, 包括创建在线备份. 更多信息参考官方<a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-cluster-management.html" target="_blank" rel="noopener">official MySQL documentation</a></p></li>
+</ul>
+<h4 id="向mysql集群插入数据">2.3.7 向MySQL集群插入数据</h4>
+<ul>
+<li><p>注意为了使用集群功能, 必须使用NDB数据库引擎。如果使用InnoDB (default)或其他引擎,将不能使用集群。 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 打开MySQL客户端连接到root账号</span><br><span class="line">mysql -u root -p</span><br><span class="line"></span><br><span class="line"># 首先, 创建数据库clustertest:</span><br><span class="line">CREATE DATABASE clustertest;</span><br><span class="line"></span><br><span class="line"># 其次转到新数据库:</span><br><span class="line">USE clustertest;</span><br><span class="line"></span><br><span class="line"># 再次，创建表test_table:</span><br><span class="line"># 需要显式规定ndbcluster引擎</span><br><span class="line">CREATE TABLE test_table (name VARCHAR(20), value VARCHAR(20)) ENGINE&#x3D;ndbcluster;</span><br><span class="line"></span><br><span class="line"># 现在可以插入数据了:</span><br><span class="line">INSERT INTO test_table (name,value) VALUES(&#39;some_name&#39;,&#39;some_value&#39;);</span><br><span class="line"></span><br><span class="line"># 最后验证数据插入：</span><br><span class="line">SELECT * FROM test_table;</span><br><span class="line"></span><br><span class="line"># show databases</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="insertdata.png"></p></li>
+<li><p><strong><a href="#251-ndb%e5%ad%98%e5%82%a8%e5%bc%95%e6%93%8e%e6%b5%8b%e8%af%95">思考：在本例中，数据被插入到了哪个机器？</a></strong></p>
+<ul>
+<li>我认为数据应该被插入了本地机器</li>
+<li>在此处数据备份为2的话，则另一个数据节点有一份相同的备份</li>
+</ul></li>
+<li><p>可以在my.cnf文件中设定默认数据存储引擎为ndbcluster，这样创建表时就不再规定引擎了。更多信息参考<a href="https://dev.mysql.com/doc/refman/5.7/en/storage-engine-setting.html" target="_blank" rel="noopener">MySQL Reference Manual</a></p></li>
+</ul>
+<h3 id="结语">2.4 结语</h3>
+<p>至此我们在Ubuntu 16.04 servers上安装和配置了a MySQL Cluster。需要注意的是这是一个很小的简化体系结构来说明配置过程，部署一个生产环境，还有许多其他的选项和特征需要去学习.。更多信息请参阅 <a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-cluster.html" target="_blank" rel="noopener">MySQL Cluster documentation</a></p>
+<h3 id="验证可靠性">2.5 验证可靠性</h3>
+<h4 id="ndb存储引擎测试">2.5.1 NDB存储引擎测试</h4>
+<ul>
+<li><p>在192.168.50.129的SQL节点创建数据库并且插入数据(一定要设置存储引擎为NDB)，在192.168.50.128的SQL节点可以查询到，<strong>两个SQL节点查询的数据时一致的，能够同步</strong></p>
+<p><img data-src="databaseposition.png"></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">use clustertest</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="单点故障测试">2.5.2 单点故障测试</h4>
+<h5 id="sql节点发生单点故障">SQL节点发生单点故障</h5>
+<ul>
+<li><p>将SQL节点192.168.50.128上的MySQL服务停止 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;etc&#x2F;init.d&#x2F;mysqld stop</span><br><span class="line"># sudo systemctl stop mysql</span><br></pre></td></tr></table></figure></p></li>
+<li><p>ndb_mgm查看cluster状态</p>
+<p><img data-src="sqlnotonnect.png"></p></li>
+<li><p>从SQL节点192.168.50.129上查看数据，正常</p>
+<p><img data-src="onesqlfailed.png"></p>
+<p><img data-src="onesqlfailed.gif"></p></li>
+<li><p>SQL节点的单点故障并没有引起数据查询的故障。对于应用来说，需要改变的就是将以前对故障节点的访问改为对非故障节点的访问</p></li>
+</ul>
+<h5 id="ndb数据节点单点故障">NDB(数据节点)单点故障</h5>
+<ul>
+<li><p>在这个测试环境中，数据节点也是两个，那么他们对数据的存储是互相镜像还是一份数据分成几块存储呢？这个答案关键在于配置文件中[NDBD DEFAULT]组中的<strong>NoOfReplicas参数</strong>，如果这个参数等于1，表示只有一份数据，但是分成N块分别存储在N个数据节点上，如果该值等于2，则表示数据被分成N/2,每块数据都有两个备份，这样即使有任意一个节点发生故障，只要它的备份节点正常，数据就可以正常查询</p></li>
+<li><p>将NDB节点192.168.50.129上的ndbd服务停止 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -ef | grep ndbd</span><br><span class="line">pkill -9 ndbd</span><br></pre></td></tr></table></figure></p></li>
+<li><p>ndb_mgm查看cluster状态，NDB节点192.168.50.129上已经挂掉</p>
+<p><img data-src="onendbfailed.png"></p></li>
+<li><p>从SQL节点192.168.50.128和SQL节点192.168.50.129上查看数据，正常</p>
+<p><img data-src="onenbdfailed.gif"></p></li>
+<li><p>在此样例中，挂掉一个NDB节点不影响正常的数据查询，数据节点的冗余同样防止了NDB单点故障</p></li>
+<li><p>如果该测试中，NoOfReplicas=1，如果有一个数据节点挂了，则无法正常访问完整数据</p></li>
+</ul>
+<h4 id="集群的关闭">2.5.3 集群的关闭</h4>
+<ul>
+<li>关闭顺序：SQL节点-&gt;数据节点-&gt;管理节点</li>
+<li>NDB节点和管理节点的关闭都可以在管理节点的管理程序中完成，也可以分节点关闭</li>
+<li>关闭Cluster节点不会停止sql节点数据库服务</li>
+<li>但在关闭整个MySQL Cluster环境(内部关闭：ndb_mgm&gt; shutdown)或者关闭某个SQL节点的时候，首先必须到SQL节点主机上来关闭SQL节点程序</li>
+</ul>
+<h3 id="思考问题">2.6 思考问题</h3>
+<ol type="1">
+<li>通过实验，你对一个分布式数据库系统有何理解？分布式数据库系统预计有何优越性？
+<ul>
+<li>理解：分布在同一个网络；逻辑上属于同一个系统；物理上分布在不同的节点上</li>
+<li>优越性：
+<ul>
+<li>适合分布式数据管理，能有效地提高系统性能，吞吐率和响应速度提高</li>
+<li>分布式数据库系统可利用现有的设备和系统，省时、省力、投资少</li>
+<li>提高了系统的可用性、可靠性和并行执行度，并允许存储数据副本</li>
+<li>根据实际需要，可增减某一场地，系统具有可扩展性</li>
+<li>分布式数据库系统资源和数据分布在物理上不同的场地上，为系统所有用户共享</li>
+</ul></li>
+</ul></li>
+<li><a href="#25-%e9%aa%8c%e8%af%81%e5%8f%af%e9%9d%a0%e6%80%a7">你能设计一个方案验证集群系统在可靠性上优于集中式数据库系统吗？</a>
+<ul>
+<li>集中式数据库，单点，崩了就完了</li>
+</ul></li>
+<li>同样是插入数据，你觉得MySQL Cluster和myCAT在实体完整性保持方面是否可能会有不同？为什么？ &gt; Entity Integrity ensures that there are no duplicate records within the table and that the field that identifies each record within the table is unique and never null.
+<ul>
+<li>实体完整性要求每个数据表都必须有<strong>主键</strong>，而作为主键的所有字段，其属性必须是<strong>独一及非空值</strong></li>
+<li>MySQL Cluster：auto-sharding，需要内存很大(被诟病)</li>
+<li>myCAT: 分表分库，即将一个大表水平分割为 N个小表，存储在后端MySQL服务器里或者其他数据库里。早期myCAT没有检测，不同数据库的完整性无法保证，现在未知。</li>
+</ul></li>
+</ol>
+<h2 id="问题与解决">3 问题与解决</h2>
+<ul>
+<li><p>无法连接虚拟设备sata0:1</p>
+<p><img data-src="cannotconnect.png"></p>
+<p>解决：修改虚拟机 -&gt; 右键设置硬件 -&gt; CD/DVD(SATA) -&gt; 使用 ISO 映像文件</p>
+<p>但我认为这不影响虚拟机的使用所以就没深入解决</p></li>
+<li><p>提供此类问题<code>temporary failure resolving cn.archive.ubuntu.com</code>的解决思路</p>
+<p><img data-src="cannotresolve.png"></p>
+<ul>
+<li><p>原因：无法解析该域名</p></li>
+<li><p>试试<code>nslookup www.baidu.com</code></p></li>
+<li><p>如果发现服务器的DNS没有配，则</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 打开配置文件</span><br><span class="line">vi &#x2F;etc&#x2F;resolv.conf</span><br><span class="line"></span><br><span class="line"># 添加</span><br><span class="line">nameserver 114.114.114.114</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 223.5.5.5</span><br></pre></td></tr></table></figure></li>
+</ul></li>
+<li><p>报错：该虚拟机似乎正在使用中。如果该虚拟机未在使用，请按"获取所有权(T)"按钮获取。获取所有权失败。原因:VM异常关闭导致。</p>
+<p><img data-src="usingnow.png"></p>
+<p>解决：进入VM虚拟机的存放目录，删除后缀为.lck的文件</p></li>
+<li><p><a href="https://www.cnblogs.com/Komorebi-john/p/11381053.html" target="_blank" rel="noopener">VMware-以独占方式锁定此配置文件失败.另一个正在运行</a></p>
+<ul>
+<li>上述的方法都没有成功，通过<a href="https://blog.csdn.net/qq_34418601/article/details/91041411" target="_blank" rel="noopener">在Windows程序与功能-&gt;修复vmware解决</a></li>
+</ul></li>
+<li><p><a href="https://www.linuxidc.com/Linux/2015-06/119021.htm" target="_blank" rel="noopener">每次重启虚拟机后，<code>/etc/resolv.conf</code>文件就要重新配置，之前的都被抹去</a> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># resolv.conf文件其实是一个Link文件</span><br><span class="line"># 在Ubuntu中有一个 resolvconf的服务，这个服务用来控制&#x2F;etc&#x2F;resolv.conf的内容</span><br><span class="line"># 一旦我们重启了系统或者该服务，那么&#x2F;etc&#x2F;resolv.conf文件中的内容将被还原为原来的内容</span><br><span class="line"></span><br><span class="line">sudo vi &#x2F;etc&#x2F;resolvconf&#x2F;resolv.conf.d&#x2F;base</span><br><span class="line"># [应用更改](https:&#x2F;&#x2F;www.zhoushangren.com&#x2F;archives&#x2F;779)</span><br><span class="line">sudo resolvconf -u</span><br></pre></td></tr></table></figure></p></li>
+<li><p><code>ping: unknown host www.baidu.com</code>的解决方法 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># ping 网关</span><br><span class="line">auto ens33</span><br><span class="line">iface ens33 inet dhcp</span><br></pre></td></tr></table></figure></p></li>
+</ul>
+<h2 id="实验总结">4 实验总结</h2>
+<ul>
+<li>VMware挂起
+<ul>
+<li>相当于物理机中的休眠，会将内存中的数据全部存放到对应的休眠文件中，占用的空间为内存大小，并且会对虚拟机执行关机操作</li>
+<li>休眠后的虚拟机不占任何CPU、内存</li>
+<li>相对于关机，只多了一个和内存大小相同的休眠文件</li>
+</ul></li>
+<li>VMware不像virtualbox可以从外部将虚拟机强行终止，VMware的虚拟机若是不正常关机，下一次启动会出现很多莫名其妙的问题。</li>
+<li><code>sudo apt-get update</code>总是出问题的时候，通过科学上网、修改dns服务器、更改镜像源等操作后未果，可以不要选择大晚上执行命令，<del>太闹心，再也不做这种傻逼事</del>，放一放，换个时间可能会顺利很多。输入该命令之前可添加<code>sudo apt-get clean</code>，若是文件被锁住，则<code>ps -aux | grep apt*</code>获取有关进程的PID，然后<code>sudo kill PID</code>。</li>
+<li>update和upgrade的区别：update是更新软件列表，upgrade是更新软件。在执行<code>upgrade</code>之前要先<code>update</code> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">update: 同步 &#x2F;etc&#x2F;apt&#x2F;sources.list 和 &#x2F;etc&#x2F;apt&#x2F;sources.list.d 中列出的源的索引</span><br><span class="line">upgrade：升级已安装的所有软件包，升级之后的版本就是本地索引里的</span><br></pre></td></tr></table></figure></li>
+<li>apt和apt-get的区别 &gt; apt = apt-get、apt-cache 和 apt-config 中最常用命令选项的集合 &gt; &gt; 用 apt 替换部分 apt-get 系列命令，但不是全部</li>
+</ul>
+<h2 id="参考资料">5 参考资料</h2>
+<ul>
+<li><a href="https://www.cnblogs.com/huozf/p/9780747.html" target="_blank" rel="noopener">在VMware Workstation中安装Ubuntu Server 16.04.5图解教程</a></li>
+<li><a href="https://www.linuxidc.com/Linux/2017-04/143102.htm" target="_blank" rel="noopener">为VMware虚拟机内安装的Ubuntu 16.04设置静态IP地址</a></li>
+<li><a href="https://blog.csdn.net/qq_31454611/article/details/80566002" target="_blank" rel="noopener">SSH远程连接安装在VMware的Ubuntu16.0.4</a> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看虚拟机是否能够ping外网</span><br><span class="line"># 不行，配置DNS服务器 &#96;sudo vi &#x2F;etc&#x2F;resolv.conf&#96;</span><br><span class="line"># 重启网络sudo &#x2F;etc&#x2F;init.d&#x2F;networking restart</span><br><span class="line"># 检查当前的ssh开启情况</span><br><span class="line"># 如果有sshd，则ssh-server已经启动；若仅有agent，则尚未启动</span><br><span class="line">ps -e |grep ssh</span><br><span class="line"></span><br><span class="line"># 查看端口情况</span><br><span class="line">sudo netstat -plntu</span><br><span class="line"></span><br><span class="line"># 开启ssh服务</span><br><span class="line">&#x2F;etc&#x2F;init.d&#x2F;ssh start</span><br><span class="line"></span><br><span class="line"># 重启ssh</span><br><span class="line">sudo &#x2F;etc&#x2F;init.d&#x2F;ssh restart</span><br><span class="line"></span><br><span class="line"># 当主机ssh连接虚拟机出现ssh: connect to host 192.168.50.129 port 22: Connection timed out</span><br><span class="line"># 解决1:测试虚拟机是否能访问外网</span><br></pre></td></tr></table></figure></li>
+<li><a href="https://www.cnblogs.com/gomysql/p/3664783.html" target="_blank" rel="noopener">MySQL Cluster搭建与测试</a></li>
+<li><a href="https://blog.csdn.net/JesseYoung/article/details/38726561" target="_blank" rel="noopener">MySQL Cluster技术详解</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>DataBase</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+        <tag>Cluster</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows下git clone慢的尝试解决方法</title>
+    <url>/2020/03/21/Windows-git-clone-slow/</url>
+    <content><![CDATA[<div class="note success">
+            <p><strong>重启大法?!</strong> 重启网络，重启机器</p>
+          </div>
+<div class="note success">
+            <p>科学上网</p>
+          </div>
+<div class="note warning">
+            <p>STILL SLOW</p>
+          </div>
+<div class="note danger">
+            <p>ERROR: PRC fail</p>
+          </div>
+<a id="more"></a>
+<p><img data-src="prc-fail.png" /></p>
+<h1 id="git使用太多内存"><a href="#git%e4%bd%bf%e7%94%a8%e5%a4%aa%e5%a4%9a%e5%86%85%e5%ad%98">git使用太多内存</a></h1>
+<ul>
+<li>git使用太多内存，需要先<code>git gc</code></li>
+</ul>
+<h1 id="源代码过于庞大"><a href="#%e6%ba%90%e4%bb%a3%e7%a0%81%e8%bf%87%e4%ba%8e%e5%ba%9e%e5%a4%a7">源代码过于庞大</a></h1>
+<ul>
+<li><p>http方式不行，可以用ssh的方式(<a href="https://blog.csdn.net/lqlqlq007/article/details/78983879" target="_blank" rel="noopener">首先要进行git ssh的配置</a>)</p></li>
+<li><p>需要修改git的http.postBuffer，加大git传输字节，仅对http形式有效</p>
+<figure class="highlight plain"><figcaption><span>bash</span></figcaption><table><tr><td class="code"><pre><span class="line">% 查看当前的配置</span><br><span class="line">git config -l</span><br><span class="line">% 加大httpbuffer</span><br><span class="line">git config --global http.postBuffer 524288000</span><br><span class="line">git config --global http.sslVerify false</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="修改host文件"><a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99">修改host文件</a></h1>
+<ul>
+<li><p>通过<a href="https://www.ipaddress.com/" target="_blank" rel="noopener">查询ip地址</a></p>
+<ul>
+<li><code>github.global.ssl.fastly.net</code></li>
+<li><code>github.com</code></li>
+<li><code>assets-cdn.github.com</code></li>
+</ul></li>
+<li><p>位于<code>C:\Windows\System32\drivers\etc</code>目录下的<code>hosts</code>文件</p></li>
+<li><p>按如下格式，在文件末尾写入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">151.101.185.194 global-ssl.fastly.net</span><br><span class="line">140.82.113.3  github.com</span><br></pre></td></tr></table></figure></li>
+<li><p>刷新系统dns缓存</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 可在windows的cmd下</span><br><span class="line">ipconfig &#x2F;flushdns</span><br></pre></td></tr></table></figure></li>
+<li><p>ip经常会变，如发现速度又下降了，及时去更换ip</p></li>
+</ul>
+<h1 id="git设置和取消代理"><a href="#git%e8%ae%be%e7%bd%ae%e5%92%8c%e5%8f%96%e6%b6%88%e4%bb%a3%e7%90%86">git设置和取消代理</a></h1>
+<h2 id="vpn的情况下"><a href="#vpn%e7%9a%84%e6%83%85%e5%86%b5%e4%b8%8b">vpn的情况下</a></h2>
+<ul>
+<li>开全局代理的情况下，利用代理进行下载，对https有效，ssh无效 <figure class="highlight plain"><figcaption><span>bash</span></figcaption><table><tr><td class="code"><pre><span class="line">git config --global http.proxy http:&#x2F;&#x2F;127.0.0.1:自己的端口号</span><br><span class="line">git config --global https.proxy https:&#x2F;&#x2F;127.0.0.1:自己的端口号</span><br><span class="line"></span><br><span class="line"># 可以在计算机的设置-&gt;代理查看</span><br><span class="line"></span><br><span class="line"># 取消方式</span><br><span class="line">git config --global --unset http.proxy</span><br><span class="line">git config --global --unset https.proxy</span><br><span class="line"></span><br><span class="line"># 查看目前所有的配置</span><br><span class="line">git config --global list</span><br></pre></td></tr></table></figure></li>
+<li>使用全局代理，clone国内仓库慢，改进：只对github进行代理，对国内的仓库不影响 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 先取消全局代理，通过上面的取消方法</span><br><span class="line"></span><br><span class="line">git config --global http.https:&#x2F;&#x2F;github.com.proxy https:&#x2F;&#x2F;127.0.0.1:自己的端口号</span><br><span class="line">git config --global https.https:&#x2F;&#x2F;github.com.proxy https:&#x2F;&#x2F;127.0.0.1:自己的端口号</span><br><span class="line"></span><br><span class="line"># 取消</span><br><span class="line">git config --global --unset http.https:&#x2F;&#x2F;github.com.proxy</span><br><span class="line">git config --global --unset https.https:&#x2F;&#x2F;github.com.proxy</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="参考资料"><a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99">参考资料</a></h1>
+<ul>
+<li><p><a href="https://www.cnblogs.com/rockbean/p/12017010.html" target="_blank" rel="noopener">git设置和取消代理</a></p></li>
+<li><p><a href="https://github.com/hexojs/hexo/issues/4172" target="_blank" rel="noopener">谜之问题</a></p>
+<p><img data-src="ERROR.png" /></p>
+<p>可能是：短时间过多请求api造成的</p>
+<p>解决： <code>hexo\themes\next\scripts\events\index.js</code></p>
+<p>将<a href="https://github.com/theme-next/hexo-theme-next/commit/9b543ddacf21a59f2daa52b0ae64075aed62fca2" target="_blank" rel="noopener">作者修改的部分</a>做注释</p>
+<p><img data-src="error-fix.png" /></p></li>
+</ul>
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MkDocs+Github+Travis搭建博客</title>
+    <url>/2020/03/21/MkDocs-Github-Travis/</url>
+    <content><![CDATA[<blockquote>
+<p>最近是不是玩博客玩疯了 大概逻辑：通过Travis CI部署的MkDocs环境生成静态页面并且发布到GitHub上 能够通过https://xxx.github.io/<仓库名>访问 MkDocs 官网 1. https://squidfunk.github.io/mkdocs-material/ 2. https://www.mkdocs.org/</p>
+<p>Travis 官网 https://travis-ci.org</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="github">Github</h1>
+<ul>
+<li>建立仓库后，<code>git clone</code>仓库到本地</li>
+</ul>
+<h1 id="mkdocs">MkDocs</h1>
+<h2 id="使用简介-最好看文档">使用简介 [最好看文档]</h2>
+<h3 id="安装">安装</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看python和pip版本</span><br><span class="line">python --version</span><br><span class="line">pip --version</span><br><span class="line"># Installing and verifying MkDocs </span><br><span class="line"># Material requires MkDocs &gt;&#x3D; 1.0.0.</span><br><span class="line">pip install mkdocs &amp;&amp; mkdocs --version</span><br><span class="line"># install material</span><br><span class="line">pip install mkdocs-material</span><br></pre></td></tr></table></figure>
+<h3 id="使用">使用</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 创建文档库</span><br><span class="line"># xxx是目录名称 会生成docs文件夹和mkdocs.yml</span><br><span class="line">mkdocs new xxx</span><br><span class="line"># 启用服务</span><br><span class="line">mkdocs serve</span><br><span class="line"># 编译构建站点</span><br><span class="line">mkdocs build</span><br></pre></td></tr></table></figure>
+<p><strong>至于页面的样式，看文档更改mkdocs.yml文件</strong></p>
+<h2 id="部署到github">部署到Github</h2>
+<ul>
+<li>将克隆下来的仓库切到<code>master</code>主分支</li>
+<li>将上述产生的<code>docs文件夹和mkdocs.yml</code>放入该git目录下</li>
+<li>自动编译并发布至<code>Github gh-pages</code>分支 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdocs gh-deploy --clean</span><br><span class="line"># 可以 mkdocs serve 看看是否能够正常显示</span><br></pre></td></tr></table></figure></li>
+<li>将本地的仓库同步远程 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git add -A</span><br><span class="line">git push</span><br></pre></td></tr></table></figure></li>
+<li>通过<code>https:xxx.github.io/仓库名称</code>访问</li>
+</ul>
+<h1 id="travis">Travis</h1>
+<ul>
+<li>持续集成服务 <del>看起来像是监控每一次的提交修改的情况</del></li>
+<li><a href="https://flc.io/more/github-travis-mkdocs-document/" target="_blank" rel="noopener">直接附上教程</a></li>
+</ul>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://www.jianshu.com/p/b07dc1fd4f9e" target="_blank" rel="noopener">使用MKdocs搭建个人博客并发布在Github Pages上</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1468110" target="_blank" rel="noopener">基于mkdocs-material搭建个人静态博客</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Blogs</category>
+      </categories>
+      <tags>
+        <tag>blog</tag>
+        <tag>MkDocs</tag>
+        <tag>github</tag>
+        <tag>Travis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo+github搭建博客</title>
+    <url>/2020/03/21/hexo-github/</url>
+    <content><![CDATA[<blockquote>
+<p>Hexo是一个基于 Github Pages 的博客发布工具，支持Markdown格式，有众多优秀插件和主题 github：https://github.com/hexojs/hexo 官网：http://hexo.io</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="hexo-一些命令-用法">hexo 一些命令 &amp; 用法</h1>
+<ul>
+<li><p>一般下载的主题的位置位于<code>hexo/themes</code>，切换主题的时候需要修改<code>hexo/_config.yml</code>中的<code>theme</code></p></li>
+<li><p>一般生成的文章的位置位于<code>hexo/source/_posts</code></p></li>
+<li><p>所有的命令都在<code>git bash</code>下进行，一些<code>hexo</code>的命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># hexo generate 生成静态文件 </span><br><span class="line">hexo g</span><br><span class="line"># hexo server 启动服务，在本地预览</span><br><span class="line">hexo s </span><br><span class="line"># hexo deploy 部署网站</span><br><span class="line"># 上传到github，无需通过git add和git push，但需要配置</span><br><span class="line">hexo d</span><br><span class="line"># 新建文章</span><br><span class="line">hexo new &quot;name&quot;</span><br><span class="line"># 新建页面</span><br><span class="line">hexo new page &quot;pageName&quot;</span><br></pre></td></tr></table></figure></li>
+<li><p>插入图片 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># hexo&#x2F;_config.yml </span><br><span class="line">post_asset_folder: true</span><br><span class="line"># hexo n 生成md博文时，&#x2F;source&#x2F;_posts文件夹内除了md文件还有一个同名的文件夹，不再赘述</span><br><span class="line"></span><br><span class="line"># 在hexo目录下，安装上传本地图片的插件，我装了会出错</span><br><span class="line">npm install hexo-asset-image --save</span><br><span class="line"># 卸载</span><br><span class="line">npm uninstall hexo-asset-image</span><br></pre></td></tr></table></figure></p></li>
+<li><p><a href="https://github.com/theme-next/hexo-symbols-count-time/issues/53" target="_blank" rel="noopener">The symbols count is undefined and reading time is NaN:aN</a></p></li>
+</ul>
+<h1 id="github">Github</h1>
+<ul>
+<li><p>部署到github上，通过hexo直接更新github仓库 如果要通过<code>hexo d</code>直接上传，需要配置</p>
+<ul>
+<li><code>ssh key</code></li>
+<li>修改<code>hexo/_config.yml</code>中有关<code>deploy</code>的部分</li>
+</ul>
+<p><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:purplezi/purplezi.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>安装插件<code>npm install hexo-deployer-git --save</code></li>
+</ul></li>
+</ul>
+<h1 id="其他主题">其他主题</h1>
+<blockquote>
+<ol type="1">
+<li>Fluid，基于 Hexo 的一款 Material Design 风格的主题 github：https://github.com/fluid-dev/hexo-theme-fluid 官网：https://hexo.fluid-dev.com/docs 配置指南：https://hexo.fluid-dev.com/docs</li>
+<li>https://github.com/blinkfox/hexo-theme-matery</li>
+<li>https://github.com/litten/hexo-theme-yilia 推荐用yilia-plus</li>
+<li>https://www.zhihu.com/question/24422335?utm_source=qq&amp;utm_medium=social&amp;utm_oi=868617446326681600</li>
+</ol>
+</blockquote>
+<h1 id="参考资料">参考资料</h1>
+<ul>
+<li><a href="https://io-oi.me/tech/hexo-next-optimization/" target="_blank" rel="noopener">hexo+Github超深度优化</a></li>
+<li><a href="http://chant00.com/2015/11/04/%E5%9C%A8hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%EF%BC%8C%E9%9F%B3%E4%B9%90%EF%BC%8C%E8%A7%86%E5%B1%8F%EF%BC%8C%E5%85%AC%E5%BC%8F/" target="_blank" rel="noopener">在hexo中加入图片、音频、视频</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Blogs</category>
+      </categories>
+      <tags>
+        <tag>blog</tag>
+        <tag>github</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/03/15/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<a id="more"></a>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="create-a-new-post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="run-server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="generate-static-files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+  </entry>
+</search>
