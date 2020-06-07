@@ -1,184 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-
-
-
-
-
-<head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="lazy x 2">
-  <meta name="author" content="Purplezi">
-  <meta name="keywords" content="">
-  <title>部署MySQL Cluster集群系统 - Purplezi</title>
-
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
-<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
-<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
-<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
-
-
-
-  <link  rel="stylesheet" href="/lib/prettify/Monokai%20Sublime.min.css" />
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-<!-- 自定义样式保持在最底部 -->
-
-
-<meta name="generator" content="Hexo 4.2.0"></head>
-
-
-<body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand"
-       href="/">&nbsp;<strong>Purplezi</strong>&nbsp;</a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
-          </li>
-        
-          
-          
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/archives/">Archives</a>
-          </li>
-        
-          
-          
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/categories/">Categories</a>
-          </li>
-        
-          
-          
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/tags/">Tags</a>
-          </li>
-        
-          
-          
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/about/">About</a>
-          </li>
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
-                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-    <div class="view intro-2" id="background" parallax=true
-         style="background: url('/img/default.png') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask rgba-black-light flex-center">
-          <div class="container text-center white-text fadeInUp">
-            <span class="h2" id="subtitle">
-              
-            </span>
-
-            
-              
-                <p class="mt-3 post-meta">
-                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                  Wednesday, March 25th 2020, 11:31 am
-                </p>
-              
-
-              <p class="mt-1">
-                
-                  
-                  <span class="post-meta">
-                    <i class="far fa-chart-bar"></i>
-                    5.7k 字
-                  </span>
-                
-
-                
-                  
-                  <span class="post-meta">
-                      <i class="far fa-clock"></i>
-                      24 分钟
-                  </span>
-                
-
-                
-              </p>
-            
-          </div>
-
-          
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    
-      
-
-<div class="container-fluid">
-  <div class="row">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-md">
-      <div class="container nopadding-md" id="board-ctn">
-        <div class="py-5 z-depth-3" id="board">
-          <div class="post-content mx-auto" id="post">
-            
-            <div class="markdown-body">
-              <blockquote>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="generator" content="Hexo 4.2.0"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>部署MySQL Cluster集群系统 - Purplezi</title><meta description="MySQL Cluster is a technology providing shared-nothing clustering and auto-sharding for the MySQL database management system. It is designed to provide high availability and high throughput with low"><meta property="og:type" content="blog"><meta property="og:title" content="部署MySQL Cluster集群系统"><meta property="og:url" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/"><meta property="og:site_name" content="Purplezi"><meta property="og:description" content="MySQL Cluster is a technology providing shared-nothing clustering and auto-sharding for the MySQL database management system. It is designed to provide high availability and high throughput with low"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/iso.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/delete-VMnet01.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/dhcp-ipaddress.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/gatewayaddress.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/VMnet8.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/configureIPaddress.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/configuredns.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/MySQLCluster.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/common.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/adduser.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/usermod.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/install.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/dpkg.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/config-ini.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/startndb_mgmd.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/ndbmgmdservice.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/systemctlenablendbmgmd.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/dpkg-data.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/myconf.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/data.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/ndbstartsuccess.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/ndbstartsuccess1.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/systemctlenablendbd.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/password.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/strongpw.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/installmysqlserver.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/mycnf.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/startmysql.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/NDB.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/numberofreadydatanodes.gif"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/fullprocess.gif"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/ndbmgm.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/ndbmgm1.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/mysqldallconnect.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/insertdata.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/databaseposition.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/sqlnotonnect.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/onesqlfailed.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/onesqlfailed.gif"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/onendbfailed.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/onenbdfailed.gif"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/cannotconnect.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/cannotresolve.png"><meta property="og:image" content="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/usingnow.png"><meta property="article:published_time" content="2020-03-25T03:31:59.000Z"><meta property="article:modified_time" content="2020-06-07T02:28:31.503Z"><meta property="article:author" content="Purplezi"><meta property="article:tag" content="mysql"><meta property="article:tag" content="Cluster"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="iso.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/"},"headline":"Purplezi","image":["https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/iso.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/delete-VMnet01.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/dhcp-ipaddress.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/gatewayaddress.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/VMnet8.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/configureIPaddress.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/configuredns.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/MySQLCluster.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/common.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/adduser.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/usermod.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/install.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/dpkg.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/config-ini.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/startndb_mgmd.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/ndbmgmdservice.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/systemctlenablendbmgmd.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/dpkg-data.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/myconf.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/data.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/ndbstartsuccess.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/ndbstartsuccess1.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/systemctlenablendbd.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/password.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/strongpw.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/installmysqlserver.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/mycnf.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/startmysql.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/NDB.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/numberofreadydatanodes.gif","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/fullprocess.gif","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/ndbmgm.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/ndbmgm1.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/mysqldallconnect.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/insertdata.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/databaseposition.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/sqlnotonnect.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/onesqlfailed.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/onesqlfailed.gif","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/onendbfailed.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/onenbdfailed.gif","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/cannotconnect.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/cannotresolve.png","https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/usingnow.png"],"datePublished":"2020-03-25T03:31:59.000Z","dateModified":"2020-06-07T02:28:31.503Z","author":{"@type":"Person","name":"Purplezi"},"description":"MySQL Cluster is a technology providing shared-nothing clustering and auto-sharding for the MySQL database management system. It is designed to provide high availability and high throughput with low"}</script><link rel="canonical" href="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/"><link rel="icon" href="/img/fish-tank.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/monokai-sublime.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css"><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/plant-pot.svg" alt="Purplezi" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/purplezi"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2020-03-25T03:31:59.000Z" title="2020-03-25T03:31:59.000Z">2020-03-25</time><span class="level-item"><a class="link-muted" href="/categories/DataBase/">DataBase</a></span><span class="level-item">39 minutes read (About 5809 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">部署MySQL Cluster集群系统</h1><div class="content"><blockquote>
 <p>MySQL Cluster is a technology providing <strong>shared-nothing</strong> clustering and auto-sharding for the MySQL database management system. It is designed to provide high availability and high throughput with low latency, while allowing for near linear scalability A MySQL Cluster consists of one or more management nodes (ndb_mgmd) that store the cluster’s configuration and control the data nodes (ndbd), where cluster data is stored. After communicating with the management node, clients (MySQL clients, servers, or native APIs) connect directly to these data nodes. With MySQL Cluster there is typically no replication of data, but instead data node synchronization. For this purpose a special data engine must be used — NDBCluster (NDB)</p>
 </blockquote>
 <a id="more"></a>
 <h2 id="实验环境">1 实验环境</h2>
 <ul>
-<li><a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-multi-node-mysql-cluster-on-ubuntu-18-04" target="_blank" rel="noopener">英文指南(18.04&amp;16.04)</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-multi-node-mysql-cluster-on-ubuntu-18-04">英文指南(18.04&amp;16.04)</a></li>
 <li>VMware Workstation Pro 12</li>
 <li>2台Linux虚拟机，Ubuntu 16.04 Server</li>
-<li><a href="http://dev.mysql.com/downloads/cluster/" target="_blank" rel="noopener">MySQL-Cluster的安装包</a>：mysql-cluster_8.0.19-1ubuntu16.04_amd64.deb-bundle.tar</li>
+<li><a href="http://dev.mysql.com/downloads/cluster/">MySQL-Cluster的安装包</a>：mysql-cluster_8.0.19-1ubuntu16.04_amd64.deb-bundle.tar</li>
 <li>设置windows主机和Linux虚拟机共享文件夹</li>
 <li>方便编辑配置文件，安装vim <code>sudo apt-get install vim</code></li>
 </ul>
@@ -190,9 +20,9 @@
 <ul>
 <li><p>两个不同的虚拟机如果是用同一个镜像报错内部错误 -&gt; 就像virtualbox中的多重加载</p></li>
 <li><p>所以用一个iso安装好一个虚拟机后，将使用ISO映像文件去掉，选择使用物理驱动器。再用这个iso装另外的机器。克隆同理。</p>
-<p><img data-src="iso.png" srcset="/img/loading.gif"></p></li>
+<p><img src="iso.png"></p></li>
 </ul></li>
-<li><a href="https://blog.csdn.net/happysunshineguy/article/details/77158993?utm_source=copy" target="_blank" rel="noopener">虚拟机与宿主机共享</a>
+<li><a href="https://blog.csdn.net/happysunshineguy/article/details/77158993?utm_source=copy">虚拟机与宿主机共享</a>
 <ul>
 <li>注意用<code>cp</code>而不是<code>mv</code>将vmware tools安装包移动到可以进行解压<code>gunzip</code>的目录，如'/root'。因为该安装包只读，所以无法在该文件夹下进行解压和<code>mv</code>命令</li>
 <li>tar格式(tar是打包，不是压缩) <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">打包:tar cvf 目录文件名.tar 目录文件名</span><br><span class="line">解包:tar xvf 目录文件名.tar</span><br></pre></td></tr></table></figure></li>
@@ -204,28 +34,28 @@
 <ul>
 <li><p>按要求给一台机器设置静态ip为：192.168.50.128，另一台机器的静态ip为：192.168.50.129。</p></li>
 <li><p>使用NAT，虚拟机在一个子网中，通过物理机的IP上网。</p>
-<p><img data-src="delete-VMnet01.png" srcset="/img/loading.gif" width=80%></p></li>
+<p><img src="delete-VMnet01.png" width=80%></p></li>
 <li><p>去掉<code>使用本地DHCP服务将IP地址分配给虚拟机</code>，并且设置子网IP为：192.168.50.0，子网掩码为：255.255.255.0。因此，在Ubuntu中，设置IP地址的时候，可以设置为192.168.50.x，x可以为1~255。</p>
-<p><img data-src="dhcp-ipaddress.png" srcset="/img/loading.gif" width=80%></p></li>
+<p><img src="dhcp-ipaddress.png" width=80%></p></li>
 <li><p>选择<code>NAT设置</code>，打开NAT设置面板，查看网关地址。</p>
-<p><img data-src="gatewayaddress.png" srcset="/img/loading.gif"></p></li>
+<p><img src="gatewayaddress.png"></p></li>
 <li><p>在VMWare的虚拟机管理界面，选择Ubuntu的<code>编辑虚拟机设置</code>，打开Ubuntu这个虚拟的设置界面。选择网络适配器，然后确定网络连接选中的是<code>自定义</code>中的VMnet8(NAT模式)。</p>
-<p><img data-src="VMnet8.png" srcset="/img/loading.gif"></p></li>
+<p><img src="VMnet8.png"></p></li>
 </ul>
 <h4 id="为ubuntu设置静态ip地址">2.2.2 为Ubuntu设置静态IP地址</h4>
 <h5 id="通过terminal命令行来设置ip地址">通过Terminal命令行来设置IP地址</h5>
 <ul>
 <li><p>在命令行输入 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vi &#x2F;etc&#x2F;network&#x2F;interfaces </span><br><span class="line"></span><br><span class="line"># 在打开的文件中，若有内容，先全部删除</span><br><span class="line"># 然后输入如下代码</span><br><span class="line"># ip a查看网卡信息是ens33</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet loopback</span><br><span class="line">auto ens33</span><br><span class="line">iface ens33 inet static</span><br><span class="line">address 192.168.50.128</span><br><span class="line">netmask 255.255.255.0</span><br><span class="line">gateway 192.168.50.2</span><br></pre></td></tr></table></figure></p>
-<p><img data-src="configureIPaddress.png" srcset="/img/loading.gif"></p></li>
+<p><img src="configureIPaddress.png"></p></li>
 <li><p>配置DNS服务器 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vi &#x2F;etc&#x2F;resolv.conf</span><br><span class="line"></span><br><span class="line"># 在里面填入阿里的DNS：223.5.5.5</span><br><span class="line">nameserver 223.5.5.5</span><br><span class="line"></span><br><span class="line"># 在命令行中输入：</span><br><span class="line">sudo &#x2F;etc&#x2F;init.d&#x2F;networking restart</span><br></pre></td></tr></table></figure></p>
-<p><img data-src="configuredns.png" srcset="/img/loading.gif"></p></li>
+<p><img src="configuredns.png"></p></li>
 <li><p>重复以上步骤，配置第二个虚拟机的静态IP地址。</p></li>
 </ul>
 <h3 id="集群配置">2.3 集群配置</h3>
 <h4 id="集群配置要求">2.3.1 集群配置要求</h4>
 <ul>
 <li><p>拓扑图</p>
-<p><img data-src="MySQLCluster.png" srcset="/img/loading.gif"></p></li>
+<p><img src="MySQLCluster.png"></p></li>
 <li><p>集群配置要求 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># ndbd：MySQL data nodes</span><br><span class="line"># ndb_mgmd：server for the Cluster Manager</span><br><span class="line"># mysqld and mysql：MySQL server&#x2F;client</span><br></pre></td></tr></table></figure></p>
 <table>
 <thead>
@@ -271,25 +101,25 @@
 </table>
 <ul>
 <li><p>一般配置，数据节点和管理节点分离(需要3台虚拟机模拟实现)。由于此处只用了2台虚拟机。</p>
-<p><img data-src="common.png" srcset="/img/loading.gif"></p></li>
+<p><img src="common.png"></p></li>
 </ul></li>
-<li><p><a href="http://dev.mysql.com/downloads/cluster/" target="_blank" rel="noopener">MySQL-Cluster的安装包下载</a>，根据linux操作系统选择正确的版本</p></li>
+<li><p><a href="http://dev.mysql.com/downloads/cluster/">MySQL-Cluster的安装包下载</a>，根据linux操作系统选择正确的版本</p></li>
 <li><p>若之前安装过mysql-server，需要将mysql-server卸载 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 执行以下指令卸载mysql</span><br><span class="line">sudo apt-get autoremove --purge mysql-server</span><br><span class="line">sudo apt-get remove mysql-server</span><br><span class="line">sudo apt-get autoremove mysql-server</span><br><span class="line">sudo apt-get remove mysql-common</span><br></pre></td></tr></table></figure></p></li>
 </ul>
 <h4 id="准备阶段">2.3.2 准备阶段</h4>
 <ul>
 <li><p>针对<code>192.168.50.129</code>，安装 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在命令行下</span><br><span class="line">sudo adduser mysql</span><br><span class="line">sudo usermod -aG sudo mysql</span><br></pre></td></tr></table></figure></p>
-<p><img data-src="adduser.png" srcset="/img/loading.gif"></p>
-<p><img data-src="usermod.png" srcset="/img/loading.gif"></p></li>
+<p><img src="adduser.png"></p>
+<p><img src="usermod.png"></p></li>
 <li><p>把下载的mysql-cluster_8.0.19-1ubuntu16.04_amd64.deb-bundle.tar从windows共享给虚拟机(通过共享文件夹)</p></li>
 <li><p>将MySQL-Cluster的安装包放入虚拟机的指定目录install文件夹，操作如下： <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在命令行的根目录下</span><br><span class="line">mkdir install</span><br><span class="line"># 通过共享文件夹</span><br><span class="line">tar -xvf &#x2F;mnt&#x2F;hgfs&#x2F;xxx&#x2F;mysql-cluster_8.0.19-1ubuntu16.04_amd64.deb-bundle.tar -C install&#x2F;</span><br><span class="line">cd install</span><br></pre></td></tr></table></figure></p>
-<p><img data-src="install.png" srcset="/img/loading.gif"></p></li>
+<p><img src="install.png"></p></li>
 <li><p>安装<code>MySQL server binary</code> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 安装依赖包</span><br><span class="line">sudo apt update</span><br><span class="line"># sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br><span class="line"></span><br><span class="line">sudo apt-get install libaio1 libmecab2</span><br></pre></td></tr></table></figure></p></li>
 </ul>
 <h4 id="安装配置集群管理器">2.3.3 安装配置集群管理器</h4>
 <ul>
 <li><p>用dpkg指令在Cluster Manager 服务器(为<strong>192.168.50.129</strong>)上安装ndb_mgmd <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 进入install目录</span><br><span class="line">sudo dpkg -i mysql-cluster-community-management-server_8.0.19-1ubuntu16.04_amd64.deb</span><br></pre></td></tr></table></figure></p>
-<p><img data-src="dpkg.png" srcset="/img/loading.gif"></p></li>
+<p><img src="dpkg.png"></p></li>
 <li><p>在第一次运行ndb_mgmd前需要对其进行配置，正确配置是保证数据节点正确同步和负载分配的前提。</p></li>
 <li><p>Cluster Manager 应该是MySQL Cluster 第一个启动的组件.它需要一个配置文件来加载参数. 我门创建配置文件: /var/lib/mysql-cluster/config.ini. <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 从Windows编辑config.ini可能会报错，需要在Linux系统下编辑</span><br><span class="line"># 在Cluster Manager 所在机器上创建 &#x2F;var&#x2F;lib&#x2F;mysql-cluster目录:</span><br><span class="line">sudo mkdir &#x2F;var&#x2F;lib&#x2F;mysql-cluster</span><br><span class="line"></span><br><span class="line">sudo vim &#x2F;var&#x2F;lib&#x2F;mysql-cluster&#x2F;config.ini</span><br><span class="line"></span><br><span class="line"># 内容如下</span><br><span class="line">[ndbd default]</span><br><span class="line"># Options affecting ndbd processes on all data nodes:</span><br><span class="line">NoOfReplicas&#x3D;2  # Number of replicas</span><br><span class="line"></span><br><span class="line">[ndb_mgmd]</span><br><span class="line"># Management process options:</span><br><span class="line">hostname&#x3D;192.168.50.129  # Hostname of the manager</span><br><span class="line">NodeId&#x3D;1</span><br><span class="line">datadir&#x3D;&#x2F;var&#x2F;lib&#x2F;mysql-cluster  # Directory for the log files</span><br><span class="line"></span><br><span class="line">[ndbd]</span><br><span class="line">hostname&#x3D;192.168.50.128 # Hostname&#x2F;IP of the first data node</span><br><span class="line">NodeId&#x3D;11            # Node ID for this data node</span><br><span class="line">datadir&#x3D;&#x2F;usr&#x2F;local&#x2F;mysql&#x2F;data   # Remote directory for the data files</span><br><span class="line"></span><br><span class="line">[ndbd]</span><br><span class="line">hostname&#x3D;192.168.50.129 # Hostname&#x2F;IP of the second data node</span><br><span class="line">NodeId&#x3D;12            # Node ID for this data node</span><br><span class="line">datadir&#x3D;&#x2F;usr&#x2F;local&#x2F;mysql&#x2F;data   # Remote directory for the data files</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line"># SQL node options:</span><br><span class="line">hostname&#x3D;192.168.50.129 # MySQL server&#x2F;client i manager</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line"># SQL node options:</span><br><span class="line">hostname&#x3D;192.168.50.128 # MySQL server&#x2F;client i manager</span><br></pre></td></tr></table></figure></p>
 <ul>
@@ -299,18 +129,18 @@
 <li>[MYSQLD] 表示SQL节点的配置，可以有多个，分别写上不同的SQL节点的ip地址；如不写，只保留一个空节点，表示任意一个ip地址都可以进行访问。此节点的个数表明了可以用来连接数据节点的SQL节点总数</li>
 <li>每个节点都有一个独立的id号，可以填写，比如nodeid=2，老版本使用id，新版本已经不使用id标识了。不填写，系统会按照配置文件的填写顺序自动分配</li>
 </ul>
-<p><img data-src="config-ini.png" srcset="/img/loading.gif"></p></li>
+<p><img src="config-ini.png"></p></li>
 <li><p>如果是生产环境，应该根据实际情况调整配置参数，参考MySQL Cluster. 你还可以增加 data nodes (ndbd) 或 MySQL server nodes (mysqld).</p></li>
 <li><p>启动管理器 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看是否有正在运行的服务进程</span><br><span class="line">ps -aux | grep ndb_mgmd</span><br><span class="line"></span><br><span class="line"># 在启动服务前，可能需要杀掉正在运行的服务:</span><br><span class="line">sudo pkill -f ndb_mgmd</span><br><span class="line"></span><br><span class="line"># 启动服务</span><br><span class="line">sudo ndb_mgmd -f &#x2F;var&#x2F;lib&#x2F;mysql-cluster&#x2F;config.ini</span><br><span class="line"></span><br><span class="line">#检查ndb_mgmd 使用的端口 1186</span><br><span class="line">sudo netstat -plntu</span><br></pre></td></tr></table></figure></p>
-<p><img data-src="startndb_mgmd.png" srcset="/img/loading.gif"></p></li>
+<p><img src="startndb_mgmd.png"></p></li>
 <li><p>配置<strong>自动加载服务</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在Ubuntu虚拟机下</span><br><span class="line"># 打开并编辑下面 systemd Unit 文件</span><br><span class="line">sudo vim &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;ndb_mgmd.service</span><br><span class="line"></span><br><span class="line"># 键入以下内容，保存并关闭</span><br><span class="line">[Unit]</span><br><span class="line">Description&#x3D;MySQL NDB Cluster Management Server</span><br><span class="line">After&#x3D;network.target auditd.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type&#x3D;forking</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;sbin&#x2F;ndb_mgmd -f &#x2F;var&#x2F;lib&#x2F;mysql-cluster&#x2F;config.ini</span><br><span class="line">ExecReload&#x3D;&#x2F;bin&#x2F;kill -HUP $MAINPID</span><br><span class="line">KillMode&#x3D;process</span><br><span class="line">Restart&#x3D;on-failure</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br><span class="line"></span><br><span class="line"># 上面只是加入了如何启动、停止和重启动ndb_mgmd进程的最小选项集合</span><br><span class="line"># more information，参阅[systemd manual](https:&#x2F;&#x2F;www.freedesktop.org&#x2F;software&#x2F;systemd&#x2F;man&#x2F;systemd.service.html).</span><br></pre></td></tr></table></figure>
-<p><img data-src="ndbmgmdservice.png" srcset="/img/loading.gif"></p>
+<p><img src="ndbmgmdservice.png"></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># reload systemd’s manager configuration using daemon-reload</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line"></span><br><span class="line"># enable the service we just created</span><br><span class="line"># MySQL Cluster Manager starts on reboot</span><br><span class="line">sudo systemctl enable ndb_mgmd</span><br><span class="line"></span><br><span class="line"># start the service</span><br><span class="line">sudo systemctl start ndb_mgmd</span><br><span class="line"></span><br><span class="line"># verify that the NDB Cluster Management service is running</span><br><span class="line">sudo systemctl status ndb_mgmd</span><br></pre></td></tr></table></figure>
 <ul>
 <li><code>ndb_mgmd</code>MySQL Cluster Management server作为一个系统服务正在运行</li>
 </ul>
-<p><img data-src="systemctlenablendbmgmd.png" srcset="/img/loading.gif"></p></li>
+<p><img src="systemctlenablendbmgmd.png"></p></li>
 <li><p>设置<code>Cluster Manager</code>允许其它<code>MySQL Cluster</code>节点连入</p>
 <ul>
 <li>如果出现连接问题，则需要设置<code>ufw</code>防火墙，添加允许数据节点连入的规则 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo ufw allow from 192.168.50.128</span><br><span class="line">sudo ufw allow from 192.168.50.129</span><br></pre></td></tr></table></figure></li>
@@ -322,18 +152,18 @@
 <li><p>假定在192.168.50.129上进行(同理另一个节点)</p></li>
 <li><p>安装依赖包 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 修复损坏的软件包，尝试卸载出错的包，重新安装正确版本的</span><br><span class="line">sudo apt-get –f install </span><br><span class="line">sudo apt install libclass-methodmaker-perl</span><br></pre></td></tr></table></figure></p></li>
 <li><p>安装数据节点包 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 进入install文件夹</span><br><span class="line">sudo dpkg -i mysql-cluster-community-data-node_8.0.19-1ubuntu16.04_amd64.deb</span><br></pre></td></tr></table></figure></p>
-<p><img data-src="dpkg-data.png" srcset="/img/loading.gif"></p></li>
+<p><img src="dpkg-data.png"></p></li>
 <li><p>数据节点将从固定位置/etc/my.cnf获取配置文件.创建文件并编辑 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vim &#x2F;etc&#x2F;my.cnf</span><br><span class="line"></span><br><span class="line"># 写入以下内容 两个虚拟机都一样</span><br><span class="line">[mysql_cluster]</span><br><span class="line"># Options for NDB Cluster processes:</span><br><span class="line">ndb-connectstring&#x3D;192.168.50.129  # location of cluster manager</span><br></pre></td></tr></table></figure></p>
-<p><img data-src="myconf.png" srcset="/img/loading.gif"></p></li>
+<p><img src="myconf.png"></p></li>
 <li><p>本配置设定在管理器配置数据目录为<code>/usr/local/mysql/data</code>。运行服务前要创建相关目录<code>sudo mkdir -p /usr/local/mysql/data</code>。在成功启动数据节点的时候，会向该文件夹中写入数据，如下图所示。</p>
-<p><img data-src="data.png" srcset="/img/loading.gif"></p></li>
+<p><img src="data.png"></p></li>
 <li><p>启动服务<code>sudo ndbd</code>，NDB 数据节点守护程序成功启动</p>
-<p><img data-src="ndbstartsuccess.png" srcset="/img/loading.gif"></p>
+<p><img src="ndbstartsuccess.png"></p>
 <p>同理见<code>192.168.50.128</code>(192.168.50.129机器上的管理器服务要打开)</p>
-<p><img data-src="ndbstartsuccess1.png" srcset="/img/loading.gif"></p></li>
+<p><img src="ndbstartsuccess1.png"></p></li>
 <li><p>如果出现连接问题，请打开防火墙： <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo ufw allow from 192.168.50.129</span><br><span class="line">sudo ufw allow from 192.168.50.128</span><br></pre></td></tr></table></figure></p></li>
 <li><p>同配置集群管理器类似，配置数据节点服务自启动 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 打开并编辑如下 systemd Unit 文件</span><br><span class="line">sudo vim &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;ndbd.service</span><br><span class="line"></span><br><span class="line"># 内容如下：</span><br><span class="line">[Unit]</span><br><span class="line">Description&#x3D;MySQL NDB Data Node Daemon</span><br><span class="line">After&#x3D;network.target auditd.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type&#x3D;forking</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;sbin&#x2F;ndbd</span><br><span class="line">ExecReload&#x3D;&#x2F;bin&#x2F;kill -HUP $MAINPID</span><br><span class="line">KillMode&#x3D;process</span><br><span class="line">Restart&#x3D;on-failure</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br><span class="line"></span><br><span class="line"># 采用daemon-reload重新加载systemd’s manager配置</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line"></span><br><span class="line"># 让我们刚创建的服务生效，使data node daemon可以开机执行</span><br><span class="line">sudo systemctl enable ndbd</span><br><span class="line"></span><br><span class="line"># 启动服务</span><br><span class="line">sudo systemctl start ndbd</span><br><span class="line"></span><br><span class="line"># 禁止服务</span><br><span class="line">sudo systemctl stop ndbd</span><br><span class="line"></span><br><span class="line"># 验证NDB Cluster Management service服务正在执行</span><br><span class="line">sudo systemctl status ndbd</span><br></pre></td></tr></table></figure></p>
-<p><img data-src="systemctlenablendbd.png" srcset="/img/loading.gif"></p></li>
+<p><img src="systemctlenablendbd.png"></p></li>
 </ul>
 <h4 id="配置并运行mysql-server和client">2.3.5 配置并运行MySQL Server和Client</h4>
 <ul>
@@ -343,14 +173,14 @@
 <li><p>在安装MySQL server 前，需要安装两个依赖库（如果已经安装过可忽略） <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install libaio1 libmecab2</span><br></pre></td></tr></table></figure></p></li>
 <li><p>安装解压在install目录的软件包中的一些MySQL Cluster依赖包 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;install&#x2F;</span><br><span class="line">sudo dpkg -i mysql-common_8.0.19-1ubuntu16.04_amd64.deb</span><br><span class="line">sudo dpkg -i mysql-cluster-community-client-core_8.0.19-1ubuntu16.04_amd64.deb</span><br><span class="line">sudo dpkg -i mysql-cluster-community-client_8.0.19-1ubuntu16.04_amd64.deb</span><br><span class="line">sudo dpkg -i mysql-client_8.0.19-1ubuntu16.04_amd64.deb</span><br><span class="line">sudo dpkg -i mysql-cluster-community-server-core_8.0.19-1ubuntu16.04_amd64.deb</span><br><span class="line">sudo dpkg -i mysql-cluster-community-server_8.0.19-1ubuntu16.04_amd64.deb</span><br><span class="line"></span><br><span class="line"># 此处若是出现依赖问题，输入以下命令，再重新执行一遍上面语句 </span><br><span class="line">sudo apt-get -f install</span><br><span class="line"># 或者把依赖包删除 重装一遍</span><br><span class="line">sudo apt-get purge libaio1 </span><br><span class="line">sudo apt-get purge libmecab2</span><br></pre></td></tr></table></figure></p></li>
 <li><p>当安装mysql-cluster-community-server时，会出现配置提示，请求为mysql数据库root用户设置密码。在后面选项选择使用<strong>强安全密码</strong></p>
-<p><img data-src="password.png" srcset="/img/loading.gif"></p>
-<p><img data-src="strongpw.png" srcset="/img/loading.gif"></p></li>
+<p><img src="password.png"></p>
+<p><img src="strongpw.png"></p></li>
 <li><p>安装MySQL server:<code>sudo dpkg -i mysql-server_8.0.19-1ubuntu16.04_amd64.deb</code></p>
-<p><img data-src="installmysqlserver.png" srcset="/img/loading.gif"></p></li>
+<p><img src="installmysqlserver.png"></p></li>
 <li><p>配置MySQL server <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 打开MySQL Server 配置文件默认</span><br><span class="line">sudo vim &#x2F;etc&#x2F;mysql&#x2F;my.cnf</span><br></pre></td></tr></table></figure></p>
 <ul>
 <li><p>可看到下列文本</p>
-<p><img data-src="mycnf.png" srcset="/img/loading.gif"></p></li>
+<p><img src="mycnf.png"></p></li>
 <li><p>往文本后追加(192.168.50.128填写的相同)</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line"># Options for mysqld process:</span><br><span class="line">ndbcluster  # run NDB storage engine</span><br><span class="line"></span><br><span class="line">[mysql_cluster]</span><br><span class="line"># Options for NDB Cluster processes:</span><br><span class="line">ndb-connectstring&#x3D;192.168.50.129  # location of management server</span><br></pre></td></tr></table></figure></li>
 </ul></li>
@@ -361,50 +191,50 @@
 <ul>
 <li><p>为了验证MySQL Cluster正确安装, 登陆Cluster Manager / SQL Server节点，为192.168.50.129/192.168.50.128。</p></li>
 <li><p>打开MySQL客户端连接到root账号：<code>mysql -u root -p</code></p>
-<p><img data-src="startmysql.png" srcset="/img/loading.gif"></p></li>
+<p><img src="startmysql.png"></p></li>
 <li><p>在MySQL客户端中, 运行下列命令: <code>SHOW ENGINE NDB STATUS \G</code>，系统会显示NDB引擎的相关信息，表示成功连入MySQL Cluster</p>
-<p><img data-src="NDB.png" srcset="/img/loading.gif"></p></li>
+<p><img src="NDB.png"></p></li>
 <li><p><code>number of ready_data_nodes= 2</code></p>
 <ul>
 <li>如果一个数据节点挂了（本例中必须是那个没有安装MySQL Cluster管理器的节点），MySQL cluster还是可以继续工作</li>
 <li>测试cluster的稳定性
 <ul>
 <li><p>shutting down非管理器节点（192.168.50.128），在整个过程中看到<code>number_of_ready_data_nodes</code>从2变为1。</p>
-<p><img data-src="numberofreadydatanodes.gif" srcset="/img/loading.gif"></p></li>
+<p><img src="numberofreadydatanodes.gif"></p></li>
 <li><p>再次开启服务，又由1变为2(这个变化过程有延迟，需要等待一会)。同理停止管理器节点上的ndbd服务。</p>
-<p><img data-src="fullprocess.gif" srcset="/img/loading.gif"></p></li>
+<p><img src="fullprocess.gif"></p></li>
 </ul></li>
 </ul></li>
 <li><p>在集群管理器控制台上查看集群信息，命令为：<code>ndb_mgm</code>。然后在集群管理器控制台输入<code>SHOW</code>，输出信息如下：</p>
 <ul>
 <li><p>192.168.50.128的数据节点ndbd断开连接的情况</p>
-<p><img data-src="ndbmgm.png" srcset="/img/loading.gif"></p></li>
+<p><img src="ndbmgm.png"></p></li>
 <li><p>192.168.50.128的数据节点ndbd未断开连接的情况</p>
-<p><img data-src="ndbmgm1.png" srcset="/img/loading.gif"></p>
+<p><img src="ndbmgm1.png"></p>
 <p>192.168.50.128的mysql服务器启动</p>
-<p><img data-src="mysqldallconnect.png" srcset="/img/loading.gif"></p></li>
+<p><img src="mysqldallconnect.png"></p></li>
 </ul></li>
 <li><p>退出MySQL客户端，使用quit或按CTRL-D</p></li>
-<li><p>管理控制台功能很多，有很多其他的管理命令来管理集群和数据, 包括创建在线备份. 更多信息参考官方<a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-cluster-management.html" target="_blank" rel="noopener">official MySQL documentation</a></p></li>
+<li><p>管理控制台功能很多，有很多其他的管理命令来管理集群和数据, 包括创建在线备份. 更多信息参考官方<a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-cluster-management.html">official MySQL documentation</a></p></li>
 </ul>
 <h4 id="向mysql集群插入数据">2.3.7 向MySQL集群插入数据</h4>
 <ul>
 <li><p>注意为了使用集群功能, 必须使用NDB数据库引擎。如果使用InnoDB (default)或其他引擎,将不能使用集群。 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 打开MySQL客户端连接到root账号</span><br><span class="line">mysql -u root -p</span><br><span class="line"></span><br><span class="line"># 首先, 创建数据库clustertest:</span><br><span class="line">CREATE DATABASE clustertest;</span><br><span class="line"></span><br><span class="line"># 其次转到新数据库:</span><br><span class="line">USE clustertest;</span><br><span class="line"></span><br><span class="line"># 再次，创建表test_table:</span><br><span class="line"># 需要显式规定ndbcluster引擎</span><br><span class="line">CREATE TABLE test_table (name VARCHAR(20), value VARCHAR(20)) ENGINE&#x3D;ndbcluster;</span><br><span class="line"></span><br><span class="line"># 现在可以插入数据了:</span><br><span class="line">INSERT INTO test_table (name,value) VALUES(&#39;some_name&#39;,&#39;some_value&#39;);</span><br><span class="line"></span><br><span class="line"># 最后验证数据插入：</span><br><span class="line">SELECT * FROM test_table;</span><br><span class="line"></span><br><span class="line"># show databases</span><br></pre></td></tr></table></figure></p>
-<p><img data-src="insertdata.png" srcset="/img/loading.gif"></p></li>
+<p><img src="insertdata.png"></p></li>
 <li><p><strong><a href="#251-ndb%e5%ad%98%e5%82%a8%e5%bc%95%e6%93%8e%e6%b5%8b%e8%af%95">思考：在本例中，数据被插入到了哪个机器？</a></strong></p>
 <ul>
 <li>我认为数据应该被插入了本地机器</li>
 <li>在此处数据备份为2的话，则另一个数据节点有一份相同的备份</li>
 </ul></li>
-<li><p>可以在my.cnf文件中设定默认数据存储引擎为ndbcluster，这样创建表时就不再规定引擎了。更多信息参考<a href="https://dev.mysql.com/doc/refman/5.7/en/storage-engine-setting.html" target="_blank" rel="noopener">MySQL Reference Manual</a></p></li>
+<li><p>可以在my.cnf文件中设定默认数据存储引擎为ndbcluster，这样创建表时就不再规定引擎了。更多信息参考<a href="https://dev.mysql.com/doc/refman/5.7/en/storage-engine-setting.html">MySQL Reference Manual</a></p></li>
 </ul>
 <h3 id="结语">2.4 结语</h3>
-<p>至此我们在Ubuntu 16.04 servers上安装和配置了a MySQL Cluster。需要注意的是这是一个很小的简化体系结构来说明配置过程，部署一个生产环境，还有许多其他的选项和特征需要去学习.。更多信息请参阅 <a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-cluster.html" target="_blank" rel="noopener">MySQL Cluster documentation</a></p>
+<p>至此我们在Ubuntu 16.04 servers上安装和配置了a MySQL Cluster。需要注意的是这是一个很小的简化体系结构来说明配置过程，部署一个生产环境，还有许多其他的选项和特征需要去学习.。更多信息请参阅 <a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-cluster.html">MySQL Cluster documentation</a></p>
 <h3 id="验证可靠性">2.5 验证可靠性</h3>
 <h4 id="ndb存储引擎测试">2.5.1 NDB存储引擎测试</h4>
 <ul>
 <li><p>在192.168.50.129的SQL节点创建数据库并且插入数据(一定要设置存储引擎为NDB)，在192.168.50.128的SQL节点可以查询到，<strong>两个SQL节点查询的数据时一致的，能够同步</strong></p>
-<p><img data-src="databaseposition.png" srcset="/img/loading.gif"></p>
+<p><img src="databaseposition.png"></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">use clustertest</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h4 id="单点故障测试">2.5.2 单点故障测试</h4>
@@ -412,10 +242,10 @@
 <ul>
 <li><p>将SQL节点192.168.50.128上的MySQL服务停止 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;etc&#x2F;init.d&#x2F;mysqld stop</span><br><span class="line"># sudo systemctl stop mysql</span><br></pre></td></tr></table></figure></p></li>
 <li><p>ndb_mgm查看cluster状态</p>
-<p><img data-src="sqlnotonnect.png" srcset="/img/loading.gif"></p></li>
+<p><img src="sqlnotonnect.png"></p></li>
 <li><p>从SQL节点192.168.50.129上查看数据，正常</p>
-<p><img data-src="onesqlfailed.png" srcset="/img/loading.gif"></p>
-<p><img data-src="onesqlfailed.gif" srcset="/img/loading.gif"></p></li>
+<p><img src="onesqlfailed.png"></p>
+<p><img src="onesqlfailed.gif"></p></li>
 <li><p>SQL节点的单点故障并没有引起数据查询的故障。对于应用来说，需要改变的就是将以前对故障节点的访问改为对非故障节点的访问</p></li>
 </ul>
 <h5 id="ndb数据节点单点故障">NDB(数据节点)单点故障</h5>
@@ -423,9 +253,9 @@
 <li><p>在这个测试环境中，数据节点也是两个，那么他们对数据的存储是互相镜像还是一份数据分成几块存储呢？这个答案关键在于配置文件中[NDBD DEFAULT]组中的<strong>NoOfReplicas参数</strong>，如果这个参数等于1，表示只有一份数据，但是分成N块分别存储在N个数据节点上，如果该值等于2，则表示数据被分成N/2,每块数据都有两个备份，这样即使有任意一个节点发生故障，只要它的备份节点正常，数据就可以正常查询</p></li>
 <li><p>将NDB节点192.168.50.129上的ndbd服务停止 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -ef | grep ndbd</span><br><span class="line">pkill -9 ndbd</span><br></pre></td></tr></table></figure></p></li>
 <li><p>ndb_mgm查看cluster状态，NDB节点192.168.50.129上已经挂掉</p>
-<p><img data-src="onendbfailed.png" srcset="/img/loading.gif"></p></li>
+<p><img src="onendbfailed.png"></p></li>
 <li><p>从SQL节点192.168.50.128和SQL节点192.168.50.129上查看数据，正常</p>
-<p><img data-src="onenbdfailed.gif" srcset="/img/loading.gif"></p></li>
+<p><img src="onenbdfailed.gif"></p></li>
 <li><p>在此样例中，挂掉一个NDB节点不影响正常的数据查询，数据节点的冗余同样防止了NDB单点故障</p></li>
 <li><p>如果该测试中，NoOfReplicas=1，如果有一个数据节点挂了，则无法正常访问完整数据</p></li>
 </ul>
@@ -464,11 +294,11 @@
 <h2 id="问题与解决">3 问题与解决</h2>
 <ul>
 <li><p>无法连接虚拟设备sata0:1</p>
-<p><img data-src="cannotconnect.png" srcset="/img/loading.gif"></p>
+<p><img src="cannotconnect.png"></p>
 <p>解决：修改虚拟机 -&gt; 右键设置硬件 -&gt; CD/DVD(SATA) -&gt; 使用 ISO 映像文件</p>
 <p>但我认为这不影响虚拟机的使用所以就没深入解决</p></li>
 <li><p>提供此类问题<code>temporary failure resolving cn.archive.ubuntu.com</code>的解决思路</p>
-<p><img data-src="cannotresolve.png" srcset="/img/loading.gif"></p>
+<p><img src="cannotresolve.png"></p>
 <ul>
 <li><p>原因：无法解析该域名</p></li>
 <li><p>试试<code>nslookup www.baidu.com</code></p></li>
@@ -476,13 +306,13 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 打开配置文件</span><br><span class="line">vi &#x2F;etc&#x2F;resolv.conf</span><br><span class="line"></span><br><span class="line"># 添加</span><br><span class="line">nameserver 114.114.114.114</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 223.5.5.5</span><br></pre></td></tr></table></figure></li>
 </ul></li>
 <li><p>报错：该虚拟机似乎正在使用中。如果该虚拟机未在使用，请按"获取所有权(T)"按钮获取。获取所有权失败。原因:VM异常关闭导致。</p>
-<p><img data-src="usingnow.png" srcset="/img/loading.gif"></p>
+<p><img src="usingnow.png"></p>
 <p>解决：进入VM虚拟机的存放目录，删除后缀为.lck的文件</p></li>
-<li><p><a href="https://www.cnblogs.com/Komorebi-john/p/11381053.html" target="_blank" rel="noopener">VMware-以独占方式锁定此配置文件失败.另一个正在运行</a></p>
+<li><p><a href="https://www.cnblogs.com/Komorebi-john/p/11381053.html">VMware-以独占方式锁定此配置文件失败.另一个正在运行</a></p>
 <ul>
-<li>上述的方法都没有成功，通过<a href="https://blog.csdn.net/qq_34418601/article/details/91041411" target="_blank" rel="noopener">在Windows程序与功能-&gt;修复vmware解决</a></li>
+<li>上述的方法都没有成功，通过<a href="https://blog.csdn.net/qq_34418601/article/details/91041411">在Windows程序与功能-&gt;修复vmware解决</a></li>
 </ul></li>
-<li><p><a href="https://www.linuxidc.com/Linux/2015-06/119021.htm" target="_blank" rel="noopener">每次重启虚拟机后，<code>/etc/resolv.conf</code>文件就要重新配置，之前的都被抹去</a> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># resolv.conf文件其实是一个Link文件</span><br><span class="line"># 在Ubuntu中有一个 resolvconf的服务，这个服务用来控制&#x2F;etc&#x2F;resolv.conf的内容</span><br><span class="line"># 一旦我们重启了系统或者该服务，那么&#x2F;etc&#x2F;resolv.conf文件中的内容将被还原为原来的内容</span><br><span class="line"></span><br><span class="line">sudo vi &#x2F;etc&#x2F;resolvconf&#x2F;resolv.conf.d&#x2F;base</span><br><span class="line"># [应用更改](https:&#x2F;&#x2F;www.zhoushangren.com&#x2F;archives&#x2F;779)</span><br><span class="line">sudo resolvconf -u</span><br></pre></td></tr></table></figure></p></li>
+<li><p><a href="https://www.linuxidc.com/Linux/2015-06/119021.htm">每次重启虚拟机后，<code>/etc/resolv.conf</code>文件就要重新配置，之前的都被抹去</a> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># resolv.conf文件其实是一个Link文件</span><br><span class="line"># 在Ubuntu中有一个 resolvconf的服务，这个服务用来控制&#x2F;etc&#x2F;resolv.conf的内容</span><br><span class="line"># 一旦我们重启了系统或者该服务，那么&#x2F;etc&#x2F;resolv.conf文件中的内容将被还原为原来的内容</span><br><span class="line"></span><br><span class="line">sudo vi &#x2F;etc&#x2F;resolvconf&#x2F;resolv.conf.d&#x2F;base</span><br><span class="line"># [应用更改](https:&#x2F;&#x2F;www.zhoushangren.com&#x2F;archives&#x2F;779)</span><br><span class="line">sudo resolvconf -u</span><br></pre></td></tr></table></figure></p></li>
 <li><p><code>ping: unknown host www.baidu.com</code>的解决方法 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># ping 网关</span><br><span class="line">auto ens33</span><br><span class="line">iface ens33 inet dhcp</span><br></pre></td></tr></table></figure></p></li>
 </ul>
 <h2 id="实验总结">4 实验总结</h2>
@@ -500,296 +330,55 @@
 </ul>
 <h2 id="参考资料">5 参考资料</h2>
 <ul>
-<li><a href="https://www.cnblogs.com/huozf/p/9780747.html" target="_blank" rel="noopener">在VMware Workstation中安装Ubuntu Server 16.04.5图解教程</a></li>
-<li><a href="https://www.linuxidc.com/Linux/2017-04/143102.htm" target="_blank" rel="noopener">为VMware虚拟机内安装的Ubuntu 16.04设置静态IP地址</a></li>
-<li><a href="https://blog.csdn.net/qq_31454611/article/details/80566002" target="_blank" rel="noopener">SSH远程连接安装在VMware的Ubuntu16.0.4</a> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看虚拟机是否能够ping外网</span><br><span class="line"># 不行，配置DNS服务器 &#96;sudo vi &#x2F;etc&#x2F;resolv.conf&#96;</span><br><span class="line"># 重启网络sudo &#x2F;etc&#x2F;init.d&#x2F;networking restart</span><br><span class="line"># 检查当前的ssh开启情况</span><br><span class="line"># 如果有sshd，则ssh-server已经启动；若仅有agent，则尚未启动</span><br><span class="line">ps -e |grep ssh</span><br><span class="line"></span><br><span class="line"># 查看端口情况</span><br><span class="line">sudo netstat -plntu</span><br><span class="line"></span><br><span class="line"># 开启ssh服务</span><br><span class="line">&#x2F;etc&#x2F;init.d&#x2F;ssh start</span><br><span class="line"></span><br><span class="line"># 重启ssh</span><br><span class="line">sudo &#x2F;etc&#x2F;init.d&#x2F;ssh restart</span><br><span class="line"></span><br><span class="line"># 当主机ssh连接虚拟机出现ssh: connect to host 192.168.50.129 port 22: Connection timed out</span><br><span class="line"># 解决1:测试虚拟机是否能访问外网</span><br></pre></td></tr></table></figure></li>
-<li><a href="https://www.cnblogs.com/gomysql/p/3664783.html" target="_blank" rel="noopener">MySQL Cluster搭建与测试</a></li>
-<li><a href="https://blog.csdn.net/JesseYoung/article/details/38726561" target="_blank" rel="noopener">MySQL Cluster技术详解</a></li>
+<li><a href="https://www.cnblogs.com/huozf/p/9780747.html">在VMware Workstation中安装Ubuntu Server 16.04.5图解教程</a></li>
+<li><a href="https://www.linuxidc.com/Linux/2017-04/143102.htm">为VMware虚拟机内安装的Ubuntu 16.04设置静态IP地址</a></li>
+<li><a href="https://blog.csdn.net/qq_31454611/article/details/80566002">SSH远程连接安装在VMware的Ubuntu16.0.4</a> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看虚拟机是否能够ping外网</span><br><span class="line"># 不行，配置DNS服务器 &#96;sudo vi &#x2F;etc&#x2F;resolv.conf&#96;</span><br><span class="line"># 重启网络sudo &#x2F;etc&#x2F;init.d&#x2F;networking restart</span><br><span class="line"># 检查当前的ssh开启情况</span><br><span class="line"># 如果有sshd，则ssh-server已经启动；若仅有agent，则尚未启动</span><br><span class="line">ps -e |grep ssh</span><br><span class="line"></span><br><span class="line"># 查看端口情况</span><br><span class="line">sudo netstat -plntu</span><br><span class="line"></span><br><span class="line"># 开启ssh服务</span><br><span class="line">&#x2F;etc&#x2F;init.d&#x2F;ssh start</span><br><span class="line"></span><br><span class="line"># 重启ssh</span><br><span class="line">sudo &#x2F;etc&#x2F;init.d&#x2F;ssh restart</span><br><span class="line"></span><br><span class="line"># 当主机ssh连接虚拟机出现ssh: connect to host 192.168.50.129 port 22: Connection timed out</span><br><span class="line"># 解决1:测试虚拟机是否能访问外网</span><br></pre></td></tr></table></figure></li>
+<li><a href="https://www.cnblogs.com/gomysql/p/3664783.html">MySQL Cluster搭建与测试</a></li>
+<li><a href="https://blog.csdn.net/JesseYoung/article/details/38726561">MySQL Cluster技术详解</a></li>
 </ul>
-
-            </div>
-            <hr>
-            <div>
-              <p>
-                
-                  <span>
-                <i class="iconfont icon-inbox"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/DataBase/">DataBase</a>
-                      &nbsp;
-                    
-                  </span>&nbsp;&nbsp;
-                
-                
-                  <span>
-                <i class="iconfont icon-tag"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/mysql/">mysql</a>
-                    
-                      <a class="hover-with-bg" href="/tags/Cluster/">Cluster</a>
-                    
-                  </span>
-                
-              </p>
-              
-                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
-              
-            </div>
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc-start"></div>
-<div id="toc">
-  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
-  <div id="tocbot"></div>
-</div>
-
-      </div>
-    
-  </div>
-</div>
-
-<!-- Custom -->
-
-
-    
-  </main>
-
-  
-    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
-      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
-    </a>
-  
-
-  
-    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">keyword</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-  
-
-  
-
-  
-
-  <footer class="mt-5">
-  <div class="text-center py-3">
-    <div>
-      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
-      <i class="iconfont icon-love"></i>
-      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
-    </div>
-    
-
-    
-
-    
-  </div>
-</footer>
-
-<!-- SCRIPTS -->
-<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
-<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
-<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
-<script  src="/js/main.js" ></script>
-
-
-  <script  src="/js/lazyload.js" ></script>
-
-
-
-  
-  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
-  <script>
-    $(document).ready(function () {
-      var navHeight = $('#navbar').height();
-      var post = $('#post');
-      var toc = $('#toc');
-      var tocLimMax = post.offset().top + post.height() - navHeight;
-
-      $(window).scroll(function () {
-        var tocLimMin = $('#toc-start').offset().top - navHeight;
-        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
-
-        if (tocLimMin <= scroH && scroH <= tocLimMax) {
-          toc.css({
-            'display': 'block',
-            'position': 'fixed',
-            'top': navHeight,
-          });
-        } else if (scroH <= tocLimMin) {
-          toc.css({
-            'position': '',
-            'top': '',
-          });
-        } else if (scroH > tocLimMax) {
-          toc.css('display', 'none');
-        }
-      });
-      tocbot.init({
-        tocSelector: '#tocbot',
-        contentSelector: '.post-content',
-        headingSelector: 'h1,h2,h3,h4,h5,h6',
-        linkClass: 'tocbot-link',
-        activeLinkClass: 'tocbot-active-link',
-        listClass: 'tocbot-list',
-        isCollapsedClass: 'tocbot-is-collapsed',
-        collapsibleClass: 'tocbot-is-collapsible',
-        scrollSmooth: true,
-      });
-      if ($('.toc-list-item').length > 0) {
-        $('#toc > p').css('visibility', 'visible');
-      }
-      var offset = $('#board-ctn').css('margin-right')
-      $('#toc-ctn').css({
-        'right': offset
-      })
-    });
-  </script>
-
-
-
-
-
-
-
-
-
-
-<!-- Plugins -->
-
-
-
-  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
-  <script>
-    $(document).ready(function () {
-      $('pre').addClass('prettyprint  ');
-      prettyPrint();
-    })
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
-  <script>
-    var typed = new Typed('#subtitle', {
-      strings: [
-        '  ',
-        "部署MySQL Cluster集群系统&nbsp;",
-      ],
-      cursorChar: "_",
-      typeSpeed: 70,
-      loop: false,
-    });
-    typed.stop();
-    $(document).ready(function () {
-      $(".typed-cursor").addClass("h2");
-      typed.start();
-    });
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
-  <script>
-    anchors.options = {
-      placement: "right",
-      visible: "hover",
-      
-    };
-    var el = "h1,h2,h3,h4,h5,h6".split(",");
-    var res = [];
-    for (item of el) {
-      res.push(".markdown-body > " + item)
-    }
-    anchors.add(res.join(", "))
-  </script>
-
-
-
-  <script  src="/js/local-search.js" ></script>
-  <script>
-    var path = "/local-search.xml";
-    var inputArea = document.querySelector("#local-search-input");
-    inputArea.onclick = function () {
-      getSearchFile(path);
-      this.onclick = null
-    }
-  </script>
-
-
-
-  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <script>
-    $("#post img:not(.no-zoom img, img[no-zoom])").each(
-      function () {
-        var element = document.createElement("a");
-        $(element).attr("data-fancybox", "images");
-        $(element).attr("href", $(this).attr("src"));
-        $(this).wrap(element);
-      }
-    );
-  </script>
-
-
-
-  
-
-  
-    <!-- MathJax -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-          tex2jax: {
-              inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-              processEscapes: true,
-              skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-          }
-      });
-
-      MathJax.Hub.Queue(function() {
-          var all = MathJax.Hub.getAllJax(), i;
-          for(i=0; i < all.length; i += 1) {
-              all[i].SourceElement().parentNode.className += ' has-jax';
-          }
-      });
-
-    </script>
-
-    <script  src="https://cdn.staticfile.org/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" ></script>
-
-  
-
-
-
-
-
-
-
-
-
-
-</body>
-</html>
+</div><div class="article-tags size-small mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/mysql/">mysql</a><a class="link-muted mr-2" rel="tag" href="/tags/Cluster/">Cluster</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2020/04/12/Number-Theory/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Number Theory</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2020/03/21/Windows-git-clone-slow/"><span class="level-item">Windows下git clone慢的尝试解决方法</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/channel.png" alt="purplezi"></figure><p class="title is-size-4 is-block line-height-inherit">purplezi</p><p class="is-size-6 is-block">Lazy, foolish</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">7</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">4</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">11</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/purplezi" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/purplezi"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" id="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="is-flex" href="#实验环境"><span class="mr-2">1</span><span>1 实验环境</span></a></li><li><a class="is-flex" href="#实验过程"><span class="mr-2">2</span><span>2 实验过程</span></a><ul class="menu-list"><li><a class="is-flex" href="#前提"><span class="mr-2">2.1</span><span>2.1 前提</span></a></li><li><a class="is-flex" href="#设置静态ip"><span class="mr-2">2.2</span><span>2.2 设置静态IP</span></a><ul class="menu-list"><li><a class="is-flex" href="#vmware配置网络环境"><span class="mr-2">2.2.1</span><span>2.2.1 VMware配置网络环境</span></a></li><li><a class="is-flex" href="#通过terminal命令行来设置ip地址"><span class="mr-2">2.2.2</span><span>通过Terminal命令行来设置IP地址</span></a></li></ul></li><li><a class="is-flex" href="#集群配置"><span class="mr-2">2.3</span><span>2.3 集群配置</span></a><ul class="menu-list"><li><a class="is-flex" href="#集群配置要求"><span class="mr-2">2.3.1</span><span>2.3.1 集群配置要求</span></a></li><li><a class="is-flex" href="#准备阶段"><span class="mr-2">2.3.2</span><span>2.3.2 准备阶段</span></a></li><li><a class="is-flex" href="#安装配置集群管理器"><span class="mr-2">2.3.3</span><span>2.3.3 安装配置集群管理器</span></a></li><li><a class="is-flex" href="#配置数据节点"><span class="mr-2">2.3.4</span><span>2.3.4 配置数据节点</span></a></li><li><a class="is-flex" href="#配置并运行mysql-server和client"><span class="mr-2">2.3.5</span><span>2.3.5 配置并运行MySQL Server和Client</span></a></li><li><a class="is-flex" href="#验证mysql-cluster安装"><span class="mr-2">2.3.6</span><span>2.3.6 验证MySQL Cluster安装</span></a></li><li><a class="is-flex" href="#向mysql集群插入数据"><span class="mr-2">2.3.7</span><span>2.3.7 向MySQL集群插入数据</span></a></li></ul></li><li><a class="is-flex" href="#结语"><span class="mr-2">2.4</span><span>2.4 结语</span></a></li><li><a class="is-flex" href="#验证可靠性"><span class="mr-2">2.5</span><span>2.5 验证可靠性</span></a><ul class="menu-list"><li><a class="is-flex" href="#ndb存储引擎测试"><span class="mr-2">2.5.1</span><span>2.5.1 NDB存储引擎测试</span></a></li><li><a class="is-flex" href="#ndb数据节点单点故障"><span class="mr-2">2.5.2</span><span>NDB(数据节点)单点故障</span></a></li><li><a class="is-flex" href="#集群的关闭"><span class="mr-2">2.5.3</span><span>2.5.3 集群的关闭</span></a></li></ul></li><li><a class="is-flex" href="#思考问题"><span class="mr-2">2.6</span><span>2.6 思考问题</span></a></li></ul></li><li><a class="is-flex" href="#问题与解决"><span class="mr-2">3</span><span>3 问题与解决</span></a></li><li><a class="is-flex" href="#实验总结"><span class="mr-2">4</span><span>4 实验总结</span></a></li><li><a class="is-flex" href="#参考资料"><span class="mr-2">5</span><span>5 参考资料</span></a></li></ul></div></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Links</h3><ul class="menu-list"><li><a class="level is-mobile is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li><li><a class="level is-mobile is-mobile" href="https://bulma.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Bulma</span></span><span class="level-right"><span class="level-item tag">bulma.io</span></span></a></li></ul></div></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile is-marginless" href="/categories/ACM/"><span class="level-start"><span class="level-item">ACM</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/Blogs/"><span class="level-start"><span class="level-item">Blogs</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/DataBase/"><span class="level-start"><span class="level-item">DataBase</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/git/"><span class="level-start"><span class="level-item">git</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget"><div class="card-content"><h3 class="menu-label">Recent</h3><article class="media"><div class="media-content size-small"><p><time dateTime="2020-05-15T09:32:27.000Z">2020-05-15</time></p><p class="title is-6"><a class="link-muted" href="/2020/05/15/Hadoop-Hbase/">NoSQL数据库系统Hadoop-Hbase安装配置(伪分布模式)与简单使用</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/DataBase/">DataBase</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-04-12T15:52:12.000Z">2020-04-12</time></p><p class="title is-6"><a class="link-muted" href="/2020/04/12/Number-Theory/">Number Theory</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/ACM/">ACM</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-03-25T03:31:59.000Z">2020-03-25</time></p><p class="title is-6"><a class="link-muted" href="/2020/03/25/MySQL-Cluster-set-up-configuration/">部署MySQL Cluster集群系统</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/DataBase/">DataBase</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-03-21T04:40:38.000Z">2020-03-21</time></p><p class="title is-6"><a class="link-muted" href="/2020/03/21/Windows-git-clone-slow/">Windows下git clone慢的尝试解决方法</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/git/">git</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-03-21T04:38:41.000Z">2020-03-21</time></p><p class="title is-6"><a class="link-muted" href="/2020/03/21/MkDocs-Github-Travis/">MkDocs+Github+Travis搭建博客</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/Blogs/">Blogs</a></p></div></article></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile is-marginless" href="/archives/2020/05/"><span class="level-start"><span class="level-item">May 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/archives/2020/04/"><span class="level-start"><span class="level-item">April 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/archives/2020/03/"><span class="level-start"><span class="level-item">March 2020</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li></ul></div></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Cluster/"><span class="tag">Cluster</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Hadoop/"><span class="tag">Hadoop</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Hbase/"><span class="tag">Hbase</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MkDocs/"><span class="tag">MkDocs</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Travis/"><span class="tag">Travis</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/blog/"><span class="tag">blog</span><span class="tag is-grey-lightest">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/git/"><span class="tag">git</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/github/"><span class="tag">github</span><span class="tag is-grey-lightest">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/hexo/"><span class="tag">hexo</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/mysql/"><span class="tag">mysql</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E8%AE%BA/"><span class="tag">数论</span><span class="tag is-grey-lightest">1</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/plant-pot.svg" alt="Purplezi" height="28"></a><p class="size-small"><span>&copy; 2020 Purplezi</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            site: {
+                url: 'https://purplezi.gitee.io',
+                external_link: {"enable":true,"exclude":[]}
+            },
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to Top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><div id="outdated"><h6>Your browser is out-of-date!</h6><p>Update your browser to view this website correctly.&amp;npsb;<a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a></p><p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p></div><script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script><script>window.addEventListener("load", function () {
+            outdatedBrowser({
+                bgColor: '#f25648',
+                color: '#ffffff',
+                lowerThan: 'object-fit' // display on IE11 or below
+            });
+        });</script><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
