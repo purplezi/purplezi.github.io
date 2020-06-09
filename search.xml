@@ -1,6 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>软件安全概述</title>
+    <url>/2020/06/09/Software-Security/</url>
+    <content><![CDATA[<h1 id="三大软件安全问题">三大软件安全问题</h1>
+<h2 id="有什么安全问题安全问题产生的原因">有什么安全问题，安全问题产生的原因</h2>
+<h3 id="二进制方面">二进制方面</h3>
+<ol type="1">
+<li>内存相关问题
+<ul>
+<li>有明确的机制</li>
+<li>例子：<strong>缓冲区溢出</strong>，空指针，格式化字符串</li>
+</ul></li>
+<li>逻辑错误问题
+<ul>
+<li>多种多样</li>
+</ul></li>
+</ol>
+<h3 id="web方面">Web方面</h3>
+<ol type="1">
+<li>典型安全问题
+<ul>
+<li><strong>XSS</strong>，<strong>SQL</strong>注入</li>
+</ul></li>
+<li>非典型安全问题：很多
+<ul>
+<li>主要是一些代码的逻辑错误，每个漏洞都可能有不同的原理</li>
+</ul></li>
+</ol>
+<a id="more"></a>
+<h2 id="如何去发现问题-安全漏洞---漏洞挖掘技术">如何去发现<del>问题</del> (安全漏洞) -&gt; 漏洞挖掘技术</h2>
+<h3 id="白盒分析">白盒分析</h3>
+<ul>
+<li>分析<strong>软件的源代码</strong>去寻找问题</li>
+<li>方法
+<ul>
+<li>手工代码分析 -&gt; 软件测试技术 / 代码review。但是软件的源代码通常比较庞大，手工分析起来很费劲</li>
+<li>自动化代码分析 -&gt; 典型的技术：符号执行</li>
+</ul></li>
+</ul>
+<h3 id="黑盒分析">黑盒分析</h3>
+<ul>
+<li>因为白盒分析数据量大，需投入很多人工，人们寻求简单方法，和白盒分析对立的黑盒发展</li>
+<li>原理：完全不管软件的内部机理 / 不看源码，把需要分析的软件当做一个黑盒子，看不见 / 根本不去看内部</li>
+<li>方法：分析<strong>表面现象</strong>
+<ul>
+<li>软件：通过输入和输出去猜测内部机制</li>
+<li>黑盒分析法，Fuzzing技术(模糊测试)</li>
+</ul></li>
+</ul>
+<h2 id="如果有人利用这这些安全问题如何防御">如果有人利用这这些安全问题，如何防御</h2>
+<h3 id="补丁">补丁</h3>
+<ul>
+<li>由于软件复杂性，要发现问题及时修补</li>
+<li>方法
+<ul>
+<li>通过<strong>漏洞数据库</strong>来披露和管理各种漏洞，厂家有义务定期发布软件补丁或者更新</li>
+<li>软件用户应该<strong>及时升级</strong>软件</li>
+<li>第三方人员，如果发现了安全问题，应该<strong>通报</strong>给厂家，而不是在漏洞修补以前，利用漏洞搞破坏，或者不负责任的披露漏洞</li>
+</ul></li>
+</ul>
+<h3 id="防御机制">防御机制</h3>
+<ol type="1">
+<li>寻找记录攻击的痕迹，然后分析这些数据
+<ul>
+<li>数据的来源分为了主机层面和网络层面</li>
+</ul></li>
+<li>攻击者可能会做哪些方面的伪装，常用的伪装技术有哪些，如何去对抗伪装
+<ul>
+<li>方法：加壳脱壳技术 / Rootkit技术</li>
+</ul></li>
+</ol>
+<h1 id="研究第一大方面缓冲区溢出和xss">研究第一大方面：缓冲区溢出和XSS</h1>
+<ul>
+<li>代表了<strong>二进制软件</strong>和<strong>脚本软件</strong>（包括绝大多数Web软件都是脚本软件开发的）两大技术方向</li>
+<li>缓冲区溢出虽然比XSS底层，但是更难。XSS虽然比较上层，但是相对比较容易理解
+<ul>
+<li>计算机科学的特点就是，越底层的东西，越难</li>
+<li>开发操作系统比开发app难多了</li>
+</ul></li>
+</ul>
+<h1 id="二进制软件">二进制软件</h1>
+<ul>
+<li>计算机的底层，是CPU直接执行在内存中的机器指令</li>
+<li>C和C++这类编程语言开发的软件，通过编译链接过程，把程序变成CPU可以直接执行的二进制指令</li>
+<li>这类软件的一个特点也是不可避免的一点：需要直接操作内存(指针)
+<ul>
+<li>内存是所有在运行态的软件及其数据保存的地方</li>
+<li>内存分为细小的单元，每个单元有一个唯一的地址</li>
+</ul></li>
+<li>二进制软件安全问题的根源
+<ul>
+<li>所有要访问数据，必须知道数据的地址，要保存新的数据，就必须分配内存，获得可用的地址</li>
+<li>地址也是数，如果不小心计算错误，就会访问到不该访问的数据，造成数据的泄露或者破坏。</li>
+</ul></li>
+<li>二进制程序的编程，有很大的难度的原因
+<ul>
+<li>二进制文件晦涩难懂</li>
+<li>CPU只能执行二进制指令(是基于物理上的电路)，所以不可能设计得机制太复杂</li>
+</ul></li>
+</ul>
+<h1 id="脚本软件">脚本软件</h1>
+<ul>
+<li>在C和C++发展成熟以后，就有人去研究如何降低编程的难度，能否避免程序员编程时直接操作内存，把需要操作内存的地方，都封装起来，屏蔽在编程语言的内部 -&gt; 发明了脚本语言</li>
+<li>概念：用C和C++这样的二进制程序开一个软件来执行一种新的程序，就是用软件来模拟CPU工作
+<ul>
+<li>由于软件的可定制性比CPU就高多了，可以想定义什么指令就定义什么指令</li>
+<li>对象与封装：把所有需要操作内存的东西，全部封闭在执行器内部，只给程序员接口，不给程序员操作内存的机会。比如把字符串封装为string<strong>对象</strong>。只能调用string.len()这样的方法来操作这个对象。这样就避免了由于编程不慎造成的内存相关问题，也降低了编程难度</li>
+</ul></li>
+<li>如python、java、js、web浏览器这样的脚本程序的执行器都是二进制程序。</li>
+<li>解决了内存相关问题，有引出了其他的问题
+<ul>
+<li>用户输入问题。比如XSS出现的原因如下：web程序存在一种高交互性。web是互联网时代的软件的基本框架，所以会有用户提交数据。为了网页动态的需求，开发了网页的前端脚本，比如js，直接把脚本嵌入到网页中。浏览器只要发现了script标签，就去当做脚本来执行，把网页按照程序员的定制，变的丰富多彩，变得富于变化。但是，恰恰另外一种需求，就是UGC(User Generated Conten 用户生成内容)软件，也就是网页的内容来自于用户提交的内容，比如BBS、博客、微博，电商视频网站的用户评论，都会涉及到用户提交的内容在页面上呈现。<strong>当用户提交的内容里含有脚本</strong>，如果直接将用户提交的内容放在页面上，那么用户提交的内容中的脚本会不会被浏览器解析执行呢？那么一个用户提交了一个脚本就可以在这个页面的所有用户主机上执行呢？用户能提交程序执行了，怎么才能不保证这个程序不是恶意的呢？前端脚本，除了渲染页面元素这样的功能，还有获得用户的输入跳转页面到其他地址等等丰富的功能。</li>
+</ul></li>
+</ul>
+<h1 id="实验">实验</h1>
+<h2 id="编写一个简单的html文件">编写一个简单的html文件</h2>
+<ul>
+<li><p>要求只要有一个表单，用户就可以在表单中输入数据，向服务器提交。</p>
+<p><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span>&gt;</span>提交<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p></li>
+<li><p>保存为index.html文件，用浏览器打开显示如下</p>
+<p><img src="indexhtml.png" width=50%></p></li>
+</ul>
+<h2 id="搭建一个web服务器">搭建一个web服务器</h2>
+<ul>
+<li>如果这个html是放在web服务器上，用户输入了数据，点击提交，浏览器就会把编辑框中的数据封装为一个POST请求，发现服务器。服务器会把这个数据发给后端脚本来处理。</li>
+<li>通过定义form的属性来指明需要哪个脚本文件来处理
+<ul>
+<li>比如PHP程序，他有一个POST超级变量，当用户提交了数据以后，对应的php脚本的post变量就是用户提交的数据</li>
+<li>假设服务器现在把用户提交的数据放在user_input.html的body标签中。然后保存在服务器文件的根目录中。当有网站的用户访问 http://xxxx.com/user_input.html 的时候，就会看到刚才那个表单用户提交的内容。当然实际的情况是这两个用户可能不是同一个用户，于是A用户提交的内容B用户就访问到了。</li>
+<li>当服务器脚本是原封不动的把用户输入的数据写到html里时，如果用户提交的数据中包括<code>&lt;script&gt;标签</code>，就会被执行。比如alert函数，弹出一个消息框，<code>&lt;script&gt;alert('xss attack')&lt;/script&gt;</code>；比如给window.location.href赋值，能让用户莫名其妙的跳转到另外一个网站</li>
+</ul></li>
+<li>最简单的实验环境
+<ul>
+<li>在vscode中，安装一个php插件，然后编写一个简单的php脚本，调试运行这个脚本</li>
+<li>F5 vscode会自动选择脚本运行的方式，把用户的表单输入写入到html文件</li>
+<li>通过浏览器访问这个文件html文件，这就是一个最简单的xss运行环境了。</li>
+</ul></li>
+<li>实际的XSS漏洞可能很复杂，比如还会有数据库、登录等。另外，编程语言也不限于php，java、python也可以</li>
+</ul>
+<h2 id="问题">问题</h2>
+<ul>
+<li>当编写的代码中出现中文，在网页上显示乱码
+<ul>
+<li>编码问题，head标签里通过meta指定</li>
+</ul></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>Security</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>NoSQL数据库系统Hadoop-Hbase安装配置(伪分布模式)与简单使用</title>
     <url>/2020/05/15/Hadoop-Hbase/</url>
     <content><![CDATA[<style>
@@ -1000,6 +1154,10 @@
 <li>开全局代理的情况下，利用代理进行下载，对https有效，ssh无效 <figure class="highlight plain"><figcaption><span>bash</span></figcaption><table><tr><td class="code"><pre><span class="line">git config --global http.proxy http:&#x2F;&#x2F;127.0.0.1:自己的端口号</span><br><span class="line">git config --global https.proxy https:&#x2F;&#x2F;127.0.0.1:自己的端口号</span><br><span class="line"></span><br><span class="line"># 可以在计算机的设置-&gt;代理查看</span><br><span class="line"></span><br><span class="line"># 取消方式</span><br><span class="line">git config --global --unset http.proxy</span><br><span class="line">git config --global --unset https.proxy</span><br><span class="line"></span><br><span class="line"># 查看目前所有的配置</span><br><span class="line">git config --global list</span><br></pre></td></tr></table></figure></li>
 <li>使用全局代理，clone国内仓库慢，改进：只对github进行代理，对国内的仓库不影响 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 先取消全局代理，通过上面的取消方法</span><br><span class="line"></span><br><span class="line">git config --global http.https:&#x2F;&#x2F;github.com.proxy https:&#x2F;&#x2F;127.0.0.1:自己的端口号</span><br><span class="line">git config --global https.https:&#x2F;&#x2F;github.com.proxy https:&#x2F;&#x2F;127.0.0.1:自己的端口号</span><br><span class="line"></span><br><span class="line"># 取消</span><br><span class="line">git config --global --unset http.https:&#x2F;&#x2F;github.com.proxy</span><br><span class="line">git config --global --unset https.https:&#x2F;&#x2F;github.com.proxy</span><br></pre></td></tr></table></figure></li>
 </ul>
+<h1 id="关于git其他问题"><a href="#关于git其他问题">关于git其他问题</a></h1>
+<ul>
+<li><a href="https://stackoverflow.com/questions/49067062/fatal-httprequestexception-encountered-error-with-github-bitbucket-repositor">“fatal: HttpRequestException encountered.” Error with GitHub/Bitbucket Repositories due to dropping TLS-1.0 support</a></li>
+</ul>
 <h1 id="参考资料"><a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99">参考资料</a></h1>
 <ul>
 <li><p><a href="https://www.cnblogs.com/rockbean/p/12017010.html">git设置和取消代理</a></p></li>
@@ -1101,7 +1259,7 @@
 <li>https://github.com/blinkfox/hexo-theme-matery</li>
 <li>https://github.com/litten/hexo-theme-yilia 推荐用yilia-plus</li>
 <li>https://www.zhihu.com/question/24422335?utm_source=qq&amp;utm_medium=social&amp;utm_oi=868617446326681600</li>
-<li>http://ppoffice.github.io/hexo-theme-icarus</li>
+<li>http://ppoffice.github.io/hexo-theme-icarus dark mode change: https://blog.sbx0.cn/2020/04/07/icarus-3-night-mode/</li>
 </ol>
 </blockquote>
 <ul>
@@ -1109,6 +1267,7 @@
 <ul>
 <li>解决方法：对每篇文章进行微修改，就可以马上加载出来了</li>
 </ul></li>
+<li>如果是配置gitee的Gitee Pages，不是Pro，则需要手动到Gitee Pages上更新</li>
 </ul>
 <h1 id="参考资料">参考资料</h1>
 <ul>
