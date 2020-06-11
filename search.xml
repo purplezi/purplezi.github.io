@@ -1,6 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>XSS攻击</title>
+    <url>/2020/06/11/xss-attack/</url>
+    <content><![CDATA[<h1 id="使用python内置的库开发一个基本的http服务器端">使用python内置的库开发一个基本的http服务器端</h1>
+<ul>
+<li><a href="#讲解代码">测试代码</a></li>
+<li>使用python原生的cgi和http.server两个库运行的一个简单的http服务器程序
+<ul>
+<li>因为没有使用第三方库，所有不需要使用pip安装依赖</li>
+<li>运行比较简单</li>
+<li>公共网关接口（Common Gateway Interface，CGI）是Web 服务器运行时外部程序的规范，按 CGI 编写的程序可以扩展服务器功能</li>
+</ul></li>
+</ul>
+<a id="more"></a>
+<h2 id="讲解代码">讲解代码</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> cgi</span><br><span class="line"><span class="keyword">from</span> http.server <span class="keyword">import</span> HTTPServer, BaseHTTPRequestHandler</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyHTTPRequestHandler</span><span class="params">(BaseHTTPRequestHandler)</span>:</span></span><br><span class="line">    field_name = <span class="string">'a'</span></span><br><span class="line">    form_html = \</span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        &lt;html&gt;</span></span><br><span class="line"><span class="string">        &lt;body&gt;</span></span><br><span class="line"><span class="string">        &lt;form method='post' enctype='multipart/form-data'&gt;</span></span><br><span class="line"><span class="string">        &lt;input type='text' name='%s'&gt;</span></span><br><span class="line"><span class="string">        &lt;input type='submit'&gt;</span></span><br><span class="line"><span class="string">        &lt;/form&gt;</span></span><br><span class="line"><span class="string">        &lt;/body&gt;</span></span><br><span class="line"><span class="string">        &lt;/html&gt;</span></span><br><span class="line"><span class="string">        '''</span> % field_name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_GET</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.send_response(<span class="number">200</span>)</span><br><span class="line">        self.send_header(<span class="string">"Content-type"</span>, <span class="string">"text/html"</span>)</span><br><span class="line">        self.end_headers()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            file = open(<span class="string">"."</span>+self.path, <span class="string">"rb"</span>)</span><br><span class="line">        <span class="keyword">except</span> FileNotFoundError <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">            self.wfile.write(self.form_html.encode())</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            content = file.read()</span><br><span class="line">            self.wfile.write(content)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_POST</span><span class="params">(self)</span>:</span></span><br><span class="line">        form_data = cgi.FieldStorage(</span><br><span class="line">            fp=self.rfile,</span><br><span class="line">            headers=self.headers,</span><br><span class="line">            environ=&#123;</span><br><span class="line">                <span class="string">'REQUEST_METHOD'</span>: <span class="string">'POST'</span>,</span><br><span class="line">                <span class="string">'CONTENT_TYPE'</span>: self.headers[<span class="string">'Content-Type'</span>],</span><br><span class="line">            &#125;)</span><br><span class="line">        fields = form_data.keys()</span><br><span class="line">        <span class="keyword">if</span> self.field_name <span class="keyword">in</span> fields:</span><br><span class="line">            input_data = form_data[self.field_name].value</span><br><span class="line">            file = open(<span class="string">"."</span>+self.path, <span class="string">"wb"</span>)</span><br><span class="line">            file.write(input_data.encode())</span><br><span class="line"></span><br><span class="line">        self.send_response(<span class="number">200</span>)</span><br><span class="line">        self.send_header(<span class="string">"Content-type"</span>, <span class="string">"text/html"</span>)</span><br><span class="line">        self.end_headers()</span><br><span class="line">        self.wfile.write(<span class="string">b"&lt;html&gt;&lt;body&gt;OK&lt;/body&gt;&lt;/html&gt;"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyHTTPServer</span><span class="params">(HTTPServer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, host, port)</span>:</span></span><br><span class="line">        print(<span class="string">"run app server by python!"</span>)</span><br><span class="line">        HTTPServer.__init__(self,  (host, port), MyHTTPRequestHandler)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="string">'__main__'</span> == __name__:</span><br><span class="line">    server_ip = <span class="string">"0.0.0.0"</span></span><br><span class="line">    server_port = <span class="number">8080</span></span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) == <span class="number">2</span>:</span><br><span class="line">        server_port = int(sys.argv[<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) == <span class="number">3</span>:</span><br><span class="line">        server_ip = sys.argv[<span class="number">1</span>]</span><br><span class="line">        server_port = int(sys.argv[<span class="number">2</span>])</span><br><span class="line">    print(<span class="string">"App server is running on http://%s:%s "</span> % (server_ip, server_port))</span><br><span class="line"></span><br><span class="line">    server = MyHTTPServer(server_ip, server_port)</span><br><span class="line">    server.serve_forever()</span><br></pre></td></tr></table></figure>
+<h3 id="运行代码">运行代码</h3>
+<ul>
+<li><p>使用<code>python httpserver.py</code>或者<code>py httpserver.py</code></p>
+<ul>
+<li><p>使用vscode调试代码，在同目录下会自动生成一个<code>.vscode</code>的目录，目录下生成<code>launch.json</code>文件，配置如下</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 使用 IntelliSense 了解相关属性。 </span></span><br><span class="line">    <span class="comment">// 悬停以查看现有属性的描述。</span></span><br><span class="line">    <span class="comment">// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387</span></span><br><span class="line">    <span class="attr">"version"</span>: <span class="string">"0.2.0"</span>,</span><br><span class="line">    <span class="attr">"configurations"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Python: 当前文件"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"python"</span>,</span><br><span class="line">            <span class="attr">"request"</span>: <span class="string">"launch"</span>,</span><br><span class="line">            <span class="attr">"program"</span>: <span class="string">"$&#123;file&#125;"</span>,</span><br><span class="line">            <span class="attr">"console"</span>: <span class="string">"integratedTerminal"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul></li>
+<li><p>在浏览器的访问网址为<code>127.0.0.1:8080/a.html</code></p>
+<p><img src="a-html.png" width=50%></p></li>
+</ul>
+<h3 id="主要的父类与子类">主要的父类与子类</h3>
+<h4 id="http-methods">http methods</h4>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods">http请求下的多种methods</a>
+<ul>
+<li>通常使用得最多的，是 GET 和 POST</li>
+<li>直接在浏览器中输入链接，浏览器拿到地址以后，默认是采用 GET 方式向服务器发送请求，GET 方式最常见。</li>
+<li>表单使用的 post 方法提交数据 <code>&lt;form method='post' enctype='multipart/form-data'&gt;</code></li>
+<li>通常来说，从服务器获取数据，使用 get 方法，向服务器提交数据，使用 post 方法</li>
+<li>其他的方法，在现在的web应用程序中，用到的很少</li>
+</ul></li>
+</ul>
+<h4 id="myhttpserver类">MyHTTPServer类</h4>
+<ul>
+<li><p>MyHTTPServer类，是继承自原生的HTTPServer，重写 init 函数，增加了打印输出语言</p></li>
+<li><p>然后直接调用父类 HTTPServer 的 init 函数传递了服务器运行需要的地址、端口等参数，我们的监听地址和端口是 0.0.0.0:8080</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyHTTPServer</span><span class="params">(HTTPServer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, host, port)</span>:</span></span><br><span class="line">        print(<span class="string">"run app server by python!"</span>)</span><br><span class="line">        HTTPServer.__init__(self,  (host, port), MyHTTPRequestHandler)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="myhttprequesthandler">MyHTTPRequestHandler</h4>
+<ul>
+<li>MyHTTPRequestHandler 类，这个是 HTTPServer 的回调，用来处理到达的请求，也就是 0.0.0.0:8080 上有任何的 HTTP 请求到达时，都会调用 MyHTTPRequestHandler来处理
+<ul>
+<li>MyHTTPRequestHandler 直接继承自 BaseHTTPRequestHandler</li>
+<li>重写了父类的 do_GET和do_POST两个方法</li>
+<li>这个HTTP请求的处理类是整个代码的主体，也是出问题的地方</li>
+<li>在 python 的 BaseHTTPRequestHandler 类中 ，do_XXX函数，就是处理对应的客户端请求的函数。代码指定了 MyHTTPRequestHandler 来处理 http 请求，那么当用 GET 方法请求，就会调用 do_GET，POST 方法请求，就会调用 do_POST函数</li>
+<li>浏览器所发送的数据包里包括请求类型， 在 http 的 headers里，会说明方法。</li>
+<li>这是python最基本的http 服务器的方式</li>
+</ul></li>
+</ul>
+<h3 id="其他处理">其他处理</h3>
+<ul>
+<li>通常，一个静态的http服务器，这里的路径就是 http 服务器根目录下的文件，动态服务器可能是文件和参数，或者是对应其他服务器后台的处理过程
+<ul>
+<li>self.path 是这个请求的路径</li>
+<li>例如 http://127.0.0.1:8080/a.html 。其中 http://127.0.0.1:8080是协议服务器地址和端口。/a.html就是路径</li>
+<li>例如 http://127.0.0.1:8080/a.php?p1=x 。指定由 a.php 来处理这个请求，参数是 p1=x 。问号后面是参数，可以有多个</li>
+</ul></li>
+<li>一般来说，如果读的文件不存在，应该返回404
+<ul>
+<li>self.send_response(200) 按照协议应该是404</li>
+<li>则这里的处理为 如果指定的文件不存在，还是返回200，表示请求路径是正确的，可以处理，然后返回一个默认的页面。这个页面是 form_html的变量，在FileNotFoundError异常处理过程中写回</li>
+<li>self.wfile 和 self.rfile 对应 http 响应和请求的 body 部分</li>
+</ul></li>
+<li>GET处理完成以后，浏览器就拿到了 200 状态的 "Content-type" 为 "text/html" 的 form_html</li>
+<li>在浏览器刷新是重复上一次的POST请求，所以会提示是否要重新提交表单</li>
+</ul>
+<h3 id="调试运行">调试运行</h3>
+<ul>
+<li>在 def do_GET 下断点，刷新浏览器，代码就会断点命中中断。</li>
+<li>结合浏览器，抓包看看 http 请求和响应的数据格式 （用抓包器或者浏览器的调试模式观察）</li>
+</ul>
+<h4 id="浏览器调试模式">浏览器调试模式</h4>
+<ul>
+<li><p>打开浏览器的调试模式(chrome &gt; 菜单 &gt; 更多工具 &gt; 开发者工具)</p></li>
+<li><p>在sources这个标签下看到服务器向浏览器返回的数据，即 form_html 变量</p>
+<ul>
+<li><p>这一段 html 浏览器渲染出来，就是那个带一个编辑框的表单- 表单指定了使用post方式向服务器提交数据</p>
+<p><img src="sourcetab.png"></p></li>
+</ul></li>
+<li><p>在network tab里可以看到完整的请求响应过程</p>
+<p><img src="networktab.png"></p>
+<ul>
+<li><p>完整的网络数据，其中 header 里就说了 GET 或者 POST 、返回的状态码200等等</p>
+<p><img src="headers.png"></p></li>
+</ul></li>
+<li><p>在表单中填入数据，点提交按钮，然后服务器的 do_POST 函数被调用。通过 cgi.FieldStorage解析了客户端提交的请求，原始的请求的头部在self.headers。body部分在self.rfile。解析完成以后放到 form_data变量里，其中 form_data['field_name'].value 是在编辑框中填入的数据 <figure class="highlight py"><table><tr><td class="code"><pre><span class="line">form_data = cgi.FieldStorage(</span><br><span class="line">          fp=self.rfile,</span><br><span class="line">          headers=self.headers,</span><br><span class="line">          environ=&#123;</span><br><span class="line">              <span class="string">'REQUEST_METHOD'</span>: <span class="string">'POST'</span>,</span><br><span class="line">              <span class="string">'CONTENT_TYPE'</span>: self.headers[<span class="string">'Content-Type'</span>],</span><br><span class="line">          &#125;)</span><br></pre></td></tr></table></figure></p></li>
+</ul>
+<h3 id="使用场景">使用场景</h3>
+<ul>
+<li><p>通常，一个服务器会根据业务逻辑处理用户提交的数据，比如用户发表的商品评论，比如在线教学系统中填入的作业一般会写入数据库。但是这些数据，在某些情况下又会被显示出来，比如其他用户查看别人的商品评论的时候，比如老师查看学生的作业时。</p></li>
+<li><p>为了模拟这个过程，简化了一下，没有用户系统，也没有数据库，直接写入了 path 对应的文件。</p></li>
+<li><p>处理用户提交，写入文件 <figure class="highlight py"><table><tr><td class="code"><pre><span class="line">fields = form_data.keys()</span><br><span class="line"><span class="keyword">if</span> self.field_name <span class="keyword">in</span> fields:</span><br><span class="line">    input_data = form_data[self.field_name].value</span><br><span class="line">    file = open(<span class="string">"."</span>+self.path, <span class="string">"wb"</span>)</span><br><span class="line">    file.write(input_data.encode())</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>fields = form_data.keys()是获取表单中的键值对，因此使用.value得到输入的值：这里获得是对应的是form中input的name <code>&lt;input type='text' name='%s'&gt;</code></li>
+<li>表单以变量名变量值的方式组织，input的name相当于变量名，填入的数据就是变量值</li>
+<li>python的cgi.FieldStorage将form组织为python的dict数据类型，所以可以通过 form_data['field_name'].value 获得所填入的数据</li>
+</ul></li>
+<li><p>如果写入成功，就返回一个 200 状态的 OK <figure class="highlight py"><table><tr><td class="code"><pre><span class="line">  self.send_response(<span class="number">200</span>)</span><br><span class="line">  self.send_header(<span class="string">"Content-type"</span>, <span class="string">"text/html"</span>)</span><br><span class="line">  self.end_headers()</span><br><span class="line">  self.wfile.write(<span class="string">b"&lt;html&gt;&lt;body&gt;OK&lt;/body&gt;&lt;/html&gt;"</span>)</span><br><span class="line">  ``` </span><br><span class="line"></span><br><span class="line"><span class="comment">## 漏洞</span></span><br><span class="line"></span><br><span class="line">- 如果向网页中填入了 <span class="number">123</span> ，那么<span class="number">123</span>被写入了a.html文件。执行完成后，同目录下会多一个a.html，内容为<span class="number">123</span>。然后下次再访问 http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8080</span>/a.html 时，在浏览器地址栏里回车。由于这个时候a.html已经存在了，所以是运行的部分是</span><br><span class="line">  ```py</span><br><span class="line">  <span class="keyword">else</span>:</span><br><span class="line">      content = file.read()</span><br><span class="line">      self.wfile.write(content)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>会直接把文件内容会写给浏览器</li>
+<li>这里是在简化模拟用户提交数据 &gt; 存入数据 &gt; 其他用户获取这个数据的过程</li>
+</ul>
+<p><img src="httpserver1.gif"></p></li>
+<li><p>XSS漏洞</p>
+<ul>
+<li><p>再访问一个不存在的页面，比如b.html，又会出现那个默认的form。这时输入<code>&lt;html&gt;&lt;body&gt;&lt;script&gt;alert('XSS')&lt;/script&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</code>，然后在访问b.html的时候，整个页面被载入 script 在浏览器上执行，也就是<strong>用户提交的数据被执行了</strong></p>
+<p><img src="httpserver-xss.gif"></p></li>
+<li><p>重新开一个页面，在c.html中填入<code>&lt;html&gt;&lt;body&gt;&lt;script&gt;window.location.href='http://by.cuc.edu.cn'&lt;/script&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</code>。下次再访问c.html的时候。页面跳转了。<code>window.location.href='http://by.cuc.edu.cn'</code> 这段脚本的功能是实现了跳转</p></li>
+</ul></li>
+<li><p>理论上，任何的js都是可以被执行的。js可以实现非常丰富的功能。比如可以骗取用户扫码、支付，实际到黑客的账户。如果是没有基本防御措施的网站，这段会被放进服务器数据库里，然后别人提交了数据就自动跳转到这个网站。比如有一个商品A，用户在评论里输入了一段js代码。如果服务器不做处理直接保存。后面的用户访问商品A、看评论，前一个用户输入的代码就会在其他用户的页面上执行。</p></li>
+</ul>
+<h3 id="furthermore">Furthermore</h3>
+<ul>
+<li><p>如果大家在浏览器中访问 http://127.0.0.1:8080/httpserver.py ，则在sources中显示全部完整的源代码。由于服务器没有做任何过滤，只要是存在的文件，就发送给客户端</p>
+<ul>
+<li>现在黑客可以知道我整个后台的逻辑了。</li>
+<li>如果还有一些配置文件，比如数据库地址和访问口令等。那就更严重了</li>
+<li>更严重的是，黑客甚至可以注入后端代码。由于我们是回写到文件，可以构造一个http post请求，把httpserver.py文件改写了。但是构造这个请求用浏览器就不行了，需要采用curl等更基础的工具裸写post请求发送给服务器的</li>
+</ul></li>
+<li><p>在调试工具的 elements tab，由于后台只处理名为a的表单项写入文件，所以我们需要把input的把 name="%s" 改为 name="a" 再提交。改为以后，同时在提交框中输入‘hahaha’提交。此时httpserver.py，它变为'hahaha'，只是注入一个hahaha 服务器就挂了，再也跑不起来了。</p>
+<p><img src="httpserver-xss3.gif"></p></li>
+<li><p>所以，这是一个及其简单，但是漏洞百出的web服务器。这就是不做任何过滤，直接写入数据的危害。</p></li>
+</ul>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods">http methods</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>xss</tag>
+        <tag>security</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>软件安全概述</title>
     <url>/2020/06/09/Software-Security/</url>
     <content><![CDATA[<h1 id="三大软件安全问题">三大软件安全问题</h1>
