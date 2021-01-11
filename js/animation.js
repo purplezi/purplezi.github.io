@@ -28,7 +28,7 @@
     });
     setTimeout(() => {
         $('body > .navbar, body > .section, body > .footer').forEach(element => {
-            element.style.opacity = '1';
+            element.style.opacity = '0.95';
             element.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
         });
         document.querySelector('body > .navbar').style.transform = 'translateY(0)';
@@ -40,7 +40,7 @@
             let i = 1;
             $(selector).forEach(element => {
                 setTimeout(() => {
-                    element.style.opacity = '1';
+                    element.style.opacity = '0.95';
                     element.style.transform = '';
                     element.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
                 }, i * 100);

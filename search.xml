@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>IP地址</title>
+    <url>/2020/07/20/ipaddress/</url>
+    <content><![CDATA[<p>localhost、127.0.0.1、0.0.0.0、本机IP的区别 - https://zhuanlan.zhihu.com/p/72988255 - https://www.cnblogs.com/operationhome/p/8681475.html - https://www.jianshu.com/p/ad7cd1d5be45</p>
+]]></content>
+      <tags>
+        <tag>Network</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>阿里云服务器(centos7系统) 使用nginx+uwsgi 部署python+flask项目</title>
     <url>/2020/06/21/aliyun-sfim/</url>
     <content><![CDATA[<h1 id="web服务器的搭建">Web服务器的搭建</h1>
 <h2 id="阿里云ecscentos7-python-flask-nginx">阿里云ECS(centos7) + python flask + Nginx</h2>
 <ul>
-<li><a href="https://blog.csdn.net/CHENYAoo/article/details/83055108">uwsgi、wsgi和nginx的区别和关系</a></li>
-<li><a href="https://blog.csdn.net/u011244708/article/details/82915006">CentOS7 python2升级到python3的那些坑</a></li>
-<li><a href="https://www.cnblogs.com/FZfangzheng/p/7588944.html">Centos7安装Python3的方法</a></li>
-<li><a href="https://www.runoob.com/mysql/mysql-install.html">Linux/UNIX 上安装 MySQL</a>
+<li><p><a href="https://blog.csdn.net/CHENYAoo/article/details/83055108">uwsgi、wsgi和nginx的区别和关系</a></p></li>
+<li><p><a href="https://blog.csdn.net/u011244708/article/details/82915006">CentOS7 python2升级到python3的那些坑</a></p></li>
+<li><p><a href="https://www.cnblogs.com/FZfangzheng/p/7588944.html">Centos7安装Python3的方法</a></p></li>
+<li><p><a href="https://www.runoob.com/mysql/mysql-install.html">Linux/UNIX 上安装 MySQL</a></p>
 <ul>
 <li>选择MySQL5.7版本 8.0版本一直报错</li>
 </ul></li>
-<li><a href="https://my.oschina.net/u/2455518/blog/3039411">CentOS7安装MySql8不能启动的问题</a></li>
-<li><a href="https://stackoverflow.com/questions/33326065/unable-to-access-mysql-after-it-automatically-generated-a-temporary-password">unable-to-access-mysql-after-it-automatically-generated-a-temporary-password</a>
+<li><p><a href="https://my.oschina.net/u/2455518/blog/3039411">CentOS7安装MySql8不能启动的问题</a></p></li>
+<li><p><a href="https://stackoverflow.com/questions/33326065/unable-to-access-mysql-after-it-automatically-generated-a-temporary-password">unable-to-access-mysql-after-it-automatically-generated-a-temporary-password</a></p>
 <ul>
 <li>mysql -uroot -p : 123456</li>
 <li>mysql 修改 root 密码
 <ul>
-<li>ALTER USER 'root'@'localhost' IDENTIFIED BY 'test4321'; &gt; ERROR 1290 (HY000): The MySQL server is running with the --skip-grant-tables option so it cannot execute this statement</li>
-<li>https://blog.csdn.net/vv19910825/article/details/82979563 &gt; ERROR 1819 (HY000): Your password does not satisfy the current policy</li>
-<li>https://blog.csdn.net/hello_world_qwp/article/details/79551789</li>
+<li><p>ALTER USER 'root'@'localhost' IDENTIFIED BY 'test4321'; &gt; ERROR 1290 (HY000): The MySQL server is running with the --skip-grant-tables option so it cannot execute this statement</p></li>
+<li><p>https://blog.csdn.net/vv19910825/article/details/82979563 &gt; ERROR 1819 (HY000): Your password does not satisfy the current policy</p></li>
+<li><p>https://blog.csdn.net/hello_world_qwp/article/details/79551789</p></li>
 </ul></li>
 </ul></li>
-<li><a href="https://blog.csdn.net/qq_41090453/article/details/83451321">在本地端使用浏览器打开该云实例的公网地址:端口</a></li>
-<li><a href="https://www.jianshu.com/p/61d18009b657">nginx + uwsgi</a></li>
+<li><p><a href="https://blog.csdn.net/qq_41090453/article/details/83451321">在本地端使用浏览器打开该云实例的公网地址:端口</a></p></li>
+<li><p><a href="https://www.jianshu.com/p/61d18009b657">nginx + uwsgi</a></p></li>
 </ul>
 <a id="more"></a>
 <h2 id="ip端口号访问">ip+端口号访问</h2>
@@ -63,7 +72,7 @@
 <li><p>先关闭uwsgi</p></li>
 <li><p>/etc/nginx/nginx.conf / 日志/var/log/nginx/error.log<br />
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#只用nginx代理的配置</span><br><span class="line">server &#123;</span><br><span class="line">     listen          80;</span><br><span class="line">     server_name     47.106.218.225;  # 阿里云公网ip</span><br><span class="line"> </span><br><span class="line">     location &#x2F; &#123;</span><br><span class="line">        proxy_pass    http:&#x2F;&#x2F;127.0.0.1:5000;      # 本机:启动端口（此处端口与项目端口一致）      </span><br><span class="line">        proxy_set_header Host $host;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python app.py</span><br><span class="line">nohup python app.py &gt;&gt; app.out &amp;   将运行日志输出到app.out文件</span><br><span class="line">nohup python run.py &gt;&gt; run.out &amp; </span><br><span class="line">tail -f app.out</span><br><span class="line">tailf app.out</span><br></pre></td></tr></table></figure></p></li>
+<p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python app.py</span><br><span class="line">nohup python app.py &gt;&gt; app.out &amp;   将运行日志输出到app.out文件</span><br><span class="line">nohup python run.py &gt;&gt; run.out &amp; </span><br><span class="line"># nohup 加在一个命令的最前面，表示不挂断的运行命令</span><br><span class="line"># &amp; 加在一个命令的最后面，表示这个命令放在后台执行</span><br><span class="line"># ps 和 jobs</span><br><span class="line"># 区别在于 jobs 只能查看当前终端后台执行的任务，换了终端就看不见了</span><br><span class="line"># ps命令适用于查看瞬时进程的动态，可以看到别的终端的任务</span><br><span class="line"># a: 显示所有程序  u: 以用户为主的格式来显示   x: 显示所有程序，不以终端机来区分</span><br><span class="line"># fg命令 将后台中的命令调至前台继续运行</span><br><span class="line"># Ctrl + z 命令 将一个正在前台执行的命令放到后台，并且处于暂停状态</span><br><span class="line"># bg命令 将一个在后台暂停的命令，变成在后台继续执行</span><br><span class="line">tail -f app.out</span><br><span class="line">tailf app.out</span><br></pre></td></tr></table></figure></p></li>
 </ul>
 <h3 id="method-4---nginx-uwsgi---访问无需端口号直接以阿里云服务器公网访问">Method 4 - nginx + uwsgi - 访问无需端口号，直接以阿里云服务器公网访问</h3>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; config.ini</span><br><span class="line">#http &#x3D; :80</span><br><span class="line"></span><br><span class="line">&gt; &#x2F;etc&#x2F;nginx&#x2F;nginx.conf</span><br><span class="line">server &#123;</span><br><span class="line">        #ssl_protocols TLSv1.2;</span><br><span class="line">        #server_tokens off;</span><br><span class="line">        listen       80 default_server;</span><br><span class="line">        #listen       [::]:80 default_server;</span><br><span class="line">        server_name  121.199.46.37; # 阿里云公网ip</span><br><span class="line">        #root         &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html;</span><br><span class="line"></span><br><span class="line">        # Load configuration files for the default server block.</span><br><span class="line">        include &#x2F;etc&#x2F;nginx&#x2F;default.d&#x2F;*.conf;</span><br><span class="line"></span><br><span class="line">        location &#x2F; &#123;</span><br><span class="line">           #proxy_pass http:&#x2F;&#x2F;127.0.0.1:5000; # 本机:启动端口(此处端口与项目端口一致)</span><br><span class="line">           #proxy_set_header Host $host;</span><br><span class="line">           #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">           include uwsgi_params;</span><br><span class="line">           uwsgi_pass 127.0.0.1:5000;</span><br><span class="line">           uwsgi_param UWSGI_PYHOME &#x2F;usr&#x2F;bin&#x2F;python; # python位置</span><br><span class="line">           uwsgi_param UWSGI_CHDIR &#x2F;root&#x2F;test; # 项目根目录</span><br><span class="line">           uwsgi_param UWSGI_SCRIPT app:app;</span><br><span class="line">        &#125;</span><br><span class="line"># 跑起来</span><br><span class="line">systemctl start nginx</span><br><span class="line"></span><br><span class="line">nginx -s reload</span><br><span class="line">service nginx restart  # 重启nginx服务</span><br><span class="line">service nginx start # 启动服务</span><br><span class="line">service nginx stop # 停止服务 </span><br><span class="line"></span><br><span class="line">运行uwsgi服务（通过执行启动脚本运行项目）</span><br><span class="line">uwsgi --ini config.ini  （启动脚本存放位置）</span><br><span class="line"># 后台运行</span><br><span class="line">uwsgi --ini config.ini --daemonize uwsgi.out</span><br></pre></td></tr></table></figure>
@@ -99,7 +108,7 @@
 </table>
 <ul>
 <li><p>使用Nginx服务器托管Flask应用的安装、配置过程</p></li>
-<li><p>Nginx是一个提供静态文件访问的web服务，然而，它不能直接执行托管Python应用程序，而uWSGI解决了这个问题</p></li>
+<li><p>Nginx是一个提供静态文件访问的web服务，然而，它不能直接执行托管Python应用程序，而uWSGI解决了这个问题？？？</p></li>
 <li><p><a href="https://www.missshi.cn/api/view/blog/5b1511a213d85b1251000000">可以看看理论部分-使用Flask+uwsgi+Nginx部署Flask正式环境</a></p>
 <blockquote>
 <p>直接使用python run.py运行服务的方式只适合本地开发 线上运行时要保证更高的性能和稳定性，需要使用uwsgi进行部署</p>
@@ -108,6 +117,7 @@
 <p>使用Nginx有如下一些优点： 安全：不管什么请求都要经过代理服务器，避免了外部程序直接攻击web服务器 负载均衡：根据请求情况和服务器负载情况，将请求分配给不同的web服务器，保证服务器性能 提高web服务器的IO性能：对于一些静态文件，可以直接由反向代理处理，不经过web服务器</p>
 </blockquote></li>
 <li><p><a href="https://www.jianshu.com/p/5b73444eb47d">只看了概念解释-新手的Flask+uwsgi+Nginx+Ubuntu部署过程</a></p></li>
+<li><p><a href="https://www.jianshu.com/p/48048554f989">一篇就弄懂WSGI、uwsgi和uWSGI的区别</a></p></li>
 </ul>
 <h1 id="备用资料">备用资料</h1>
 <ul>
