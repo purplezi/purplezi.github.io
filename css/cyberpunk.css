@@ -11396,11 +11396,6 @@ figure.highlight .section {
   }
 }
 body {
-  background: url("/img/gallery/3.jpg") no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-}
-body {
   counter-reset: card;
 }
 ::selection {

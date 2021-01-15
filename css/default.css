@@ -11394,11 +11394,6 @@ figure.highlight .section {
     padding: 1.5rem 1rem;
   }
 }
-body {
-  background: url("/img/gallery/3.jpg") no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-}
 #universe {
   display: none;
 }

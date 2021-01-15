@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>icarus-一个hexo主题美化过程</title>
+    <url>/2021/01/15/icarus/</url>
+    <content><![CDATA[<ul>
+<li><p>添加背景</p>
+<ul>
+<li><p><code>hexo\themes\icarus\source\css</code></p>
+<p>背景图片位于<code>hexo\themes\icarus\source\img</code> <figure class="highlight styl"><table><tr><td class="code"><pre><span class="line">body</span><br><span class="line">background: url(/img/gallery/3.jpg) no-repeat;</span><br><span class="line"><span class="attribute">background-attachment</span>: fixed;</span><br><span class="line"><span class="attribute">background-size</span>: cover;</span><br></pre></td></tr></table></figure></p></li>
+</ul></li>
+<li><p>调整背景透明度</p>
+<ul>
+<li><code>themes\icarus\source\js\animation.js</code></li>
+</ul></li>
+<li><p><a href="https://www.jianshu.com/p/2c2726da64a3?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">在hexo博客中加入豆瓣读书功能</a></p></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>blog</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>白帽子讲web安全</title>
+    <url>/2021/01/11/web-notes/</url>
+    <content><![CDATA[<blockquote>
+<p>安全工程师的核心竞争力不在于他能拥有多少个 0day，掌握多少种安全技术，而是在于他对安全理解的深度，以及由此引申的看待安全问题的角度和高度</p>
+</blockquote>
+<h1 id="安全世界观">安全世界观</h1>
+<p><strong>root(administrator)</strong>：用户态的最高权限，系统最高权限</p>
+<h1 id="客户端脚本安全">客户端脚本安全</h1>
+<h1 id="服务器端应用安全">服务器端应用安全</h1>
+<h1 id="互联网公司安全运营">互联网公司安全运营</h1>
+]]></content>
+      <tags>
+        <tag>web security</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>IP地址</title>
     <url>/2020/07/20/ipaddress/</url>
     <content><![CDATA[<p>localhost、127.0.0.1、0.0.0.0、本机IP的区别 - https://zhuanlan.zhihu.com/p/72988255 - https://www.cnblogs.com/operationhome/p/8681475.html - https://www.jianshu.com/p/ad7cd1d5be45</p>
