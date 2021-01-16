@@ -10252,6 +10252,9 @@ body {
 body > .section {
   flex-grow: 1;
 }
+.section {
+  opacity: 0.95;
+}
 .ml-0,
 .mx-0 {
   margin-left: 0 !important;
@@ -10837,6 +10840,7 @@ article.article .content .message.message-immersive .message-body {
   height: 100%;
 }
 .navbar-main {
+  opacity: 0.95;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 .navbar-main .navbar-menu,
@@ -10883,6 +10887,9 @@ article.article .content .message.message-immersive .message-body {
 }
 .navbar-logo img {
   max-height: 1.75rem;
+}
+footer.footer {
+  opacity: 0.95;
 }
 @media screen and (max-width: 768px) {
   footer.footer .level-start {
