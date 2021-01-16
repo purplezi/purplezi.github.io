@@ -1,6 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>数字图像篡改取证</title>
+    <url>/2021/01/16/digital-images-forensic/</url>
+    <content><![CDATA[<h1 id="阅读文献">阅读文献</h1>
+<h2 id="术语">术语</h2>
+<table>
+<thead>
+<tr class="header">
+<th>term</th>
+<th>explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>pixel</td>
+<td>像素，图像的基本单位，一张图片是由一个个pixel组成</td>
+</tr>
+<tr class="even">
+<td>patch</td>
+<td>块，每个patch都是由好多个pixel组成的</td>
+</tr>
+</tbody>
+</table>
+<h2 id="forensic-similarity-for-digital-images">Forensic Similarity for Digital Images</h2>
+<h3 id="abstract">Abstract</h3>
+<ul>
+<li>目的：<strong>forensic similarity</strong>➡<strong>two image patches</strong> contain the same forensic trace or different <strong>forensic traces</strong></li>
+<li>应用
+<ul>
+<li>forgery detection 伪造检测</li>
+<li>❓localization 本地化</li>
+<li>❓database consistency verification 数据库一致性检测</li>
+</ul></li>
+<li>方法
+<ul>
+<li>将成对的图像块映射到一个分数</li>
+<li>基于CNN的特征提取器 + 相似性网络(三层神经网络)</li>
+</ul></li>
+<li>评估
+<ul>
+<li>determining whether two image patches were captured by the same or different camera model</li>
+<li>were manipulated by the same or different editing operation, and</li>
+<li>were manipulated by the same or different manipulation parameter, given a particular editing operation.</li>
+</ul></li>
+<li>原理
+<ul>
+<li>detect the visually imperceptible <strong>traces or fingerprints</strong> that are intrinsically introduced by <strong>a particular processing operation</strong></li>
+</ul></li>
+</ul>
+<h3 id="introduction">INTRODUCTION</h3>
+<ul>
+<li>前人缺点
+<ul>
+<li>[需要先验]require <strong>prior</strong> training examples from a <strong>particular</strong> forensic trace / many deep learning systems assume a <strong>closed</strong> set of forensic traces</li>
+<li>[过于精确]many forensic investigations <strong>do not require explicit</strong> identification of a particular forensic trace</li>
+</ul></li>
+<li>本文的改进
+<ul>
+<li><strong>open</strong> set</li>
+<li>not explicitly identify the particular forensic traces contained in an image patch, just whether they are <strong>consistent</strong> across two image patches</li>
+</ul></li>
+</ul>
+<h3 id="forensic-similarity">FORENSIC SIMILARITY</h3>
+<h3 id="proposed-approach">PROPOSED APPROACH</h3>
+<h3 id="experimental-evaluation">EXPERIMENTAL EVALUATION</h3>
+<h3 id="practical-applications">PRACTICAL APPLICATIONS</h3>
+<h3 id="conclusion">CONCLUSION</h3>
+]]></content>
+      <tags>
+        <tag>forensic</tag>
+        <tag>cv</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>icarus-一个hexo主题美化过程</title>
     <url>/2021/01/15/icarus/</url>
     <content><![CDATA[<ul>
