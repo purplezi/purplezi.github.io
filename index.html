@@ -1,146 +1,302 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="generator" content="Hexo 4.2.0"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>Purplezi</title><meta description="lazy x 2"><meta property="og:type" content="blog"><meta property="og:title" content="Purplezi"><meta property="og:url" content="https://purplezi.gitee.io/"><meta property="og:site_name" content="Purplezi"><meta property="og:description" content="lazy x 2"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://purplezi.gitee.io/img/og_image.png"><meta property="article:author" content="Purplezi"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://purplezi.gitee.io"},"headline":"Purplezi","image":["https://purplezi.gitee.io/img/og_image.png"],"author":{"@type":"Person","name":"Purplezi"},"description":"lazy x 2"}</script><link rel="icon" href="/img/fish-tank.svg"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/monokai-sublime.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css"><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/plant-pot.svg" alt="Purplezi" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item is-active" href="/">Home</a><a class="navbar-item" href="/photos">Photos</a><a class="navbar-item" href="/books">Books</a><a class="navbar-item" href="/movies">Movies</a><a class="navbar-item" href="/games">Games</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item night" id="night-nav" title="Night Mode" href="javascript:;"><i class="fas fa-moon" id="night-icon"></i></a><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/purplezi"><i class="fab fa-github"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2021-01-16T03:55:34.000Z" title="2021-01-16T03:55:34.000Z">2021-01-16</time><span class="level-item">2 minutes read (About 274 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2021/01/16/digital-images-forensic/">数字图像篡改取证</a></h1><div class="content"><h1 id="阅读文献">阅读文献</h1>
-<h2 id="术语">术语</h2>
-<table>
-<thead>
-<tr class="header">
-<th>term</th>
-<th>explanation</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>pixel</td>
-<td>像素，图像的基本单位，一张图片是由一个个pixel组成</td>
-</tr>
-<tr class="even">
-<td>patch</td>
-<td>块，每个patch都是由好多个pixel组成的</td>
-</tr>
-</tbody>
-</table>
-<h2 id="forensic-similarity-for-digital-images">Forensic Similarity for Digital Images</h2>
-<h3 id="abstract">Abstract</h3>
-<ul>
-<li>目的：<strong>forensic similarity</strong>➡<strong>two image patches</strong> contain the same forensic trace or different <strong>forensic traces</strong></li>
-<li>应用
-<ul>
-<li>forgery detection 伪造检测</li>
-<li>❓localization 本地化</li>
-<li>❓database consistency verification 数据库一致性检测</li>
-</ul></li>
-<li>方法
-<ul>
-<li>将成对的图像块映射到一个分数</li>
-<li>基于CNN的特征提取器 + 相似性网络(三层神经网络)</li>
-</ul></li>
-<li>评估
-<ul>
-<li>determining whether two image patches were captured by the same or different camera model</li>
-<li>were manipulated by the same or different editing operation, and</li>
-<li>were manipulated by the same or different manipulation parameter, given a particular editing operation.</li>
-</ul></li>
-<li>原理
-<ul>
-<li>detect the visually imperceptible <strong>traces or fingerprints</strong> that are intrinsically introduced by <strong>a particular processing operation</strong></li>
-</ul></li>
-</ul>
-<h3 id="introduction">INTRODUCTION</h3>
-<ul>
-<li>前人缺点
-<ul>
-<li>[需要先验]require <strong>prior</strong> training examples from a <strong>particular</strong> forensic trace / many deep learning systems assume a <strong>closed</strong> set of forensic traces</li>
-<li>[过于精确]many forensic investigations <strong>do not require explicit</strong> identification of a particular forensic trace</li>
-</ul></li>
-<li>本文的改进
-<ul>
-<li><strong>open</strong> set</li>
-<li>not explicitly identify the particular forensic traces contained in an image patch, just whether they are <strong>consistent</strong> across two image patches</li>
-</ul></li>
-</ul>
-<h3 id="forensic-similarity">FORENSIC SIMILARITY</h3>
-<h3 id="proposed-approach">PROPOSED APPROACH</h3>
-<h3 id="experimental-evaluation">EXPERIMENTAL EVALUATION</h3>
-<h3 id="practical-applications">PRACTICAL APPLICATIONS</h3>
-<h3 id="conclusion">CONCLUSION</h3>
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2021-01-15T10:43:21.000Z" title="2021-01-15T10:43:21.000Z">2021-01-15</time><span class="level-item">a few seconds read (About 82 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2021/01/15/icarus/">icarus-一个hexo主题美化过程</a></h1><div class="content"><ul>
-<li><p>添加背景</p>
-<ul>
-<li><p><code>hexo\themes\icarus\source\css</code></p>
-<p>背景图片位于<code>hexo\themes\icarus\source\img</code> <figure class="highlight styl"><table><tr><td class="code"><pre><span class="line">body</span><br><span class="line">background: url(/img/gallery/3.jpg) no-repeat;</span><br><span class="line"><span class="attribute">background-attachment</span>: fixed;</span><br><span class="line"><span class="attribute">background-size</span>: cover;</span><br></pre></td></tr></table></figure></p></li>
-</ul></li>
-<li><p>调整背景透明度</p>
-<ul>
-<li><code>themes\icarus\source\js\animation.js</code></li>
-</ul></li>
-<li><p><a href="https://www.jianshu.com/p/2c2726da64a3?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">在hexo博客中加入豆瓣读书功能</a></p></li>
-</ul>
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2021-01-11T11:33:45.000Z" title="2021-01-11T11:33:45.000Z">2021-01-11</time><span class="level-item">a minute read (About 113 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2021/01/11/web-notes/">白帽子讲web安全</a></h1><div class="content"><blockquote>
-<p>安全工程师的核心竞争力不在于他能拥有多少个 0day，掌握多少种安全技术，而是在于他对安全理解的深度，以及由此引申的看待安全问题的角度和高度</p>
-</blockquote>
-<h1 id="安全世界观">安全世界观</h1>
-<p><strong>root(administrator)</strong>：用户态的最高权限，系统最高权限</p>
-<h1 id="客户端脚本安全">客户端脚本安全</h1>
-<h1 id="服务器端应用安全">服务器端应用安全</h1>
-<h1 id="互联网公司安全运营">互联网公司安全运营</h1>
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2020-07-20T01:25:45.000Z" title="2020-07-20T01:25:45.000Z">2020-07-20</time><span class="level-item">a few seconds read (About 31 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2020/07/20/ipaddress/">IP地址</a></h1><div class="content"><p>localhost、127.0.0.1、0.0.0.0、本机IP的区别 - https://zhuanlan.zhihu.com/p/72988255 - https://www.cnblogs.com/operationhome/p/8681475.html - https://www.jianshu.com/p/ad7cd1d5be45</p>
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2020-06-21T13:05:05.000Z" title="2020-06-21T13:05:05.000Z">2020-06-21</time><span class="level-item">17 minutes read (About 2490 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2020/06/21/aliyun-sfim/">阿里云服务器(centos7系统) 使用nginx+uwsgi 部署python+flask项目</a></h1><div class="content"><h1 id="web服务器的搭建">Web服务器的搭建</h1>
-<h2 id="阿里云ecscentos7-python-flask-nginx">阿里云ECS(centos7) + python flask + Nginx</h2>
-<ul>
-<li><p><a href="https://blog.csdn.net/CHENYAoo/article/details/83055108">uwsgi、wsgi和nginx的区别和关系</a></p></li>
-<li><p><a href="https://blog.csdn.net/u011244708/article/details/82915006">CentOS7 python2升级到python3的那些坑</a></p></li>
-<li><p><a href="https://www.cnblogs.com/FZfangzheng/p/7588944.html">Centos7安装Python3的方法</a></p></li>
-<li><p><a href="https://www.runoob.com/mysql/mysql-install.html">Linux/UNIX 上安装 MySQL</a></p>
-<ul>
-<li>选择MySQL5.7版本 8.0版本一直报错</li>
-</ul></li>
-<li><p><a href="https://my.oschina.net/u/2455518/blog/3039411">CentOS7安装MySql8不能启动的问题</a></p></li>
-<li><p><a href="https://stackoverflow.com/questions/33326065/unable-to-access-mysql-after-it-automatically-generated-a-temporary-password">unable-to-access-mysql-after-it-automatically-generated-a-temporary-password</a></p>
-<ul>
-<li>mysql -uroot -p : 123456</li>
-<li>mysql 修改 root 密码
-<ul>
-<li><p>ALTER USER 'root'@'localhost' IDENTIFIED BY 'test4321'; &gt; ERROR 1290 (HY000): The MySQL server is running with the --skip-grant-tables option so it cannot execute this statement</p></li>
-<li><p>https://blog.csdn.net/vv19910825/article/details/82979563 &gt; ERROR 1819 (HY000): Your password does not satisfy the current policy</p></li>
-<li><p>https://blog.csdn.net/hello_world_qwp/article/details/79551789</p></li>
-</ul></li>
-</ul></li>
-<li><p><a href="https://blog.csdn.net/qq_41090453/article/details/83451321">在本地端使用浏览器打开该云实例的公网地址:端口</a></p></li>
-<li><p><a href="https://www.jianshu.com/p/61d18009b657">nginx + uwsgi</a></p></li>
-</ul></div><a class="article-more button is-small size-small" href="/2020/06/21/aliyun-sfim/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2020-06-13T15:18:25.000Z" title="2020-06-13T15:18:25.000Z">2020-06-13</time><span class="level-item"><a class="link-muted" href="/categories/Security/">Security</a></span><span class="level-item">27 minutes read (About 4072 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2020/06/13/binary-safe/">软件安全中的二进制安全</a></h1><div class="content"><p>二进制安全是整个软件安全中核心的内容</p></div><a class="article-more button is-small size-small" href="/2020/06/13/binary-safe/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2020-06-11T02:18:33.000Z" title="2020-06-11T02:18:33.000Z">2020-06-11</time><span class="level-item">18 minutes read (About 2738 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2020/06/11/xss-attack/">XSS攻击</a></h1><div class="content"><h1 id="使用python内置的库开发一个基本的http服务器端">使用python内置的库开发一个基本的http服务器端</h1>
-<ul>
-<li><a href="#讲解代码">测试代码</a></li>
-<li>使用python原生的cgi和http.server两个库运行的一个简单的http服务器程序
-<ul>
-<li>因为没有使用第三方库，所有不需要使用pip安装依赖</li>
-<li>运行比较简单</li>
-<li>公共网关接口（Common Gateway Interface，CGI）是Web 服务器运行时外部程序的规范，按 CGI 编写的程序可以扩展服务器功能</li>
-</ul></li>
-</ul></div><a class="article-more button is-small size-small" href="/2020/06/11/xss-attack/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2020-06-09T02:13:05.000Z" title="2020-06-09T02:13:05.000Z">2020-06-09</time><span class="level-item"><a class="link-muted" href="/categories/Security/">Security</a></span><span class="level-item">15 minutes read (About 2303 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2020/06/09/Software-Security/">软件安全概述</a></h1><div class="content"><h1 id="三大软件安全问题">三大软件安全问题</h1>
-<h2 id="有什么安全问题安全问题产生的原因">有什么安全问题，安全问题产生的原因</h2>
-<h3 id="二进制方面">二进制方面</h3>
-<ol type="1">
-<li>内存相关问题
-<ul>
-<li>有明确的机制</li>
-<li>例子：<strong>缓冲区溢出</strong>，空指针，格式化字符串</li>
-</ul></li>
-<li>逻辑错误问题
-<ul>
-<li>多种多样</li>
-</ul></li>
-</ol>
-<h3 id="web方面">Web方面</h3>
-<ol type="1">
-<li>典型安全问题
-<ul>
-<li><strong>XSS</strong>，<strong>SQL</strong>注入</li>
-</ul></li>
-<li>非典型安全问题：很多
-<ul>
-<li>主要是一些代码的逻辑错误，每个漏洞都可能有不同的原理</li>
-</ul></li>
-</ol></div><a class="article-more button is-small size-small" href="/2020/06/09/Software-Security/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2020-05-15T09:32:27.000Z" title="2020-05-15T09:32:27.000Z">2020-05-15</time><span class="level-item"><a class="link-muted" href="/categories/DataBase/">DataBase</a></span><span class="level-item">29 minutes read (About 4284 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2020/05/15/Hadoop-Hbase/">NoSQL数据库系统Hadoop-Hbase安装配置(伪分布模式)与简单使用</a></h1><div class="content"><style>
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DreamHacker - DreamCracker &amp; DreamBroker</title><meta name="author" content="Purplezi"><meta name="copyright" content="Purplezi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="DreamCreator &amp; DreamLoser">
+<meta property="og:type" content="website">
+<meta property="og:title" content="DreamHacker">
+<meta property="og:url" content="https://purplezi.gitee.io/index.html">
+<meta property="og:site_name" content="DreamHacker">
+<meta property="og:description" content="DreamCreator &amp; DreamLoser">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://purplezi.gitee.io/img/avatar.jpg">
+<meta property="article:author" content="Purplezi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://purplezi.gitee.io/img/avatar.jpg"><link rel="shortcut icon" href="/img/icon1.png"><link rel="canonical" href="https://purplezi.gitee.io/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-03-08 18:09:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">21</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> Books</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li><li><a class="site-page" href="/games/"><i class="fa-fw fas fa-game"></i><span> Games</span></a></li><li><a class="site-page" href="/photos/"><i class="fa-fw fas fa-images"></i><span> Photo</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('/img/bg4.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DreamHacker</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> Books</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li><li><a class="site-page" href="/games/"><i class="fa-fw fas fa-game"></i><span> Games</span></a></li><li><a class="site-page" href="/photos/"><i class="fa-fw fas fa-images"></i><span> Photo</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">DreamHacker</h1></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2021/01/19/computer/" title="计算机选购">     <img class="post_bg" src="https://w.wallhaven.cc/full/rd/wallhaven-rddgwm.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机选购"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/01/19/computer/" title="计算机选购">计算机选购</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2021-01-19T10:41:01.000Z" title="Created 2021-01-19 18:41:01">2021-01-19</time></span></div><div class="content">游戏本
+显卡1660Ti以上的可以满足大型单机的需求，RTX2060以上可以满足小规模机器学习训练
+全能笔记本电脑：适合对于轻薄有要求，但是需要在3D方面有部分提高，可以胜任一些3D的学习环境要求，也可以满足较多的游戏需求（非极限），比如LOL这类没有特别要求显卡性能的游戏都可以。这类笔记本一般提高显卡，价格在4500-7500区间，中位数5500。
+游戏笔记本电脑：除了大部分游戏需求，也适合3D方面要求较高的专业，以及对于游戏需求（比如3A级游戏大作），产品的价格一般较高。入门游戏本，采用1650ti显卡，基本5000-6500元区间，2060显卡中端游戏本基本7000-9000，而2070以上显卡的笔记本基本过万，2021年的3000系列显卡笔记本电脑基本会在8000起步。
+NV家独立显卡的系列名称，GTX强于GT强于MX。
+游戏要多看看笔记本屏幕的刷新频率（一般都是60hz），但是游戏建议144Hz，有钱买200Hz的，不然你显卡跑120FPS，你显示器根本没有来得及刷新，白瞎了显卡
+
+AMD 4800H
+references
+显卡天梯图：https://zhu ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2021/01/16/digital-images-forensic/" title="数字图像篡改取证">     <img class="post_bg" src="https://w.wallhaven.cc/full/dp/wallhaven-dppqeo.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数字图像篡改取证"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/01/16/digital-images-forensic/" title="数字图像篡改取证">数字图像篡改取证</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2021-01-16T03:55:34.000Z" title="Created 2021-01-16 11:55:34">2021-01-16</time></span></div><div class="content">阅读文献
+术语
+
+
+
+term
+explanation
+
+
+
+
+pixel
+像素，图像的基本单位，一张图片是由一个个pixel组成
+
+
+patch
+块，每个patch都是由好多个pixel组成的
+
+
+
+🧨Forensic Similarity for Digital Images
+运行项目
+项目地址：https://gitlab.com/MISLgit/forensic-similarity-for-digital-images
+Abstract
+
+目的：forensic similarity➡two image patches contain the same forensic trace or different forensic traces
+应用
+
+forgery detection 伪造检测
+❓localization 本地化
+❓database consistency verification 数据库一致性检测
+
+方法
+
+将成对的图像块映射到一个分数
+基于CNN的特征提取器feature extract ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/01/15/icarus/" title="icarus-一个hexo主题美化过程">icarus-一个hexo主题美化过程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2021-01-15T10:43:21.000Z" title="Created 2021-01-15 18:43:21">2021-01-15</time></span></div><div class="content">
+添加背景
+
+hexo\themes\icarus\source\css
+背景图片位于hexo\themes\icarus\source\img bodybackground: url(/img/gallery/3.jpg) no-repeat;background-attachment: fixed;background-size: cover;
+
+调整背景透明度
+
+themes\icarus\source\js\animation.js
+
+在hexo博客中加入豆瓣读书功能
+
+</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2021/01/11/web-notes/" title="白帽子讲web安全">     <img class="post_bg" src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="白帽子讲web安全"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/01/11/web-notes/" title="白帽子讲web安全">白帽子讲web安全</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2021-01-11T11:33:45.000Z" title="Created 2021-01-11 19:33:45">2021-01-11</time></span></div><div class="content">
+安全工程师的核心竞争力不在于他能拥有多少个 0day，掌握多少种安全技术，而是在于他对安全理解的深度，以及由此引申的看待安全问题的角度和高度
+
+安全世界观
+root(administrator)：用户态的最高权限，系统最高权限
+客户端脚本安全
+服务器端应用安全
+互联网公司安全运营
+</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/07/20/ipaddress/" title="IP地址">     <img class="post_bg" src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="IP地址"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/07/20/ipaddress/" title="IP地址">IP地址</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-07-20T01:25:45.000Z" title="Created 2020-07-20 09:25:45">2020-07-20</time></span></div><div class="content">localhost、127.0.0.1、0.0.0.0、本机IP的区别 - https://zhuanlan.zhihu.com/p/72988255 - https://www.cnblogs.com/operationhome/p/8681475.html - https://www.jianshu.com/p/ad7cd1d5be45
+</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/06/21/aliyun-sfim/" title="阿里云服务器(centos7系统) 使用nginx+uwsgi 部署python+flask项目">     <img class="post_bg" src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="阿里云服务器(centos7系统) 使用nginx+uwsgi 部署python+flask项目"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/06/21/aliyun-sfim/" title="阿里云服务器(centos7系统) 使用nginx+uwsgi 部署python+flask项目">阿里云服务器(centos7系统) 使用nginx+uwsgi 部署python+flask项目</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-06-21T13:05:05.000Z" title="Created 2020-06-21 21:05:05">2020-06-21</time></span></div><div class="content">Web服务器的搭建
+阿里云ECS(centos7) + python flask + Nginx
+
+uwsgi、wsgi和nginx的区别和关系
+CentOS7 python2升级到python3的那些坑
+Centos7安装Python3的方法
+Linux/UNIX 上安装 MySQL
+
+选择MySQL5.7版本 8.0版本一直报错
+
+CentOS7安装MySql8不能启动的问题
+unable-to-access-mysql-after-it-automatically-generated-a-temporary-password
+
+mysql -uroot -p : 123456
+mysql 修改 root 密码
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'test4321'; &gt; ERROR 1290 (HY000): The MySQL server is running with the --skip-grant-tables option so it cannot execute this  ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/06/13/binary-safe/" title="软件安全中的二进制安全">     <img class="post_bg" src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="软件安全中的二进制安全"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/06/13/binary-safe/" title="软件安全中的二进制安全">软件安全中的二进制安全</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-06-13T15:18:25.000Z" title="Created 2020-06-13 23:18:25">2020-06-13</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Security/">Security</a></span></div><div class="content">二进制安全是整个软件安全中核心的内容
+
+二进制软件
+
+核心：二进制是软件的最基本形态
+
+所有的基础软件都是以二进制软件的形式存在
+二进制软件：操作系统、浏览器、数据库、中间件、各种脚本软件的解释执行器、很多大型游戏
+
+二进制软件的基本特征：是CPU可以直接运行的机器指令
+
+CPU能够运行的机器指令都是二进制的，包括了很多非ASCII的不可打印字符
+二进制程序无法跨平台：不同平台的二进制软件是不同的，Intel架构的cpu的二进制无法在ARM架构上运行，反之也是
+二进制形式的软件无法跨操作系统运行：二进制程序还需要操作系统的支持
+
+直接使用二进制或者十六进制进行编程，人进行数据阅读比较困难，效率非常低下 -&gt; 编程的时候不直接处理二进制，直接使用文本来编程
+
+文本代码CPU无法执行，需要编译和链接
+程序员编写出来的文本形式的代码 -&gt; 源代码
+
+首先发明的源代码是汇编形式的，是使用的和机器指令一一对应的汇编语言，是一种直接最简单的操作指令级别的翻译过程
+汇编的编程还不是很方便，后来发明了C语言等高级语言，高级语言不止C语言一种，但是C ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/06/11/xss-attack/" title="XSS攻击">     <img class="post_bg" src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="XSS攻击"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/06/11/xss-attack/" title="XSS攻击">XSS攻击</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-06-11T02:18:33.000Z" title="Created 2020-06-11 10:18:33">2020-06-11</time></span></div><div class="content">使用python内置的库开发一个基本的http服务器端
+
+测试代码
+使用python原生的cgi和http.server两个库运行的一个简单的http服务器程序
+
+因为没有使用第三方库，所有不需要使用pip安装依赖
+运行比较简单
+公共网关接口（Common Gateway Interface，CGI）是Web 服务器运行时外部程序的规范，按 CGI 编写的程序可以扩展服务器功能
+
+
+
+讲解代码
+# -*- coding: utf-8 -*-import sysimport cgifrom http.server import HTTPServer, BaseHTTPRequestHandlerclass MyHTTPRequestHandler(BaseHTTPRequestHandler):    field_name = &#x27;a&#x27;    form_html = \        &#x27;&#x27;&#x27;        &lt;html&gt;        &lt;body&gt;        &lt;form method= ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/06/09/Software-Security/" title="软件安全概述">     <img class="post_bg" src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="软件安全概述"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/06/09/Software-Security/" title="软件安全概述">软件安全概述</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-06-09T02:13:05.000Z" title="Created 2020-06-09 10:13:05">2020-06-09</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Security/">Security</a></span></div><div class="content">三大软件安全问题
+有什么安全问题，安全问题产生的原因
+二进制方面
+
+内存相关问题
+
+有明确的机制
+例子：缓冲区溢出，空指针，格式化字符串
+
+逻辑错误问题
+
+多种多样
+
+
+Web方面
+
+典型安全问题
+
+XSS，SQL注入
+
+非典型安全问题：很多
+
+主要是一些代码的逻辑错误，每个漏洞都可能有不同的原理
+
+
+
+如何去发现问题 (安全漏洞) -&gt; 漏洞挖掘技术
+白盒分析
+
+分析软件的源代码去寻找问题
+方法
+
+手工代码分析 -&gt; 软件测试技术 / 代码review。但是软件的源代码通常比较庞大，手工分析起来很费劲
+自动化代码分析 -&gt; 典型的技术：符号执行
+
+
+黑盒分析
+
+因为白盒分析数据量大，需投入很多人工，人们寻求简单方法，和白盒分析对立的黑盒发展
+原理：完全不管软件的内部机理 / 不看源码，把需要分析的软件当做一个黑盒子，看不见 / 根本不去看内部
+方法：分析表面现象
+
+软件：通过输入和输出去猜测内部机制
+黑盒分析法，Fuzzing技术(模糊测试)
+
+
+如果有人利用这这些安全问题， ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/05/15/Hadoop-Hbase/" title="NoSQL数据库系统Hadoop-Hbase安装配置(伪分布模式)与简单使用">     <img class="post_bg" src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="NoSQL数据库系统Hadoop-Hbase安装配置(伪分布模式)与简单使用"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/05/15/Hadoop-Hbase/" title="NoSQL数据库系统Hadoop-Hbase安装配置(伪分布模式)与简单使用">NoSQL数据库系统Hadoop-Hbase安装配置(伪分布模式)与简单使用</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-05-15T09:32:27.000Z" title="Created 2020-05-15 17:32:27">2020-05-15</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/DataBase/">DataBase</a></span></div><div class="content">
   /* 设置整个页面的字体 */
   html, body, .markdown-body {
     font-family: Georgia, sans, serif;
@@ -152,61 +308,16 @@
     font-family: Georgia, sans, serif;
     font-size: 15px;
   }
-</style>
-<ul>
-<li>Hbase是一种NoSQL数据库，这意味着它不像传统的RDBMS(关系数据库管理系统 Relational Database Management System)数据库那样支持SQL作为查询语言</li>
-<li>Hbase是一种分布式存储的数据库，技术上来讲，它更像是分布式存储而不是分布式数据库</li>
-<li>数据库量要足够多，如果有十亿及百亿行数据，那么Hbase是一个很好的选项，如果只有几百万行甚至不到的数据量，RDBMS是一个很好的选择。因为数据量小的话，真正能工作的机器量少，剩余的机器都处于空闲的状态</li>
-<li>保证硬件资源足够，每个HDFS集群在少于5个节点的时候，都不能表现的很好。因为HDFS默认的复制数量是3，再加上一个NameNode</li>
-</ul></div><a class="article-more button is-small size-small" href="/2020/05/15/Hadoop-Hbase/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2020-04-12T15:52:12.000Z" title="2020-04-12T15:52:12.000Z">2020-04-12</time><span class="level-item"><a class="link-muted" href="/categories/ACM/">ACM</a></span><span class="level-item">20 minutes read (About 3001 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2020/04/12/Number-Theory/">Number Theory</a></h1><div class="content"><ul>
-<li>质数</li>
-<li>因子分解</li>
-<li>欧拉降幂</li>
-<li>RAS</li>
-<li>拓展中国剩余定理</li>
-</ul></div><a class="article-more button is-small size-small" href="/2020/04/12/Number-Theory/#more">Read More</a></article></div><nav class="pagination is-centered mt-4" role="navigation" aria-label="pagination"><div class="pagination-previous is-invisible is-hidden-mobile"><a href="/page/0/">Previous</a></div><div class="pagination-next"><a href="/page/2/">Next</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link is-current" href="/">1</a></li><li><a class="pagination-link" href="/page/2/">2</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/channel.png" alt="purplezi"></figure><p class="title is-size-4 is-block line-height-inherit">purplezi</p><p class="is-size-6 is-block">Lazy, foolish</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">15</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">5</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">21</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/purplezi" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/purplezi"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><!--!--><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Links</h3><ul class="menu-list"><li><a class="level is-mobile is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li></ul></div></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile is-marginless" href="/categories/ACM/"><span class="level-start"><span class="level-item">ACM</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/Blogs/"><span class="level-start"><span class="level-item">Blogs</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/DataBase/"><span class="level-start"><span class="level-item">DataBase</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/Security/"><span class="level-start"><span class="level-item">Security</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/git/"><span class="level-start"><span class="level-item">git</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget"><div class="card-content"><h3 class="menu-label">Recent</h3><article class="media"><div class="media-content size-small"><p><time dateTime="2021-01-16T03:55:34.000Z">2021-01-16</time></p><p class="title is-6"><a class="link-muted" href="/2021/01/16/digital-images-forensic/">数字图像篡改取证</a></p><p class="is-uppercase"></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2021-01-15T10:43:21.000Z">2021-01-15</time></p><p class="title is-6"><a class="link-muted" href="/2021/01/15/icarus/">icarus-一个hexo主题美化过程</a></p><p class="is-uppercase"></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2021-01-11T11:33:45.000Z">2021-01-11</time></p><p class="title is-6"><a class="link-muted" href="/2021/01/11/web-notes/">白帽子讲web安全</a></p><p class="is-uppercase"></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-07-20T01:25:45.000Z">2020-07-20</time></p><p class="title is-6"><a class="link-muted" href="/2020/07/20/ipaddress/">IP地址</a></p><p class="is-uppercase"></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-06-21T13:05:05.000Z">2020-06-21</time></p><p class="title is-6"><a class="link-muted" href="/2020/06/21/aliyun-sfim/">阿里云服务器(centos7系统) 使用nginx+uwsgi 部署python+flask项目</a></p><p class="is-uppercase"></p></div></article></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile is-marginless" href="/archives/2021/01/"><span class="level-start"><span class="level-item">January 2021</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile is-marginless" href="/archives/2020/07/"><span class="level-start"><span class="level-item">July 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/archives/2020/06/"><span class="level-start"><span class="level-item">June 2020</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile is-marginless" href="/archives/2020/05/"><span class="level-start"><span class="level-item">May 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/archives/2020/04/"><span class="level-start"><span class="level-item">April 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/archives/2020/03/"><span class="level-start"><span class="level-item">March 2020</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li></ul></div></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Cluster/"><span class="tag">Cluster</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Hadoop/"><span class="tag">Hadoop</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Hbase/"><span class="tag">Hbase</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MkDocs/"><span class="tag">MkDocs</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Network/"><span class="tag">Network</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Security/"><span class="tag">Security</span><span class="tag is-grey-lightest">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Travis/"><span class="tag">Travis</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/blog/"><span class="tag">blog</span><span class="tag is-grey-lightest">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/cv/"><span class="tag">cv</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/forensic/"><span class="tag">forensic</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/git/"><span class="tag">git</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/github/"><span class="tag">github</span><span class="tag is-grey-lightest">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/hexo/"><span class="tag">hexo</span><span class="tag is-grey-lightest">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/mysql/"><span class="tag">mysql</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/nginx/"><span class="tag">nginx</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/security/"><span class="tag">security</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/uwsgi/"><span class="tag">uwsgi</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/web-security/"><span class="tag">web security</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/web-server/"><span class="tag">web server</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/xss/"><span class="tag">xss</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E8%AE%BA/"><span class="tag">数论</span><span class="tag is-grey-lightest">1</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/plant-pot.svg" alt="Purplezi" height="28"></a><p class="size-small"><span>&copy; 2021 Purplezi</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
-            site: {
-                url: 'https://purplezi.gitee.io',
-                external_link: {"enable":true,"exclude":[]}
-            },
-            article: {
-                highlight: {
-                    clipboard: true,
-                    fold: 'unfolded'
-                }
-            }
-        };</script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><a id="back-to-top" title="Back to Top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
-            if (typeof $.fn.lightGallery === 'function') {
-                $('.article').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof $.fn.justifiedGallery === 'function') {
-                if ($('.justified-gallery > p > .gallery-item').length) {
-                    $('.justified-gallery > p > .gallery-item').unwrap();
-                }
-                $('.justified-gallery').justifiedGallery();
-            }
-        });</script><!--!--><!--!--><script type="text/x-mathjax-config">MathJax.Hub.Config({
-            'HTML-CSS': {
-                matchFontHeight: false
-            },
-            SVG: {
-                matchFontHeight: false
-            },
-            CommonHTML: {
-                matchFontHeight: false
-            },
-            tex2jax: {
-                inlineMath: [
-                    ['$','$'],
-                    ['\\(','\\)']
-                ]
-            }
-        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><div id="outdated"><h6>Your browser is out-of-date!</h6><p>Update your browser to view this website correctly.&amp;npsb;<a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a></p><p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p></div><script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script><script>window.addEventListener("load", function () {
-            outdatedBrowser({
-                bgColor: '#f25648',
-                color: '#ffffff',
-                lowerThan: 'object-fit' // display on IE11 or below
-            });
-        });</script><!--!--><script src="/js/main.js" defer></script><script src="/js/night.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
-            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
-        });</script></body></html>
+
+
+Hbase是一种NoSQL数据库，这意味着它不像传统的RDBMS(关系数据库管理系统 Relational Database Management System)数据库那样支持SQL作为查询语言
+Hbase是一种分布式存储的数据库，技术上来讲，它更像是分布式存储而不是分布式数据库
+数据库量要足够多，如果有十亿及百亿行数据，那么Hbase是一个很好的选项，如果只有几百万行甚至不到的数据量，RDBMS是一个很好的选择。因为数据量小的话，真正能工作的机器量少，剩余的机器都处于空闲的状态
+保证硬件资源足够，每个HDFS集 ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Purplezi</div><div class="author-info__description">DreamCreator & DreamLoser</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">16</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">21</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/01/19/computer/" title="计算机选购"><img src="https://w.wallhaven.cc/full/rd/wallhaven-rddgwm.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机选购"/></a><div class="content"><a class="title" href="/2021/01/19/computer/" title="计算机选购">计算机选购</a><time datetime="2021-01-19T10:41:01.000Z" title="Created 2021-01-19 18:41:01">2021-01-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/16/digital-images-forensic/" title="数字图像篡改取证"><img src="https://w.wallhaven.cc/full/dp/wallhaven-dppqeo.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数字图像篡改取证"/></a><div class="content"><a class="title" href="/2021/01/16/digital-images-forensic/" title="数字图像篡改取证">数字图像篡改取证</a><time datetime="2021-01-16T03:55:34.000Z" title="Created 2021-01-16 11:55:34">2021-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/01/15/icarus/" title="icarus-一个hexo主题美化过程">icarus-一个hexo主题美化过程</a><time datetime="2021-01-15T10:43:21.000Z" title="Created 2021-01-15 18:43:21">2021-01-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/11/web-notes/" title="白帽子讲web安全"><img src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="白帽子讲web安全"/></a><div class="content"><a class="title" href="/2021/01/11/web-notes/" title="白帽子讲web安全">白帽子讲web安全</a><time datetime="2021-01-11T11:33:45.000Z" title="Created 2021-01-11 19:33:45">2021-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/07/20/ipaddress/" title="IP地址"><img src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="IP地址"/></a><div class="content"><a class="title" href="/2020/07/20/ipaddress/" title="IP地址">IP地址</a><time datetime="2020-07-20T01:25:45.000Z" title="Created 2020-07-20 09:25:45">2020-07-20</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>Categories</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/ACM/"><span class="card-category-list-name">ACM</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Blogs/"><span class="card-category-list-name">Blogs</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/DataBase/"><span class="card-category-list-name">DataBase</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Security/"><span class="card-category-list-name">Security</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/git/"><span class="card-category-list-name">git</span><span class="card-category-list-count">1</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>Tags</span></div><div class="card-tag-cloud"><a href="/tags/Cluster/" style="font-size: 1.1em; color: #999">Cluster</a> <a href="/tags/Hadoop/" style="font-size: 1.1em; color: #999">Hadoop</a> <a href="/tags/Hbase/" style="font-size: 1.1em; color: #999">Hbase</a> <a href="/tags/MkDocs/" style="font-size: 1.1em; color: #999">MkDocs</a> <a href="/tags/Network/" style="font-size: 1.1em; color: #999">Network</a> <a href="/tags/Security/" style="font-size: 1.3em; color: #99a1ac">Security</a> <a href="/tags/Travis/" style="font-size: 1.1em; color: #999">Travis</a> <a href="/tags/blog/" style="font-size: 1.5em; color: #99a9bf">blog</a> <a href="/tags/cv/" style="font-size: 1.1em; color: #999">cv</a> <a href="/tags/forensic/" style="font-size: 1.1em; color: #999">forensic</a> <a href="/tags/git/" style="font-size: 1.1em; color: #999">git</a> <a href="/tags/github/" style="font-size: 1.3em; color: #99a1ac">github</a> <a href="/tags/hexo/" style="font-size: 1.3em; color: #99a1ac">hexo</a> <a href="/tags/mysql/" style="font-size: 1.1em; color: #999">mysql</a> <a href="/tags/nginx/" style="font-size: 1.1em; color: #999">nginx</a> <a href="/tags/security/" style="font-size: 1.1em; color: #999">security</a> <a href="/tags/uwsgi/" style="font-size: 1.1em; color: #999">uwsgi</a> <a href="/tags/web-security/" style="font-size: 1.1em; color: #999">web security</a> <a href="/tags/web-server/" style="font-size: 1.1em; color: #999">web server</a> <a href="/tags/xss/" style="font-size: 1.1em; color: #999">xss</a> <a href="/tags/%E6%95%B0%E8%AE%BA/" style="font-size: 1.1em; color: #999">数论</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>Archives</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/01/"><span class="card-archive-list-date">January 2021</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/07/"><span class="card-archive-list-date">July 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/06/"><span class="card-archive-list-date">June 2020</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/05/"><span class="card-archive-list-date">May 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/04/"><span class="card-archive-list-date">April 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/03/"><span class="card-archive-list-date">March 2020</span><span class="card-archive-list-count">5</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">16</div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">Last Push :</div><div class="item-count" id="last-push-date" data-lastPushDate="2021-03-08T10:09:54.309Z"></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/bg4.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Purplezi</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="/js/randombg.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
