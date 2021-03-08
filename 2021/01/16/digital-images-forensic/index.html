@@ -1,5 +1,146 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="generator" content="Hexo 4.2.0"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>数字图像篡改取证 - Purplezi</title><meta description="阅读文献 术语    term explanation     pixel 像素，图像的基本单位，一张图片是由一个个pixel组成   patch 块，每个patch都是由好多个pixel组成的    Forensic Similarity for Digital Images Abstract  目的：forensic similarity➡two"><meta property="og:type" content="blog"><meta property="og:title" content="数字图像篡改取证"><meta property="og:url" content="https://purplezi.gitee.io/2021/01/16/digital-images-forensic/"><meta property="og:site_name" content="Purplezi"><meta property="og:description" content="阅读文献 术语    term explanation     pixel 像素，图像的基本单位，一张图片是由一个个pixel组成   patch 块，每个patch都是由好多个pixel组成的    Forensic Similarity for Digital Images Abstract  目的：forensic similarity➡two"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://purplezi.gitee.io/img/og_image.png"><meta property="article:published_time" content="2021-01-16T03:55:34.000Z"><meta property="article:modified_time" content="2021-01-16T04:41:02.119Z"><meta property="article:author" content="Purplezi"><meta property="article:tag" content="forensic"><meta property="article:tag" content="cv"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://purplezi.gitee.io/2021/01/16/digital-images-forensic/"},"headline":"Purplezi","image":["https://purplezi.gitee.io/img/og_image.png"],"datePublished":"2021-01-16T03:55:34.000Z","dateModified":"2021-01-16T04:41:02.119Z","author":{"@type":"Person","name":"Purplezi"},"description":"阅读文献\r 术语\r \r \r \r term\r explanation\r \r \r \r \r pixel\r 像素，图像的基本单位，一张图片是由一个个pixel组成\r \r \r patch\r 块，每个patch都是由好多个pixel组成的\r \r \r \r Forensic Similarity for Digital Images\r Abstract\r \r 目的：forensic similarity➡two"}</script><link rel="canonical" href="https://purplezi.gitee.io/2021/01/16/digital-images-forensic/"><link rel="icon" href="/img/fish-tank.svg"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/monokai-sublime.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css"><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/plant-pot.svg" alt="Purplezi" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/photos">Photos</a><a class="navbar-item" href="/books">Books</a><a class="navbar-item" href="/movies">Movies</a><a class="navbar-item" href="/games">Games</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item night" id="night-nav" title="Night Mode" href="javascript:;"><i class="fas fa-moon" id="night-icon"></i></a><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/purplezi"><i class="fab fa-github"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2021-01-16T03:55:34.000Z" title="2021-01-16T03:55:34.000Z">2021-01-16</time><span class="level-item">2 minutes read (About 274 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">数字图像篡改取证</h1><div class="content"><h1 id="阅读文献">阅读文献</h1>
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>数字图像篡改取证 | DreamHacker</title><meta name="keywords" content="forensic,cv"><meta name="author" content="Purplezi"><meta name="copyright" content="Purplezi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="阅读文献 术语    term explanation     pixel 像素，图像的基本单位，一张图片是由一个个pixel组成   patch 块，每个patch都是由好多个pixel组成的    🧨Forensic Similarity for Digital Images 运行项目 项目地址：https:&#x2F;&#x2F;gitlab.com&#x2F;MISLgit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字图像篡改取证">
+<meta property="og:url" content="https://purplezi.gitee.io/2021/01/16/digital-images-forensic/index.html">
+<meta property="og:site_name" content="DreamHacker">
+<meta property="og:description" content="阅读文献 术语    term explanation     pixel 像素，图像的基本单位，一张图片是由一个个pixel组成   patch 块，每个patch都是由好多个pixel组成的    🧨Forensic Similarity for Digital Images 运行项目 项目地址：https:&#x2F;&#x2F;gitlab.com&#x2F;MISLgit">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://w.wallhaven.cc/full/dp/wallhaven-dppqeo.png">
+<meta property="article:published_time" content="2021-01-16T03:55:34.000Z">
+<meta property="article:modified_time" content="2021-03-08T09:55:47.260Z">
+<meta property="article:author" content="Purplezi">
+<meta property="article:tag" content="forensic">
+<meta property="article:tag" content="cv">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://w.wallhaven.cc/full/dp/wallhaven-dppqeo.png"><link rel="shortcut icon" href="/img/icon1.png"><link rel="canonical" href="https://purplezi.gitee.io/2021/01/16/digital-images-forensic/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-08 17:55:47'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">21</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> Books</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li><li><a class="site-page" href="/games/"><i class="fa-fw fas fa-game"></i><span> Games</span></a></li><li><a class="site-page" href="/photos/"><i class="fa-fw fas fa-images"></i><span> Photo</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://w.wallhaven.cc/full/dp/wallhaven-dppqeo.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DreamHacker</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> Books</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li><li><a class="site-page" href="/games/"><i class="fa-fw fas fa-game"></i><span> Games</span></a></li><li><a class="site-page" href="/photos/"><i class="fa-fw fas fa-images"></i><span> Photo</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">数字图像篡改取证</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-01-16T03:55:34.000Z" title="Created 2021-01-16 11:55:34">2021-01-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-08T09:55:47.260Z" title="Updated 2021-03-08 17:55:47">2021-03-08</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="阅读文献">阅读文献</h1>
 <h2 id="术语">术语</h2>
 <table>
 <thead>
@@ -19,7 +160,9 @@
 </tr>
 </tbody>
 </table>
-<h2 id="forensic-similarity-for-digital-images">Forensic Similarity for Digital Images</h2>
+<h2 id="forensic-similarity-for-digital-images">🧨Forensic Similarity for Digital Images</h2>
+<h3 id="运行项目">运行项目</h3>
+<p>项目地址：https://gitlab.com/MISLgit/forensic-similarity-for-digital-images</p>
 <h3 id="abstract">Abstract</h3>
 <ul>
 <li>目的：<strong>forensic similarity</strong>➡<strong>two image patches</strong> contain the same forensic trace or different <strong>forensic traces</strong></li>
@@ -32,7 +175,7 @@
 <li>方法
 <ul>
 <li>将成对的图像块映射到一个分数</li>
-<li>基于CNN的特征提取器 + 相似性网络(三层神经网络)</li>
+<li>基于CNN的<strong>特征提取器feature extractor</strong> + 相似性网络(三层神经网络)</li>
 </ul></li>
 <li>评估
 <ul>
@@ -47,65 +190,297 @@
 </ul>
 <h3 id="introduction">INTRODUCTION</h3>
 <ul>
-<li>前人缺点
+<li><p>前人缺点</p>
 <ul>
-<li>[需要先验]require <strong>prior</strong> training examples from a <strong>particular</strong> forensic trace / many deep learning systems assume a <strong>closed</strong> set of forensic traces</li>
-<li>[过于精确]many forensic investigations <strong>do not require explicit</strong> identification of a particular forensic trace</li>
+<li>[需要先验]require <strong>prior</strong> training examples from a <strong>particular</strong> forensic trace / many deep learning systems assume a <strong>closed</strong> set of forensic traces
+<ul>
+<li>close set的缺点:系统会将这个新的“未知”trace错误分类为Y(用于训练系统的已知法医痕迹的空间,包含camera models和editing operations)中的“已知”trace,从而检测错误</li>
 </ul></li>
-<li>本文的改进
+</ul></li>
+<li><p>[过于精确]many forensic investigations <strong>do not require explicit</strong> identification of a particular forensic trace</p></li>
+<li><p>本文的改进</p>
 <ul>
 <li><strong>open</strong> set</li>
 <li>not explicitly identify the particular forensic traces contained in an image patch, just whether they are <strong>consistent</strong> across two image patches</li>
 </ul></li>
+<li><p>forensic similarity system</p>
+<ul>
+<li>feature extractor
+<ul>
+<li>use CNN to extract <u>general low-dimensional forensic features(deep features)</u> from an image patch</li>
+<li>$ f : X → R^N $
+<ul>
+<li>将图像块X映射到实数值N维特征空间</li>
+<li>特征空间encode图像块X的high-level forensic information</li>
+<li>convolutional neural networks (CNNs) are powerful tools for extracting general, high-level forensic information from image patches</li>
+</ul></li>
+</ul></li>
+<li>a three layer neural network
+<ul>
+<li>map pairs of these deep features onto a similarity score</li>
+<li>$ S : R^N× R^N→ [0,1]$
+<ul>
+<li>将两对forensic feature vectors映射到一个范围为0到1的相似度分数</li>
+<li>低相似度分数表明两个图像块X1和X2具有不同的取证痕迹，而高相似度分数表明两个取证痕迹高度相似</li>
+</ul></li>
+<li>最后，将两个图像块X1和X2的相似性得分$ S(f(X1), f(X2)) $与阈值η进行比较</li>
+</ul></li>
+</ul></li>
+<li><p>forensic trace</p>
+<ul>
+<li>source camera model / manipulation type / editing parameter</li>
+<li>①the camera model that captured the image;②the social media website where the image was downloaded from;③the processing history of the image</li>
+<li>inherently unrelated to the perceptual content of the image</li>
+</ul></li>
+<li><p><strong>Siamese network</strong></p></li>
 </ul>
 <h3 id="forensic-similarity">FORENSIC SIMILARITY</h3>
+<blockquote>
+<p>motivate and formalize the concept of forensic similarity</p>
+</blockquote>
+<ol type="1">
+<li>输入：图像块X1和X2</li>
+<li>一个特征提取器将两个输入映射到一对特征向量f(X1)和f(X2)，它对有关图像块的high-level forensic information进行编码</li>
+<li>相似度函数将这<u>两个特征向量(该阶段的输入)</u>映射到相似度分数，然后将其与阈值进行比较。
+<ul>
+<li>阈值以上的相似性分数表示X1和X2具有相同的取证轨迹（例如处理历史或源相机模型）</li>
+<li>阈值以下的相似性分数表明它们具有不同的取证轨迹</li>
+</ul></li>
+</ol>
+<figure>
+<img src="digital-images-forensic\tif19-forensic-similarity.png" alt="" /><figcaption>forensic similarity system</figcaption>
+</figure>
+<figure>
+<img src="digital-images-forensic\tif19-forensic-similarity-1.png" alt="" /><figcaption>detailed-forensic similarity system</figcaption>
+</figure>
 <h3 id="proposed-approach">PROPOSED APPROACH</h3>
+<blockquote>
+<p>detail proposed deep-learning system implementation and training procedure.</p>
+<p>describe how to build and train the CNN-based feature extractor and similarity network</p>
+</blockquote>
+<ul>
+<li>patch selection</li>
+</ul>
 <h3 id="experimental-evaluation">EXPERIMENTAL EVALUATION</h3>
+<blockquote>
+<p>evaluate the effectiveness of our proposed approach in a number of forensic situations, and importantly effectiveness on unknown forensic traces</p>
+</blockquote>
+<ul>
+<li><p>Source Camera Model Comparison</p>
+<figure>
+<img src="digital-images-forensic\SourceCameraModelComparison.png" alt="" /><figcaption>Source Camera Model Comparison</figcaption>
+</figure>
+<ul>
+<li>Patch Size and Re-Compression Effects</li>
+<li>compare with other approaches</li>
+<li>impact of training procedure → unfrozen / update + subset / diverse dataset</li>
+<li>architecture variants
+<ul>
+<li>green channel → full color</li>
+</ul></li>
+</ul></li>
+<li><p>Editing Operation Comparison</p></li>
+<li><p>Editing Parameter Comparison</p></li>
+</ul>
 <h3 id="practical-applications">PRACTICAL APPLICATIONS</h3>
+<blockquote>
+<p>demonstrate the utility of this approach in two practical applications.</p>
+</blockquote>
+<ul>
+<li>image forgery detection and localization
+<ul>
+<li>localization：
+<ul>
+<li>选择原图作为参考补丁，则不一致的是拼接图</li>
+<li>选择拼接图为参考补丁，则不一致的是原图，我理解为“双向定位”</li>
+</ul></li>
+</ul></li>
+<li>image database consistency verification
+<ul>
+<li>看着这个数据库是不是由同一个相机生成的照片构成</li>
+</ul></li>
+</ul>
 <h3 id="conclusion">CONCLUSION</h3>
-</div><div class="article-tags size-small mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/forensic/">forensic</a><a class="link-muted mr-2" rel="tag" href="/tags/cv/">cv</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2021/01/15/icarus/"><span class="level-item">icarus-一个hexo主题美化过程</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/channel.png" alt="purplezi"></figure><p class="title is-size-4 is-block line-height-inherit">purplezi</p><p class="is-size-6 is-block">Lazy, foolish</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">15</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">5</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">21</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/purplezi" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/purplezi"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><!--!--><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Links</h3><ul class="menu-list"><li><a class="level is-mobile is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li></ul></div></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile is-marginless" href="/categories/ACM/"><span class="level-start"><span class="level-item">ACM</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/Blogs/"><span class="level-start"><span class="level-item">Blogs</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/DataBase/"><span class="level-start"><span class="level-item">DataBase</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/Security/"><span class="level-start"><span class="level-item">Security</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/git/"><span class="level-start"><span class="level-item">git</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget"><div class="card-content"><h3 class="menu-label">Recent</h3><article class="media"><div class="media-content size-small"><p><time dateTime="2021-01-16T03:55:34.000Z">2021-01-16</time></p><p class="title is-6"><a class="link-muted" href="/2021/01/16/digital-images-forensic/">数字图像篡改取证</a></p><p class="is-uppercase"></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2021-01-15T10:43:21.000Z">2021-01-15</time></p><p class="title is-6"><a class="link-muted" href="/2021/01/15/icarus/">icarus-一个hexo主题美化过程</a></p><p class="is-uppercase"></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2021-01-11T11:33:45.000Z">2021-01-11</time></p><p class="title is-6"><a class="link-muted" href="/2021/01/11/web-notes/">白帽子讲web安全</a></p><p class="is-uppercase"></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-07-20T01:25:45.000Z">2020-07-20</time></p><p class="title is-6"><a class="link-muted" href="/2020/07/20/ipaddress/">IP地址</a></p><p class="is-uppercase"></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-06-21T13:05:05.000Z">2020-06-21</time></p><p class="title is-6"><a class="link-muted" href="/2020/06/21/aliyun-sfim/">阿里云服务器(centos7系统) 使用nginx+uwsgi 部署python+flask项目</a></p><p class="is-uppercase"></p></div></article></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile is-marginless" href="/archives/2021/01/"><span class="level-start"><span class="level-item">January 2021</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile is-marginless" href="/archives/2020/07/"><span class="level-start"><span class="level-item">July 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/archives/2020/06/"><span class="level-start"><span class="level-item">June 2020</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile is-marginless" href="/archives/2020/05/"><span class="level-start"><span class="level-item">May 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/archives/2020/04/"><span class="level-start"><span class="level-item">April 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/archives/2020/03/"><span class="level-start"><span class="level-item">March 2020</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li></ul></div></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Cluster/"><span class="tag">Cluster</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Hadoop/"><span class="tag">Hadoop</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Hbase/"><span class="tag">Hbase</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MkDocs/"><span class="tag">MkDocs</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Network/"><span class="tag">Network</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Security/"><span class="tag">Security</span><span class="tag is-grey-lightest">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Travis/"><span class="tag">Travis</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/blog/"><span class="tag">blog</span><span class="tag is-grey-lightest">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/cv/"><span class="tag">cv</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/forensic/"><span class="tag">forensic</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/git/"><span class="tag">git</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/github/"><span class="tag">github</span><span class="tag is-grey-lightest">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/hexo/"><span class="tag">hexo</span><span class="tag is-grey-lightest">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/mysql/"><span class="tag">mysql</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/nginx/"><span class="tag">nginx</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/security/"><span class="tag">security</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/uwsgi/"><span class="tag">uwsgi</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/web-security/"><span class="tag">web security</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/web-server/"><span class="tag">web server</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/xss/"><span class="tag">xss</span><span class="tag is-grey-lightest">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E8%AE%BA/"><span class="tag">数论</span><span class="tag is-grey-lightest">1</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/plant-pot.svg" alt="Purplezi" height="28"></a><p class="size-small"><span>&copy; 2021 Purplezi</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
-            site: {
-                url: 'https://purplezi.gitee.io',
-                external_link: {"enable":true,"exclude":[]}
-            },
-            article: {
-                highlight: {
-                    clipboard: true,
-                    fold: 'unfolded'
-                }
-            }
-        };</script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><a id="back-to-top" title="Back to Top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
-            if (typeof $.fn.lightGallery === 'function') {
-                $('.article').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof $.fn.justifiedGallery === 'function') {
-                if ($('.justified-gallery > p > .gallery-item').length) {
-                    $('.justified-gallery > p > .gallery-item').unwrap();
-                }
-                $('.justified-gallery').justifiedGallery();
-            }
-        });</script><!--!--><!--!--><script type="text/x-mathjax-config">MathJax.Hub.Config({
-            'HTML-CSS': {
-                matchFontHeight: false
-            },
-            SVG: {
-                matchFontHeight: false
-            },
-            CommonHTML: {
-                matchFontHeight: false
-            },
-            tex2jax: {
-                inlineMath: [
-                    ['$','$'],
-                    ['\\(','\\)']
-                ]
-            }
-        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><div id="outdated"><h6>Your browser is out-of-date!</h6><p>Update your browser to view this website correctly.&amp;npsb;<a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a></p><p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p></div><script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script><script>window.addEventListener("load", function () {
-            outdatedBrowser({
-                bgColor: '#f25648',
-                color: '#ffffff',
-                lowerThan: 'object-fit' // display on IE11 or below
-            });
-        });</script><!--!--><script src="/js/main.js" defer></script><script src="/js/night.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
-            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
-        });</script></body></html>
+<hr />
+<h2 id="noiseprint-a-cnn-based-camera-model-fingerprint">🧨Noiseprint: a CNN-based camera model fingerprint</h2>
+<h3 id="运行项目-1">运行项目</h3>
+<p>项目地址：https://github.com/grip-unina/noiseprint</p>
+<p>jpeg压缩的质量因子要求51~101</p>
+<p><img src="digital-images-forensic\cuda-error.png" alt="img" style="zoom: 50%;" /></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow.compat.v1 <span class="keyword">as</span> tf</span><br><span class="line">tf.disable_v2_behavior()</span><br></pre></td></tr></table></figure>
+<p>运行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python main_blind.py dog1.png mat ou.jpg</span><br><span class="line">python main_map2uint8.py mat.npz test.png</span><br><span class="line">python main_showres.py dog1.png dog1.png mat.npz</span><br></pre></td></tr></table></figure>
+<p>python os join path的问题：https://blog.csdn.net/weixin_37895339/article/details/79185119</p>
+<h3 id="abstract-1">Abstract</h3>
+<blockquote>
+<p>extract <u>a camera model fingerprint → noiseprint</u></p>
+<p>image forgery localization</p>
+</blockquote>
+<p>noise residual 噪声残差</p>
+<p>siamese networks 暹罗网络</p>
+<h3 id="introduction-1">INTRODUCTION</h3>
+<p><strong>any acquisition device leaves on each captured image distinctive traces</strong></p>
+<ul>
+<li><p>statistical methods, based on <code>pixel-level</code> analyses of the data 基于数据的像素级分析的统计方法</p>
+<ul>
+<li>a model-based approach：建立一些特定特征的数学模型，并将其用于法医目的
+<ul>
+<li>popular targets
+<ul>
+<li>lens aberration</li>
+<li>camera response function</li>
+<li>color filter array(CFA)</li>
+<li>JPEG artifacts</li>
+</ul></li>
+<li>缺点：适用范围窄</li>
+</ul></li>
+<li>a data-driven approach
+<ul>
+<li>noise residual
+<ul>
+<li>概念：the noise-like signal which remains once the high-level semantic content has been removed</li>
+<li>如何获取：
+<ul>
+<li>①从图像中减去通过降噪算法(denoising algorithms)估计的“干净”版本</li>
+<li>②通过在空间或变换（傅里叶，DCT，小波）域中应用一些高通滤波器</li>
+</ul></li>
+<li>PRNU-based methods的缺点
+<ul>
+<li>the need of a large number of images taken from the camera to obtain good estimates</li>
+<li>the low power of the signal of interest with respect to noise
+<ul>
+<li>主要的噪声源是高级图像内容，由于不完善的过滤，该图像内容在PRNU中泄漏</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p>通过提取noiseprint可以发现被篡改的图片中的不一致性</p>
+<figure>
+<img src="digital-images-forensic\noiseprint-inconsistency.png" alt="" /><figcaption>1611413292011</figcaption>
+</figure></li>
+</ul>
+<blockquote>
+<p>propose a new method to extract <u>a noise residual → noiseprint</u></p>
+</blockquote>
+<p>noiseprint shows clear traces of camera artifacts</p>
+<h3 id="related-work">RELATED WORK</h3>
+<blockquote>
+<p>analyze related work on noise residuals to better contextualize our proposal</p>
+</blockquote>
+<ul>
+<li>Exploiting noise for image forensics 利用噪声进行图像取证
+<ul>
+<li>unsupervised methods</li>
+<li>intrinsic fingerprint</li>
+</ul></li>
+<li>Using deep learning for image forensics
+<ul>
+<li>缺点：rely on a training dataset strongly aligned with the test set</li>
+</ul></li>
+</ul>
+<h3 id="proposed-approach-1">PROPOSED APPROACH</h3>
+<blockquote>
+<p>describe the proposed architecture and its training</p>
+</blockquote>
+<p>因为内部处理步骤，每个相机模型在每个获取的图像上留下了模型本身特有的许多<strong>伪像(sartifacts)</strong>，但是这些伪像很<strong>脆弱</strong>而且他们的利用需要<strong>极其复杂的统计方法</strong>，最经典的方法是借助于高通滤波器(high-pass filter)或去噪器(denoiser)提取图像的噪声残留(a noise residual)</p>
+<blockquote>
+<ol type="1">
+<li>improve the noise residual extraction process</li>
+<li>enhance the camera model artifacts</li>
+</ol>
+</blockquote>
+<ul>
+<li><p>Extracting noiseprints</p>
+<ul>
+<li>输入：a generic image 通用图像</li>
+<li>输出：a suitable noise residual</li>
+</ul>
+<figure>
+<img src="E:\hexo\source_posts\digital-images-forensic\extract-noiseprint.png" alt="" /><figcaption>1611720504128</figcaption>
+</figure>
+<ul>
+<li><p>denoiser</p>
+<ul>
+<li>删除或强烈衰减高级场景内容，这对于我们的目的而言是一种干扰</li>
+<li>不是去生成无噪声版本，而是提取影响其的噪声模式（通过去除高级内容），最终将其从输入中减去以获得所需的清晰图像</li>
+</ul>
+<figure>
+<img src="E:\hexo\source_posts\digital-images-forensic\denoiser.png" alt="" /><figcaption>1611733547523</figcaption>
+</figure>
+<ul>
+<li>训练基于CNN的降噪器。输入：a noisy image patch；输出：its noise content</li>
+</ul></li>
+<li><p>原理：<strong>image patches coming from the same camera model should generate similar noiseprint patches</strong></p></li>
+</ul></li>
+<li><p>Implementation</p>
+<ul>
+<li>initialization</li>
+<li>boosting minibatch information：<span class="math inline">\(O(n^2)\)</span></li>
+<li>distance-based logistic loss</li>
+<li>regularization</li>
+</ul></li>
+</ul>
+<h3 id="experimental-analysis">EXPERIMENTAL ANALYSIS</h3>
+<blockquote>
+<p>carry out a thorough comparative performance analysis of a noiseprint-based algorithm for forgery localization</p>
+</blockquote>
+<ul>
+<li>forgery localization based on noiseprints
+<ul>
+<li>输入：the image and its noiseprint</li>
+<li>输出：a real-valued heatmap for each pixel</li>
+<li>Splicebuster：通过采用图像噪声纹代替其中使用的三阶图像残差而获得的改善效果</li>
+</ul></li>
+<li>reference methods</li>
+<li>datasets</li>
+<li>performance measures</li>
+<li>training procedure
+<ul>
+<li>training训练 / validation验证 / test测试</li>
+</ul></li>
+<li>preliminary analyses</li>
+</ul>
+<h3 id="further-noiseprint-based-forensic-analyses">FURTHER NOISEPRINT-BASED FORENSIC ANALYSES</h3>
+<blockquote>
+<p>provide ideas and examples on possible uses of noiseprints for further forensic tasks</p>
+</blockquote>
+<h3 id="conclusions">CONCLUSIONS</h3>
+<hr />
+<p>基本情况：两篇仔细阅读和整理完毕，代码找到，但未研究具体细节</p>
+<h1 id="人工智能">人工智能</h1>
+<p>一个人工智能的诞生：https://jibencaozuo.com/</p>
+<hr />
+<h1 id="汇报">汇报</h1>
+<h2 id="first">👼 FIRST</h2>
+<p>Media Forensics and DeepFakes</p>
+<p>SECTION B通读，重点看<strong>106(老师没看)</strong>，<strong>107</strong>是如何提到的 <strong>96(特征很复杂)</strong>，整合自己的方案，探讨自己的问题，最后再用标准库测试</p>
+<figure>
+<img src="E:\hexo\source_posts\digital-images-forensic\paper.png" alt="" /><figcaption>1611749784564</figcaption>
+</figure>
+<p>blind scenario</p>
+<p>传统的、盲方法(不需要先验知识)</p>
+<p>基于有监督的机器学习，如SVM</p>
+<p>聚类：kmeans(指定扩充的类别) / 自适应扩充的类别</p>
+<p>理解工作、没有代码自己编、无需百分百重现、寻找亮点</p>
+<p>难度和复杂度自己控制、最后要检测定位的目的</p>
+<p>结合实际篡改取证的需求 + 精读文章 + 优化、组合、融合</p>
+<p>假设图像来源 / 最有可能的篡改：缩放、边界融合、压缩</p>
+<p>引用式的做对比</p>
+<p>对比实验也很重要、子实验越多越好、越可信</p>
+<p>注意一下三篇文献的<strong>去噪方法</strong>、做实验的时候看中间结果</p>
+<p>最后的改进和创新都是从<strong>细节</strong>开始</p>
+<p>两大类实验：基本库 / 稍微带点鲁棒性(对数据库整体进行后处理)</p>
+<p><strong>1. 做什么 / 怎么做 2. 为什么做(整体方案/每个模块/细节参数设置)</strong></p>
+<p>自己讲3篇具体算法 / 自己对为什么的理解、重点模块 / 自己的初步实验规划、系统图 / 细化 / PPT，多画图，多用图示</p>
+<ul>
+<li>【96】 D. Cozzolino, D. Gragnaniello, and L. V erdoliva, “Image forgery localization through the fusion of camera-based, feature-based and pixel-based techniques,” in IEEE International Conference on Image Processing, 2014, pp. 5302–5306.</li>
+<li>【106】 D. Cozzolino, F. Marra, G. Poggi, C. Sansone, and L. V erdoliva, “PRNU-based forgery localization in a blind scenario,” in International Conference on Image Analysis and Processing, 2017, pp. 569–579.
+<ul>
+<li>见📕591页</li>
+</ul></li>
+<li>【107】 L. V erdoliva, D. Cozzolino, and G. Poggi, “A feature-based approach for image tampering detection and localization,” in IEEE International Workshop on Information F orensics and Security, 2014, pp. 149–154.</li>
+</ul>
+<hr />
+<h2 id="image-forgery-localization-through-the-fusion-of-camera-based-feature-based-and-pixel-based-techniques">🧨Image forgery localization through the fusion of camera-based, feature-based and pixel-based techniques</h2>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Purplezi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://purplezi.gitee.io/2021/01/16/digital-images-forensic/">https://purplezi.gitee.io/2021/01/16/digital-images-forensic/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/forensic/">forensic</a><a class="post-meta__tags" href="/tags/cv/">cv</a></div><div class="post_share"><div class="social-share" data-image="https://w.wallhaven.cc/full/dp/wallhaven-dppqeo.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/01/19/computer/"><img class="prev-cover" src="https://w.wallhaven.cc/full/rd/wallhaven-rddgwm.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">计算机选购</div></div></a></div><div class="next-post pull-right"><a href="/2021/01/15/icarus/"><img class="next-cover" src="/img/bg2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">icarus-一个hexo主题美化过程</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Purplezi</div><div class="author-info__description">DreamCreator & DreamLoser</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">16</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">21</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%98%85%E8%AF%BB%E6%96%87%E7%8C%AE"><span class="toc-number">1.</span> <span class="toc-text">阅读文献</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AF%E8%AF%AD"><span class="toc-number">1.1.</span> <span class="toc-text">术语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#forensic-similarity-for-digital-images"><span class="toc-number">1.2.</span> <span class="toc-text">🧨Forensic Similarity for Digital Images</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.2.1.</span> <span class="toc-text">运行项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#abstract"><span class="toc-number">1.2.2.</span> <span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#introduction"><span class="toc-number">1.2.3.</span> <span class="toc-text">INTRODUCTION</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#forensic-similarity"><span class="toc-number">1.2.4.</span> <span class="toc-text">FORENSIC SIMILARITY</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proposed-approach"><span class="toc-number">1.2.5.</span> <span class="toc-text">PROPOSED APPROACH</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#experimental-evaluation"><span class="toc-number">1.2.6.</span> <span class="toc-text">EXPERIMENTAL EVALUATION</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#practical-applications"><span class="toc-number">1.2.7.</span> <span class="toc-text">PRACTICAL APPLICATIONS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#conclusion"><span class="toc-number">1.2.8.</span> <span class="toc-text">CONCLUSION</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#noiseprint-a-cnn-based-camera-model-fingerprint"><span class="toc-number">1.3.</span> <span class="toc-text">🧨Noiseprint: a CNN-based camera model fingerprint</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E9%A1%B9%E7%9B%AE-1"><span class="toc-number">1.3.1.</span> <span class="toc-text">运行项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#abstract-1"><span class="toc-number">1.3.2.</span> <span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#introduction-1"><span class="toc-number">1.3.3.</span> <span class="toc-text">INTRODUCTION</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#related-work"><span class="toc-number">1.3.4.</span> <span class="toc-text">RELATED WORK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proposed-approach-1"><span class="toc-number">1.3.5.</span> <span class="toc-text">PROPOSED APPROACH</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#experimental-analysis"><span class="toc-number">1.3.6.</span> <span class="toc-text">EXPERIMENTAL ANALYSIS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#further-noiseprint-based-forensic-analyses"><span class="toc-number">1.3.7.</span> <span class="toc-text">FURTHER NOISEPRINT-BASED FORENSIC ANALYSES</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#conclusions"><span class="toc-number">1.3.8.</span> <span class="toc-text">CONCLUSIONS</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD"><span class="toc-number">2.</span> <span class="toc-text">人工智能</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B1%87%E6%8A%A5"><span class="toc-number">3.</span> <span class="toc-text">汇报</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#first"><span class="toc-number">3.1.</span> <span class="toc-text">👼 FIRST</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#image-forgery-localization-through-the-fusion-of-camera-based-feature-based-and-pixel-based-techniques"><span class="toc-number">3.2.</span> <span class="toc-text">🧨Image forgery localization through the fusion of camera-based, feature-based and pixel-based techniques</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/01/19/computer/" title="计算机选购"><img src="https://w.wallhaven.cc/full/rd/wallhaven-rddgwm.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机选购"/></a><div class="content"><a class="title" href="/2021/01/19/computer/" title="计算机选购">计算机选购</a><time datetime="2021-01-19T10:41:01.000Z" title="Created 2021-01-19 18:41:01">2021-01-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/16/digital-images-forensic/" title="数字图像篡改取证"><img src="https://w.wallhaven.cc/full/dp/wallhaven-dppqeo.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数字图像篡改取证"/></a><div class="content"><a class="title" href="/2021/01/16/digital-images-forensic/" title="数字图像篡改取证">数字图像篡改取证</a><time datetime="2021-01-16T03:55:34.000Z" title="Created 2021-01-16 11:55:34">2021-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/01/15/icarus/" title="icarus-一个hexo主题美化过程">icarus-一个hexo主题美化过程</a><time datetime="2021-01-15T10:43:21.000Z" title="Created 2021-01-15 18:43:21">2021-01-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/11/web-notes/" title="白帽子讲web安全"><img src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="白帽子讲web安全"/></a><div class="content"><a class="title" href="/2021/01/11/web-notes/" title="白帽子讲web安全">白帽子讲web安全</a><time datetime="2021-01-11T11:33:45.000Z" title="Created 2021-01-11 19:33:45">2021-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/07/20/ipaddress/" title="IP地址"><img src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="IP地址"/></a><div class="content"><a class="title" href="/2020/07/20/ipaddress/" title="IP地址">IP地址</a><time datetime="2020-07-20T01:25:45.000Z" title="Created 2020-07-20 09:25:45">2020-07-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://w.wallhaven.cc/full/dp/wallhaven-dppqeo.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Purplezi</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="/js/randombg.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
