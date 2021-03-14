@@ -28,6 +28,7 @@ jobs:
       run: |
         hexo clean
         hexo g
+
     - name: Deploy Blog
       env:
         ACTION_DEPLOY_KEY: ${{ secrets.DEPLOY_BLOG }}
@@ -38,4 +39,8 @@ jobs:
         chmod 700 ~/.ssh
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan github.com >> ~/.ssh/known_hosts
-        hexo deploy
+        cd ./public && git init && git add.
+        git config --global user.name purplezi
+        git config --global user.email 654762676@qq.com
+        git commit -m "Site deployed by Github Actions"
+      git push --force --quite "https://$ACTION_DEPLOY_KEY@github.com/purplezi/purplezi.github.io" master:master
