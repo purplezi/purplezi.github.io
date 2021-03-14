@@ -33,12 +33,12 @@ jobs:
       env:
         ACTION_DEPLOY_KEY: ${{ secrets.DEPLOY_BLOG }}
       run: |
-        rm -rf ~/.ssh
-        mkdir -p ~/.ssh/
-        echo "$DEPLOY_BLOG" > ~/.ssh/id_rsa
-        chmod 700 ~/.ssh
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan github.com >> ~/.ssh/known_hosts
+        # rm -rf ~/.ssh
+        # mkdir -p ~/.ssh/
+        # echo "$DEPLOY_BLOG" > ~/.ssh/id_rsa
+        # chmod 700 ~/.ssh
+        # chmod 600 ~/.ssh/id_rsa
+        # ssh-keyscan github.com >> ~/.ssh/known_hosts
         cd ./public && git init && git add.
         git config --global user.name purplezi
         git config --global user.email 654762676@qq.com
