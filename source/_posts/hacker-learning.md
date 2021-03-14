@@ -6,7 +6,7 @@ tags:
 cover: https://w.wallhaven.cc/full/j8/wallhaven-j8lkxw.png
 ---
 
-{% hideToggle 参考资料 %}
+{ % hideToggle 参考资料 % }
 
 - https://www.bilibili.com/video/av53347991?p=1
 - https://space.bilibili.com/282616786
@@ -15,7 +15,7 @@ cover: https://w.wallhaven.cc/full/j8/wallhaven-j8lkxw.png
 - https://www.offensive-security.com/
 - kali 中国镜像：https://mirrors.tuna.tsinghua.edu.cn/kali-images/
 
-{% endhideToggle %}
+{ % endhideToggle % }
 
 攻击工具（用于我们自己的业务环境或者授权以后的相应测试）
 - 中国菜刀
@@ -187,7 +187,7 @@ DVWA 的 Upload 测试
 
 ---
 
-{% hideToggle 【medium】解决方法 %}
+{ % hideToggle 【medium】解决方法 % }
 
 **法一：抓包修改文件类型 - 上传 php，修改 content-type**
 
@@ -268,7 +268,7 @@ DVWA 的 Upload 测试
      
     - 而服务器会认为其文件名为 hack.php，顺势解析为 php 文件。即打开菜刀，http://192.168.50.129/dvwa/hackable/uploads/hack861.php%00.png  - 无法成功
 
-{% endhideToggle %}
+{ % endhideToggle % }
 
 ---
 
