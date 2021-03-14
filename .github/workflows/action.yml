@@ -27,7 +27,7 @@ jobs:
         node -v
         npm i -g hexo-cli
         npm i
-        sed -i '18s/imageLink/imageLink.replace(\/\![0-9]{3,}x\/,"")/' themes/butterfly/source/js/utils.js
+        # sed -i '18s/imageLink/imageLink.replace(\/\![0-9]{3,}x\/,"")/' themes/butterfly/source/js/utils.js
         hexo clean
         hexo g        
     - name: Deploy to Github Pages
@@ -41,4 +41,4 @@ jobs:
         git config --global user.name $GIT_NAME
         git config --global user.email $GIT_EMAIL
         git commit -m "Site deployed by GitHub Actions"
-        git push --force --quiet "https://$GH_TOKEN@$REPO" master:master        
+        git push --force --quiet "https://$GH_TOKEN@$REPO" master:master
