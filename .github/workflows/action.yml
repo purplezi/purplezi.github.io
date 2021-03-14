@@ -21,28 +21,60 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '12.x'
-        
-    - name: Setup Hexo env
-      env:
-        ACTION_DEPLOY_KEY: ${{ secrets.DEPLOY_BLOG }}
+
+    - name: 安装 Hexo
       run: |
-        # set up private key for deploy
-        mkdir -p ~/.ssh/
-        echo "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan github.com >> ~/.ssh/known_hosts
-        # set git infomation
-        git config --global user.name 'purplezi'
-        git config --global user.email '654762676@qq.com'
-        # install dependencies
-        npm i -g hexo-cli
-        npm i
-        npm i hexo-renderer-pandoc
-    - name: Deploy
+        export TZ='Asia/Shanghai'
+        npm install hexo-cli -g
+
+    - name: 缓存 Hexo
+      uses: actions/cache@v1
+      id: cache
+      with:
+        path: node_modules
+        key: ${{runner.OS}}-${{hashFiles('**/package-lock.json')}}
+
+    - name: 安装依赖
+      if: steps.cache.outputs.cache-hit != 'true'
       run: |
-        # generate and depoly
+        npm install --save
+
+    - name: 生成静态文件
+      run: |
         hexo clean
-        hexo g -d
+        hexo generate
+
+    - name: 部署
+      run: |
+        git config --global user.name "purplezi"
+        git config --global user.email "654762676@qq.com"
+        git clone https://github.com/purplezi/purplezi.github.io.git .deploy_git
+        # 此处务必用HTTPS链接。SSH链接可能有权限报错的隐患
+        # =====注意.deploy_git前面有个空格=====
+        # 这行指令的目的是clone博客静态文件仓库，防止Hexo推送时覆盖整个静态文件仓库，而是只推送有更改的文件
+        hexo deploy
+        
+    # - name: Setup Hexo env
+    #   env:
+    #     ACTION_DEPLOY_KEY: ${{ secrets.DEPLOY_BLOG }}
+    #   run: |
+    #     # set up private key for deploy
+    #     mkdir -p ~/.ssh/
+    #     echo "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
+    #     chmod 600 ~/.ssh/id_rsa
+    #     ssh-keyscan github.com >> ~/.ssh/known_hosts
+    #     # set git infomation
+    #     git config --global user.name 'purplezi'
+    #     git config --global user.email '654762676@qq.com'
+    #     # install dependencies
+    #     npm i -g hexo-cli
+    #     npm i
+    #     npm i hexo-renderer-pandoc
+    # - name: Deploy
+    #   run: |
+    #     # generate and depoly
+    #     hexo clean
+    #     hexo g -d
 
     # - name: Deploy to Github Pages
     #   env:
