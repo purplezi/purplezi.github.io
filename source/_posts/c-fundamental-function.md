@@ -6,7 +6,7 @@ tags:
 cover: https://w.wallhaven.cc/full/e7/wallhaven-e7z65r.jpg
 ---
 
-{% folding blue, 【基本知识】函数 %}
+{ %  folding blue, 【基本知识】函数 % } 
 
 1. 三要素：
     - `int is_prime(int x)`
@@ -24,9 +24,9 @@ cover: https://w.wallhaven.cc/full/e7/wallhaven-e7z65r.jpg
 3. 函数与数组的关系：映射
     - 函数是压缩的数组，数组是展开的函数：y = f(x)，arr[2] = 100
 
-{% endfolding %}
+{ %  endfolding % } 
 
-{% folding blue, 【基本知识】递归（套娃） %}
+{ %  folding blue, 【基本知识】递归（套娃） % } 
 
 # 概念
 
@@ -81,9 +81,9 @@ int main() {
 
 
 
-{% endfolding %}
+{ %  endfolding % } 
 
-{% folding blue, 函数指针 %}
+{ %  folding blue, 函数指针 % } 
 
 `把一个函数当成参数传递给另一个函数使用`
 - 指针是一个变量（变量的本质是存值，变量类型就是为了存储不同的值），指针变量存储的值是地址，函数指针变量存的是函数地址
@@ -148,12 +148,12 @@ int main() {
 }
 ```
 
-{% endfolding %}
+{ %  endfolding % } 
 
 
-{% folding blue, 变参函数 %}
+{ %  folding blue, 变参函数 % } 
 
-{% endfolding %}
+{ %  endfolding % } 
 
 ++i 比 i++ 速度快，但是可以忽略不计
 
