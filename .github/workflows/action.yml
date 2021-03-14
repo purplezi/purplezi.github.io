@@ -98,13 +98,14 @@ jobs:
 
     - name: Deploy to Github Pages
       env:
-        GIT_NAME: purplezi
-        GIT_EMAIL: 654762676@qq.com
+        GIT_NAME: "purplezi"
+        GIT_EMAIL: "654762676@qq.com"
         REPO: github.com/purplezi/purplezi.github.io
         GH_TOKEN: ${{ secrets.DEPLOY_BLOG }}
+        PW: ${{ secrets.USER_PW }}
       run: |
         cd ./public && git init && git add .
         git config --global user.name $GIT_NAME
         git config --global user.email $GIT_EMAIL
         git commit -m "Site deployed by GitHub Actions"
-        git push --force --quiet "https://$REPO" master:master
+        git push --force --quiet "https://$GIT_NAME:$PW@$REPO" master:master
