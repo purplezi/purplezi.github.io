@@ -22,35 +22,35 @@ jobs:
       with:
         node-version: '12.x'
         
-    # - name: Setup Hexo env
-    #   env:
-    #     ACTION_DEPLOY_KEY: ${{ secrets.DEPLOY_BLOG }}
-    #   run: |
-    #     # set up private key for deploy
-    #     mkdir -p ~/.ssh/
-    #     echo "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
-    #     chmod 600 ~/.ssh/id_rsa
-    #     ssh-keyscan github.com >> ~/.ssh/known_hosts
-    #     # set git infomation
-    #     git config --global user.name 'purplezi'
-    #     git config --global user.email '654762676@qq.com'
-    #     # install dependencies
-    #     npm i -g hexo-cli
-    #     npm i
-    # - name: Deploy
-    #   run: |
-    #     # generate and depoly
-    #     hexo g -d
-
-    - name: Deploy to Github Pages
+    - name: Setup Hexo env
       env:
-        GIT_NAME: purplezi
-        GIT_EMAIL: 654762676@qq.com
-        REPO: github.com/purplezi/purplezi.github.io
-        GH_TOKEN: ${{ secrets.DEPLOY_BLOG }}
+        ACTION_DEPLOY_KEY: ${{ secrets.DEPLOY_BLOG }}
       run: |
-        cd ./public && git init && git add .
-        git config --global user.name $GIT_NAME
-        git config --global user.email $GIT_EMAIL
-        git commit -m "Site deployed by GitHub Actions"
-        git push --force --quiet "https://$GH_TOKEN@$REPO" master:master
+        # set up private key for deploy
+        mkdir -p ~/.ssh/
+        echo "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
+        # set git infomation
+        git config --global user.name 'purplezi'
+        git config --global user.email '654762676@qq.com'
+        # install dependencies
+        npm i -g hexo-cli
+        npm i
+    - name: Deploy
+      run: |
+        # generate and depoly
+        hexo g -d
+
+    # - name: Deploy to Github Pages
+    #   env:
+    #     GIT_NAME: purplezi
+    #     GIT_EMAIL: 654762676@qq.com
+    #     REPO: github.com/purplezi/purplezi.github.io
+    #     GH_TOKEN: ${{ secrets.DEPLOY_BLOG }}
+    #   run: |
+    #     cd ./public && git init && git add .
+    #     git config --global user.name $GIT_NAME
+    #     git config --global user.email $GIT_EMAIL
+    #     git commit -m "Site deployed by GitHub Actions"
+    #     git push --force --quiet "https://$GH_TOKEN@$REPO" master:master
