@@ -59,23 +59,30 @@ jobs:
     #     # 这行指令的目的是clone博客静态文件仓库，防止Hexo推送时覆盖整个静态文件仓库，而是只推送有更改的文件
     #     hexo deploy
         
-    - name: Setup Hexo env
-      env:
-        ACTION_DEPLOY_KEY: ${{ secrets.DEPLOY_BLOG }}
+    # - name: Setup Hexo env
+    #   env:
+    #     ACTION_DEPLOY_KEY: ${{ secrets.DEPLOY_BLOG }}
+    #   run: |
+    #     # set up private key for deploy
+    #     mkdir -p ~/.ssh/
+    #     echo "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
+    #     chmod 700 ~/.ssh
+    #     chmod 600 ~/.ssh/id_rsa
+    #     ssh-keyscan github.com >> ~/.ssh/known_hosts
+    #     # set git infomation
+    #     git config --global user.name 'purplezi'
+    #     git config --global user.email '654762676@qq.com'
+    #     # install dependencies
+    #     npm i -g hexo-cli
+    #     npm i
+
+    - name: Install dependencies & Generate static files
       run: |
-        # set up private key for deploy
-        mkdir -p ~/.ssh/
-        echo "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan github.com >> ~/.ssh/known_hosts
-        # set git infomation
-        git config --global user.name 'purplezi'
-        git config --global user.email '654762676@qq.com'
-        # install dependencies
+        node -v
         npm i -g hexo-cli
         npm i
-        npm i hexo-renderer-pandoc
-    
+        sed -i '18s/imageLink/imageLink.replace(\/\![0-9]{3,}x\/,"")/' themes/next/source/js/utils.js 
+
     - name: Hexo Generate 
       run: |
         # add pandoc to PATH
@@ -85,20 +92,20 @@ jobs:
         rm -rf ./public
         yarn run hexo clean
         yarn run hexo generate 
-        
-    - name: Deploy
-      run: |
-        hexo deploy
 
-    # - name: Deploy to Github Pages
-    #   env:
-    #     GIT_NAME: purplezi
-    #     GIT_EMAIL: 654762676@qq.com
-    #     REPO: github.com/purplezi/purplezi.github.io
-    #     GH_TOKEN: ${{ secrets.DEPLOY_BLOG }}
+    # - name: Deploy
     #   run: |
-    #     cd ./public && git init && git add .
-    #     git config --global user.name $GIT_NAME
-    #     git config --global user.email $GIT_EMAIL
-    #     git commit -m "Site deployed by GitHub Actions"
-    #     git push --force --quiet "https://$GH_TOKEN@$REPO" master:master
+    #     hexo deploy
+
+    - name: Deploy to Github Pages
+      env:
+        GIT_NAME: purplezi
+        GIT_EMAIL: 654762676@qq.com
+        REPO: github.com/purplezi/purplezi.github.io
+        GH_TOKEN: ${{ secrets.DEPLOY_BLOG }}
+      run: |
+        cd ./public && git init && git add .
+        git config --global user.name $GIT_NAME
+        git config --global user.email $GIT_EMAIL
+        git commit -m "Site deployed by GitHub Actions"
+        git push --force --quiet "https://$GH_TOKEN@$REPO" master:master

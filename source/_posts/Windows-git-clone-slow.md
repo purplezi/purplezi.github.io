@@ -14,22 +14,22 @@ learning-git：
 
 # Windows 下 git clone 慢的尝试解决方法
 
-{% tip success %}
+{ % tip success % }
 **重启大法?!** 
 重启网络，重启机器
-{% endtip %}
+{ % endtip % }
 
-{% tip success %}
+{ % tip success % }
 科学上网
-{% endtip %}
+{ % endtip % }
 
-{% tip warning faa-horizontal animated %}
+{ % tip warning faa-horizontal animated % }
 STILL SLOW
-{% endtip %}
+{ % endtip % }
 
-{% tip error faa-horizontal animated %}
+{ % tip error faa-horizontal animated % }
 ERROR: PRC fail
-{% endtip %}
+{ % endtip % }
 
 <!-- more -->
 
