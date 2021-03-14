@@ -1,46 +1,44 @@
-name: Deploy Hexo Blog
+# 文件路径 .github/workflows/deployment.yml
+name: Deployment
 
 on:
   push:
-    branches: [ source ]
-  pull_request:
-    branches: [ master ]
+    branches: [source] # only push events on source branch trigger deployment
 
 jobs:
-  build:
-
+  hexo-deployment:
     runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Shanghai
 
     steps:
-    - name: Setup Node.js
-      uses: actions/setup-node@v2.1.5
-      with: 
-        node-version: '12.x'
-    
-    - name: Setup Hexo
-      run: |
-        git config --global user.name "purplezi"
-        git config --global user.email "654762676@qq.com"
-        npm install hexo-cli -g --no-audit
-        npm install --no-audit
-    
-    - name: hexo clean and hexo g 
-      run: |
-        hexo clean
-        hexo g
+    - name: Checkout source
+      uses: actions/checkout@v2
+      with:
+        submodules: true
 
-    - name: Deploy Blog
-      env:
-        ACTION_DEPLOY_KEY: ${{ secrets.DEPLOY_BLOG }}
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+        
+    - name: Install dependencies & Generate static files
       run: |
-        # rm -rf ~/.ssh
-        # mkdir -p ~/.ssh/
-        # echo "$DEPLOY_BLOG" > ~/.ssh/id_rsa
-        # chmod 700 ~/.ssh
-        # chmod 600 ~/.ssh/id_rsa
-        # ssh-keyscan github.com >> ~/.ssh/known_hosts
-        cd ./public && git init && git add.
-        git config --global user.name purplezi
-        git config --global user.email 654762676@qq.com
-        git commit -m "Site deployed by Github Actions"
-        git push --force --quite "https://$ACTION_DEPLOY_KEY@github.com/purplezi/purplezi.github.io" master:master
+        node -v
+        npm i -g hexo-cli
+        npm i
+        sed -i '18s/imageLink/imageLink.replace(\/\![0-9]{3,}x\/,"")/' themes/next/source/js/utils.js
+        hexo clean
+        hexo g        
+    - name: Deploy to Github Pages
+      env:
+        GIT_NAME: purplezi
+        GIT_EMAIL: 654762676@qq.com
+        REPO: github.com/purplezi/purplezi.github.io
+        GH_TOKEN: ${{ secrets.DEPLOY_BLOG }}
+      run: |
+        cd ./public && git init && git add .
+        git config --global user.name $GIT_NAME
+        git config --global user.email $GIT_EMAIL
+        git commit -m "Site deployed by GitHub Actions"
+        git push --force --quiet "https://$GH_TOKEN@$REPO" master:master        
