@@ -1,5 +1,5 @@
 ---
-title: MkDocs+Github+Travis搭建博客
+title: MkDocs+Github+Travis 搭建博客
 date: 2020-03-21 12:38:41
 toc: true
 tags: 
@@ -10,8 +10,9 @@ tags:
 categories: Blogs
 ---
 
-> 最近是不是玩博客玩疯了
-> 大概逻辑：通过Travis CI部署的MkDocs环境生成静态页面并且发布到GitHub上
+最近是不是玩博客玩疯了
+
+> 大概逻辑：通过 Travis CI 部署的 MkDocs 环境生成静态页面并且发布到 GitHub 上
 > 能够通过https://xxx.github.io/<仓库名>访问
 > MkDocs 官网
 > 1. https://squidfunk.github.io/mkdocs-material/
@@ -31,7 +32,7 @@ categories: Blogs
 
 ### 安装
 
-```
+```bash
 # 查看python和pip版本
 python --version
 pip --version
@@ -44,7 +45,7 @@ pip install mkdocs-material
 
 ### 使用
 
-```
+```git
 # 创建文档库
 # xxx是目录名称 会生成docs文件夹和mkdocs.yml
 mkdocs new xxx
@@ -54,19 +55,19 @@ mkdocs serve
 mkdocs build 
 ```
 
-**至于页面的样式，看文档更改mkdocs.yml文件**
+**至于页面的样式，看文档更改 mkdocs.yml 文件**
 
-## 部署到Github
+## 部署到 Github
 
 - 将克隆下来的仓库切到`master`主分支
 - 将上述产生的`docs文件夹和mkdocs.yml`放入该git目录下
 - 自动编译并发布至`Github gh-pages`分支
-  ```
+  ```git
   mkdocs gh-deploy --clean
   # 可以 mkdocs serve 看看是否能够正常显示
   ```
 - 将本地的仓库同步远程
-  ```
+  ```git
   git add -A
   git push
   ```
@@ -79,5 +80,5 @@ mkdocs build
 
 # References
 
-- [使用MKdocs搭建个人博客并发布在Github Pages上](https://www.jianshu.com/p/b07dc1fd4f9e)
-- [基于mkdocs-material搭建个人静态博客](https://cloud.tencent.com/developer/article/1468110)
+- [使用 MKdocs 搭建个人博客并发布在 Github Pages 上](https://www.jianshu.com/p/b07dc1fd4f9e)
+- [基于 mkdocs-material 搭建个人静态博客](https://cloud.tencent.com/developer/article/1468110)

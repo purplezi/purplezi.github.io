@@ -37,9 +37,11 @@ jobs:
         # install dependencies
         npm i -g hexo-cli
         npm i
+        npm i hexo-renderer-pandoc
     - name: Deploy
       run: |
         # generate and depoly
+        hexo clean
         hexo g -d
 
     # - name: Deploy to Github Pages
