@@ -2,7 +2,7 @@ name: Deploy Hexo Blog
 
 on:
   push:
-    branches: [ master ]
+    branches: [ source ]
   pull_request:
     branches: [ master ]
 
