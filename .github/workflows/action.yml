@@ -81,7 +81,6 @@ jobs:
         node -v
         npm i -g hexo-cli
         npm i
-        sed -i '18s/imageLink/imageLink.replace(\/\![0-9]{3,}x\/,"")/' themes/butterfly/source/js/utils.js 
 
     - name: Hexo Generate 
       run: |
