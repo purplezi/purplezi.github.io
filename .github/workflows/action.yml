@@ -43,4 +43,4 @@ jobs:
         git config --global user.name purplezi
         git config --global user.email 654762676@qq.com
         git commit -m "Site deployed by Github Actions"
-      git push --force --quite "https://$ACTION_DEPLOY_KEY@github.com/purplezi/purplezi.github.io" master:master
+        git push --force --quite "https://$ACTION_DEPLOY_KEY@github.com/purplezi/purplezi.github.io" master:master
