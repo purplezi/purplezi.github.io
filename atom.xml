@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>DreamHacker</title>
+  <icon>https://purplezi.gitee.io/icon.png</icon>
+  <subtitle>DreamCracker &amp; DreamBroker</subtitle>
+  <link href="https://purplezi.gitee.io/atom.xml" rel="self"/>
+  
+  <link href="https://purplezi.gitee.io/"/>
+  <updated>2021-03-26T08:22:09.299Z</updated>
+  <id>https://purplezi.gitee.io/</id>
+  
+  <author>
+    <name>Purplezi</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://purplezi.gitee.io/2021/03/26/hello-world/"/>
+    <id>https://purplezi.gitee.io/2021/03/26/hello-world/</id>
+    <published>2021-03-26T08:22:09.299Z</published>
+    <updated>2021-03-26T08:22:09.299Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>入门 Linux</title>
+    <link href="https://purplezi.gitee.io/2021/03/19/Linux-fundamental/"/>
+    <id>https://purplezi.gitee.io/2021/03/19/Linux-fundamental/</id>
+    <published>2021-03-19T18:02:58.000Z</published>
+    <updated>2021-03-26T08:22:09.115Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Linux" scheme="https://purplezi.gitee.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>二分查找【binary search】</title>
+    <link href="https://purplezi.gitee.io/2021/03/13/binary-search/"/>
+    <id>https://purplezi.gitee.io/2021/03/13/binary-search/</id>
+    <published>2021-03-13T18:34:20.000Z</published>
+    <updated>2021-03-26T08:22:09.231Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="algorithm" scheme="https://purplezi.gitee.io/tags/algorithm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>hacker-learning</title>
+    <link href="https://purplezi.gitee.io/2021/03/12/hacker-learning/"/>
+    <id>https://purplezi.gitee.io/2021/03/12/hacker-learning/</id>
+    <published>2021-03-12T12:47:46.000Z</published>
+    <updated>2021-03-26T08:22:09.243Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="hacker" scheme="https://purplezi.gitee.io/tags/hacker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【C 语言基础】函数</title>
+    <link href="https://purplezi.gitee.io/2021/03/11/c-fundamental-function/"/>
+    <id>https://purplezi.gitee.io/2021/03/11/c-fundamental-function/</id>
+    <published>2021-03-11T12:18:16.000Z</published>
+    <updated>2021-03-26T08:22:09.231Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="C" scheme="https://purplezi.gitee.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>The road to the Spider Man!!</title>
+    <link href="https://purplezi.gitee.io/2021/03/10/spider/"/>
+    <id>https://purplezi.gitee.io/2021/03/10/spider/</id>
+    <published>2021-03-10T21:59:59.000Z</published>
+    <updated>2021-03-26T08:22:09.299Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>计算机选购</title>
+    <link href="https://purplezi.gitee.io/2021/01/19/computer/"/>
+    <id>https://purplezi.gitee.io/2021/01/19/computer/</id>
+    <published>2021-01-19T18:41:01.000Z</published>
+    <updated>2021-03-26T08:22:09.235Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>数字图像篡改取证</title>
+    <link href="https://purplezi.gitee.io/2021/01/16/digital-images-forensic/"/>
+    <id>https://purplezi.gitee.io/2021/01/16/digital-images-forensic/</id>
+    <published>2021-01-16T11:55:34.000Z</published>
+    <updated>2021-03-26T08:22:09.235Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="forensic" scheme="https://purplezi.gitee.io/tags/forensic/"/>
+    
+    <category term="cv" scheme="https://purplezi.gitee.io/tags/cv/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>icarus-一个hexo主题美化过程</title>
+    <link href="https://purplezi.gitee.io/2021/01/15/icarus/"/>
+    <id>https://purplezi.gitee.io/2021/01/15/icarus/</id>
+    <published>2021-01-15T18:43:21.000Z</published>
+    <updated>2021-03-26T08:22:09.299Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="blog" scheme="https://purplezi.gitee.io/tags/blog/"/>
+    
+    <category term="hexo" scheme="https://purplezi.gitee.io/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>白帽子讲web安全</title>
+    <link href="https://purplezi.gitee.io/2021/01/11/web-notes/"/>
+    <id>https://purplezi.gitee.io/2021/01/11/web-notes/</id>
+    <published>2021-01-11T19:33:45.000Z</published>
+    <updated>2021-03-26T08:22:09.299Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="web security" scheme="https://purplezi.gitee.io/tags/web-security/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>IP地址</title>
+    <link href="https://purplezi.gitee.io/2020/07/20/ipaddress/"/>
+    <id>https://purplezi.gitee.io/2020/07/20/ipaddress/</id>
+    <published>2020-07-20T09:25:45.000Z</published>
+    <updated>2021-03-26T08:22:09.299Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Network" scheme="https://purplezi.gitee.io/tags/Network/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>阿里云服务器(centos7系统) 使用nginx+uwsgi 部署python+flask项目</title>
+    <link href="https://purplezi.gitee.io/2020/06/21/aliyun-sfim/"/>
+    <id>https://purplezi.gitee.io/2020/06/21/aliyun-sfim/</id>
+    <published>2020-06-21T21:05:05.000Z</published>
+    <updated>2021-03-26T08:22:09.231Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Web服务器的搭建&quot;&gt;&lt;a href=&quot;#Web服务器的搭建&quot; class=&quot;headerlink&quot; title=&quot;Web服务器的搭建&quot;&gt;&lt;/a&gt;Web服务器的搭建&lt;/h1&gt;&lt;h2 id=&quot;阿里云ECS-centos7-python-flask-Nginx&quot;&gt;&lt;a href=&quot;#阿里云ECS-centos7-python-flask-Nginx&quot; class=&quot;headerlink&quot; title=&quot;阿里云ECS(centos7) + python flask + Nginx&quot;&gt;&lt;/a&gt;阿里云ECS(centos7) + python flask + Nginx&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/CHENYAoo/article/details/83055108&quot;&gt;uwsgi、wsgi和nginx的区别和关系&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/u011244708/article/details/82915006&quot;&gt;CentOS7 python2升级到python3的那些坑&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.cnblogs.com/FZfangzheng/p/7588944.html&quot;&gt;Centos7安装Python3的方法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.runoob.com/mysql/mysql-install.html&quot;&gt;Linux/UNIX 上安装 MySQL&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;选择MySQL5.7版本 8.0版本一直报错&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://my.oschina.net/u/2455518/blog/3039411&quot;&gt;CentOS7安装MySql8不能启动的问题&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/33326065/unable-to-access-mysql-after-it-automatically-generated-a-temporary-password&quot;&gt;unable-to-access-mysql-after-it-automatically-generated-a-temporary-password&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;mysql -uroot -p : 123456&lt;/li&gt;
+&lt;li&gt;mysql 修改 root 密码&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;ALTER USER ‘root’@’localhost’ IDENTIFIED BY ‘test4321’;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ERROR 1290 (HY000): The MySQL server is running with the –skip-grant-tables option so it cannot execute this statement&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/vv19910825/article/details/82979563&quot;&gt;https://blog.csdn.net/vv19910825/article/details/82979563&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ERROR 1819 (HY000): Your password does not satisfy the current policy &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/hello_world_qwp/article/details/79551789&quot;&gt;https://blog.csdn.net/hello_world_qwp/article/details/79551789&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/qq_41090453/article/details/83451321&quot;&gt;在本地端使用浏览器打开该云实例的公网地址:端口&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/61d18009b657&quot;&gt;nginx + uwsgi&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    
+    <category term="nginx" scheme="https://purplezi.gitee.io/tags/nginx/"/>
+    
+    <category term="uwsgi" scheme="https://purplezi.gitee.io/tags/uwsgi/"/>
+    
+    <category term="web server" scheme="https://purplezi.gitee.io/tags/web-server/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>软件安全中的二进制安全</title>
+    <link href="https://purplezi.gitee.io/2020/06/13/binary-safe/"/>
+    <id>https://purplezi.gitee.io/2020/06/13/binary-safe/</id>
+    <published>2020-06-13T23:18:25.000Z</published>
+    <updated>2021-03-26T08:22:09.231Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;二进制安全是整个软件安全中核心的内容&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Security" scheme="https://purplezi.gitee.io/categories/Security/"/>
+    
+    
+    <category term="Security" scheme="https://purplezi.gitee.io/tags/Security/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>XSS攻击</title>
+    <link href="https://purplezi.gitee.io/2020/06/11/xss-attack/"/>
+    <id>https://purplezi.gitee.io/2020/06/11/xss-attack/</id>
+    <published>2020-06-11T10:18:33.000Z</published>
+    <updated>2021-03-26T08:22:09.299Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;使用python内置的库开发一个基本的http服务器端&quot;&gt;&lt;a href=&quot;#使用python内置的库开发一个基本的http服务器端&quot; class=&quot;headerlink&quot; title=&quot;使用python内置的库开发一个基本的http服务器端&quot;&gt;&lt;/a&gt;使用python内置的库开发一个基本的http服务器端&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#%E8%AE%B2%E8%A7%A3%E4%BB%A3%E7%A0%81&quot;&gt;测试代码&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;使用python原生的cgi和http.server两个库运行的一个简单的http服务器程序&lt;ul&gt;
+&lt;li&gt;因为没有使用第三方库，所有不需要使用pip安装依赖&lt;/li&gt;
+&lt;li&gt;运行比较简单&lt;/li&gt;
+&lt;li&gt;公共网关接口（Common Gateway Interface，CGI）是Web 服务器运行时外部程序的规范，按 CGI 编写的程序可以扩展服务器功能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    
+    <category term="xss" scheme="https://purplezi.gitee.io/tags/xss/"/>
+    
+    <category term="security" scheme="https://purplezi.gitee.io/tags/security/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>软件安全概述</title>
+    <link href="https://purplezi.gitee.io/2020/06/09/Software-Security/"/>
+    <id>https://purplezi.gitee.io/2020/06/09/Software-Security/</id>
+    <published>2020-06-09T10:13:05.000Z</published>
+    <updated>2021-03-26T08:22:09.231Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;三大软件安全问题&quot;&gt;&lt;a href=&quot;#三大软件安全问题&quot; class=&quot;headerlink&quot; title=&quot;三大软件安全问题&quot;&gt;&lt;/a&gt;三大软件安全问题&lt;/h1&gt;&lt;h2 id=&quot;有什么安全问题，安全问题产生的原因&quot;&gt;&lt;a href=&quot;#有什么安全问题，安全问题产生的原因&quot; class=&quot;headerlink&quot; title=&quot;有什么安全问题，安全问题产生的原因&quot;&gt;&lt;/a&gt;有什么安全问题，安全问题产生的原因&lt;/h2&gt;&lt;h3 id=&quot;二进制方面&quot;&gt;&lt;a href=&quot;#二进制方面&quot; class=&quot;headerlink&quot; title=&quot;二进制方面&quot;&gt;&lt;/a&gt;二进制方面&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;内存相关问题&lt;ul&gt;
+&lt;li&gt;有明确的机制&lt;/li&gt;
+&lt;li&gt;例子：&lt;strong&gt;缓冲区溢出&lt;/strong&gt;，空指针，格式化字符串&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;逻辑错误问题&lt;ul&gt;
+&lt;li&gt;多种多样&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;Web方面&quot;&gt;&lt;a href=&quot;#Web方面&quot; class=&quot;headerlink&quot; title=&quot;Web方面&quot;&gt;&lt;/a&gt;Web方面&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;典型安全问题&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;XSS&lt;/strong&gt;，&lt;strong&gt;SQL&lt;/strong&gt;注入&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;非典型安全问题：很多&lt;ul&gt;
+&lt;li&gt;主要是一些代码的逻辑错误，每个漏洞都可能有不同的原理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    
+    
+    
+    <category term="Security" scheme="https://purplezi.gitee.io/categories/Security/"/>
+    
+    
+    <category term="Security" scheme="https://purplezi.gitee.io/tags/Security/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>NoSQL数据库系统Hadoop-Hbase安装配置(伪分布模式)与简单使用</title>
+    <link href="https://purplezi.gitee.io/2020/05/15/Hadoop-Hbase/"/>
+    <id>https://purplezi.gitee.io/2020/05/15/Hadoop-Hbase/</id>
+    <published>2020-05-15T17:32:27.000Z</published>
+    <updated>2021-03-26T08:22:09.103Z</updated>
+    
+    
+    <summary type="html">&lt;style&gt;
+  /* 设置整个页面的字体 */
+  html, body, .markdown-body {
+    font-family: Georgia, sans, serif;
+    font-size: 15px;
+  }
+
+  /* 只设置 markdown 字体 */
+  .markdown-body {
+    font-family: Georgia, sans, serif;
+    font-size: 15px;
+  }
+&lt;/style&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Hbase是一种NoSQL数据库，这意味着它不像传统的RDBMS(关系数据库管理系统 Relational Database Management System)数据库那样支持SQL作为查询语言&lt;/li&gt;
+&lt;li&gt;Hbase是一种分布式存储的数据库，技术上来讲，它更像是分布式存储而不是分布式数据库&lt;/li&gt;
+&lt;li&gt;数据库量要足够多，如果有十亿及百亿行数据，那么Hbase是一个很好的选项，如果只有几百万行甚至不到的数据量，RDBMS是一个很好的选择。因为数据量小的话，真正能工作的机器量少，剩余的机器都处于空闲的状态&lt;/li&gt;
+&lt;li&gt;保证硬件资源足够，每个HDFS集群在少于5个节点的时候，都不能表现的很好。因为HDFS默认的复制数量是3，再加上一个NameNode&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    <category term="DataBase" scheme="https://purplezi.gitee.io/categories/DataBase/"/>
+    
+    
+    <category term="Hadoop" scheme="https://purplezi.gitee.io/tags/Hadoop/"/>
+    
+    <category term="Hbase" scheme="https://purplezi.gitee.io/tags/Hbase/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Number Theory</title>
+    <link href="https://purplezi.gitee.io/2020/04/12/Number-Theory/"/>
+    <id>https://purplezi.gitee.io/2020/04/12/Number-Theory/</id>
+    <published>2020-04-12T23:52:12.000Z</published>
+    <updated>2021-03-26T08:22:09.231Z</updated>
+    
+    
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;质数&lt;/li&gt;
+&lt;li&gt;因子分解&lt;/li&gt;
+&lt;li&gt;欧拉降幂&lt;/li&gt;
+&lt;li&gt;RAS&lt;/li&gt;
+&lt;li&gt;拓展中国剩余定理&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    <category term="ACM" scheme="https://purplezi.gitee.io/categories/ACM/"/>
+    
+    
+    <category term="数论" scheme="https://purplezi.gitee.io/tags/%E6%95%B0%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>部署MySQL Cluster集群系统</title>
+    <link href="https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/"/>
+    <id>https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/</id>
+    <published>2020-03-25T11:31:59.000Z</published>
+    <updated>2021-03-26T08:22:09.115Z</updated>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;MySQL Cluster is a technology providing &lt;strong&gt;shared-nothing&lt;/strong&gt; clustering and auto-sharding for the MySQL database management system.&lt;br&gt;It is designed to provide high availability and high throughput with low latency, while allowing for near linear scalability&lt;br&gt;A MySQL Cluster consists of one or more management nodes (ndb_mgmd) that store the cluster’s configuration and control the data nodes (ndbd), where cluster data is stored.&lt;br&gt;After communicating with the management node, clients (MySQL clients, servers, or native APIs) connect directly to these data nodes.&lt;br&gt;With MySQL Cluster there is typically no replication of data, but instead data node synchronization. For this purpose a special data engine must be used — NDBCluster (NDB)&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="DataBase" scheme="https://purplezi.gitee.io/categories/DataBase/"/>
+    
+    
+    <category term="mysql" scheme="https://purplezi.gitee.io/tags/mysql/"/>
+    
+    <category term="Cluster" scheme="https://purplezi.gitee.io/tags/Cluster/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Git 学习之路</title>
+    <link href="https://purplezi.gitee.io/2020/03/21/Windows-git-clone-slow/"/>
+    <id>https://purplezi.gitee.io/2020/03/21/Windows-git-clone-slow/</id>
+    <published>2020-03-21T12:40:38.000Z</published>
+    <updated>2021-03-26T08:22:09.231Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;learning-git：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://link.zhihu.com/?target=http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/&quot;&gt;https://link.zhihu.com/?target=http%3A//www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.zhihu.com/search?type=content&amp;amp;q=git%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B&quot;&gt;https://www.zhihu.com/search?type=content&amp;amp;q=git%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;Windows-下-git-clone-慢的尝试解决方法&quot;&gt;&lt;a href=&quot;#Windows-下-git-clone-慢的尝试解决方法&quot; class=&quot;headerlink&quot; title=&quot;Windows 下 git clone 慢的尝试解决方法&quot;&gt;&lt;/a&gt;Windows 下 git clone 慢的尝试解决方法&lt;/h1&gt;&lt;div class=&quot;tip success&quot;&gt;&lt;p&gt;&lt;strong&gt;重启大法?!&lt;/strong&gt;&lt;br&gt;重启网络，重启机器&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;tip success&quot;&gt;&lt;p&gt;科学上网&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;tip warning faa-horizontal animated&quot;&gt;&lt;p&gt;STILL SLOW&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;tip error faa-horizontal animated&quot;&gt;&lt;p&gt;ERROR: PRC fail&lt;/p&gt;
+&lt;/div&gt;</summary>
+    
+    
+    
+    <category term="git" scheme="https://purplezi.gitee.io/categories/git/"/>
+    
+    
+    <category term="git" scheme="https://purplezi.gitee.io/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MkDocs+Github+Travis搭建博客</title>
+    <link href="https://purplezi.gitee.io/2020/03/21/MkDocs-Github-Travis/"/>
+    <id>https://purplezi.gitee.io/2020/03/21/MkDocs-Github-Travis/</id>
+    <published>2020-03-21T12:38:41.000Z</published>
+    <updated>2021-03-26T08:22:09.115Z</updated>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;最近是不是玩博客玩疯了&lt;br&gt;大概逻辑：通过Travis CI部署的MkDocs环境生成静态页面并且发布到GitHub上&lt;br&gt;能够通过&lt;a href=&quot;https://xxx.github.io/&quot;&gt;https://xxx.github.io/&lt;/a&gt;&amp;lt;仓库名&amp;gt;访问&lt;br&gt;MkDocs 官网&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://squidfunk.github.io/mkdocs-material/&quot;&gt;https://squidfunk.github.io/mkdocs-material/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.mkdocs.org/&quot;&gt;https://www.mkdocs.org/&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Travis 官网 &lt;a href=&quot;https://travis-ci.org/&quot;&gt;https://travis-ci.org&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="Blogs" scheme="https://purplezi.gitee.io/categories/Blogs/"/>
+    
+    
+    <category term="blog" scheme="https://purplezi.gitee.io/tags/blog/"/>
+    
+    <category term="MkDocs" scheme="https://purplezi.gitee.io/tags/MkDocs/"/>
+    
+    <category term="github" scheme="https://purplezi.gitee.io/tags/github/"/>
+    
+    <category term="Travis" scheme="https://purplezi.gitee.io/tags/Travis/"/>
+    
+  </entry>
+  
+</feed>
