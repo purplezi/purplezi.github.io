@@ -1,0 +1,278 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>XSS攻击 | DreamHacker</title><meta name="keywords" content="xss,security"><meta name="author" content="Purplezi"><meta name="copyright" content="Purplezi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="使用python内置的库开发一个基本的http服务器端 测试代码 使用python原生的cgi和http.server两个库运行的一个简单的http服务器程序 因为没有使用第三方库，所有不需要使用pip安装依赖 运行比较简单 公共网关接口（Common Gateway Interface，CGI）是Web 服务器运行时外部程序的规范，按 CGI 编写的程序可以扩展服务器功能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XSS攻击">
+<meta property="og:url" content="https://purplezi.gitee.io/2020/06/11/xss-attack/index.html">
+<meta property="og:site_name" content="DreamHacker">
+<meta property="og:description" content="使用python内置的库开发一个基本的http服务器端 测试代码 使用python原生的cgi和http.server两个库运行的一个简单的http服务器程序 因为没有使用第三方库，所有不需要使用pip安装依赖 运行比较简单 公共网关接口（Common Gateway Interface，CGI）是Web 服务器运行时外部程序的规范，按 CGI 编写的程序可以扩展服务器功能">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://purplezi.gitee.io/img/bg2.jpg">
+<meta property="article:published_time" content="2020-06-11T10:18:33.000Z">
+<meta property="article:modified_time" content="2021-03-26T05:54:47.464Z">
+<meta property="article:author" content="Purplezi">
+<meta property="article:tag" content="xss">
+<meta property="article:tag" content="security">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://purplezi.gitee.io/img/bg2.jpg"><link rel="shortcut icon" href="/img/icon1.png"><link rel="canonical" href="https://purplezi.gitee.io/2020/06/11/xss-attack/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-26 05:54:47'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/l-lin/font-awesome-animation/dist/font-awesome-animation.min.css"  media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 5.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">21</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> Books</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li><li><a class="site-page" href="/photos/"><i class="fa-fw fas fa-images"></i><span> Photo</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg2.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DreamHacker</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> Books</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li><li><a class="site-page" href="/photos/"><i class="fa-fw fas fa-images"></i><span> Photo</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">XSS攻击</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-06-11T10:18:33.000Z" title="Created 2020-06-11 10:18:33">2020-06-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-26T05:54:47.464Z" title="Updated 2021-03-26 05:54:47">2021-03-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="使用python内置的库开发一个基本的http服务器端"><a href="#使用python内置的库开发一个基本的http服务器端" class="headerlink" title="使用python内置的库开发一个基本的http服务器端"></a>使用python内置的库开发一个基本的http服务器端</h1><ul>
+<li><a href="#%E8%AE%B2%E8%A7%A3%E4%BB%A3%E7%A0%81">测试代码</a></li>
+<li>使用python原生的cgi和http.server两个库运行的一个简单的http服务器程序<ul>
+<li>因为没有使用第三方库，所有不需要使用pip安装依赖</li>
+<li>运行比较简单</li>
+<li>公共网关接口（Common Gateway Interface，CGI）是Web 服务器运行时外部程序的规范，按 CGI 编写的程序可以扩展服务器功能</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="讲解代码"><a href="#讲解代码" class="headerlink" title="讲解代码"></a>讲解代码</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> cgi</span><br><span class="line"><span class="keyword">from</span> http.server <span class="keyword">import</span> HTTPServer, BaseHTTPRequestHandler</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyHTTPRequestHandler</span>(<span class="params">BaseHTTPRequestHandler</span>):</span></span><br><span class="line">    field_name = <span class="string">&#x27;a&#x27;</span></span><br><span class="line">    form_html = \</span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        &lt;html&gt;</span></span><br><span class="line"><span class="string">        &lt;body&gt;</span></span><br><span class="line"><span class="string">        &lt;form method=&#x27;post&#x27; enctype=&#x27;multipart/form-data&#x27;&gt;</span></span><br><span class="line"><span class="string">        &lt;input type=&#x27;text&#x27; name=&#x27;%s&#x27;&gt;</span></span><br><span class="line"><span class="string">        &lt;input type=&#x27;submit&#x27;&gt;</span></span><br><span class="line"><span class="string">        &lt;/form&gt;</span></span><br><span class="line"><span class="string">        &lt;/body&gt;</span></span><br><span class="line"><span class="string">        &lt;/html&gt;</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span> % field_name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_GET</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.send_response(<span class="number">200</span>)</span><br><span class="line">        self.send_header(<span class="string">&quot;Content-type&quot;</span>, <span class="string">&quot;text/html&quot;</span>)</span><br><span class="line">        self.end_headers()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            file = <span class="built_in">open</span>(<span class="string">&quot;.&quot;</span>+self.path, <span class="string">&quot;rb&quot;</span>)</span><br><span class="line">        <span class="keyword">except</span> FileNotFoundError <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">            self.wfile.write(self.form_html.encode())</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            content = file.read()</span><br><span class="line">            self.wfile.write(content)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_POST</span>(<span class="params">self</span>):</span></span><br><span class="line">        form_data = cgi.FieldStorage(</span><br><span class="line">            fp=self.rfile,</span><br><span class="line">            headers=self.headers,</span><br><span class="line">            environ=&#123;</span><br><span class="line">                <span class="string">&#x27;REQUEST_METHOD&#x27;</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;CONTENT_TYPE&#x27;</span>: self.headers[<span class="string">&#x27;Content-Type&#x27;</span>],</span><br><span class="line">            &#125;)</span><br><span class="line">        fields = form_data.keys()</span><br><span class="line">        <span class="keyword">if</span> self.field_name <span class="keyword">in</span> fields:</span><br><span class="line">            input_data = form_data[self.field_name].value</span><br><span class="line">            file = <span class="built_in">open</span>(<span class="string">&quot;.&quot;</span>+self.path, <span class="string">&quot;wb&quot;</span>)</span><br><span class="line">            file.write(input_data.encode())</span><br><span class="line"></span><br><span class="line">        self.send_response(<span class="number">200</span>)</span><br><span class="line">        self.send_header(<span class="string">&quot;Content-type&quot;</span>, <span class="string">&quot;text/html&quot;</span>)</span><br><span class="line">        self.end_headers()</span><br><span class="line">        self.wfile.write(<span class="string">b&quot;&lt;html&gt;&lt;body&gt;OK&lt;/body&gt;&lt;/html&gt;&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyHTTPServer</span>(<span class="params">HTTPServer</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, host, port</span>):</span></span><br><span class="line">        print(<span class="string">&quot;run app server by python!&quot;</span>)</span><br><span class="line">        HTTPServer.__init__(self,  (host, port), MyHTTPRequestHandler)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="string">&#x27;__main__&#x27;</span> == __name__:</span><br><span class="line">    server_ip = <span class="string">&quot;0.0.0.0&quot;</span></span><br><span class="line">    server_port = <span class="number">8080</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) == <span class="number">2</span>:</span><br><span class="line">        server_port = <span class="built_in">int</span>(sys.argv[<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) == <span class="number">3</span>:</span><br><span class="line">        server_ip = sys.argv[<span class="number">1</span>]</span><br><span class="line">        server_port = <span class="built_in">int</span>(sys.argv[<span class="number">2</span>])</span><br><span class="line">    print(<span class="string">&quot;App server is running on http://%s:%s &quot;</span> % (server_ip, server_port))</span><br><span class="line"></span><br><span class="line">    server = MyHTTPServer(server_ip, server_port)</span><br><span class="line">    server.serve_forever()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="运行代码"><a href="#运行代码" class="headerlink" title="运行代码"></a>运行代码</h3><ul>
+<li>使用<code>python httpserver.py</code>或者<code>py httpserver.py</code><ul>
+<li>使用vscode调试代码，在同目录下会自动生成一个<code>.vscode</code>的目录，目录下生成<code>launch.json</code>文件，配置如下<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 使用 IntelliSense 了解相关属性。 </span></span><br><span class="line">    <span class="comment">// 悬停以查看现有属性的描述。</span></span><br><span class="line">    <span class="comment">// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;0.2.0&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Python: 当前文件&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;python&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;request&quot;</span>: <span class="string">&quot;launch&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;program&quot;</span>: <span class="string">&quot;$&#123;file&#125;&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;console&quot;</span>: <span class="string">&quot;integratedTerminal&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>在浏览器的访问网址为<code>127.0.0.1:8080/a.html</code><img src="a-html.png" width=50%></li>
+</ul>
+<h3 id="主要的父类与子类"><a href="#主要的父类与子类" class="headerlink" title="主要的父类与子类"></a>主要的父类与子类</h3><h4 id="http-methods"><a href="#http-methods" class="headerlink" title="http methods"></a>http methods</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods">http请求下的多种methods</a><ul>
+<li>通常使用得最多的，是 GET 和 POST</li>
+<li>直接在浏览器中输入链接，浏览器拿到地址以后，默认是采用 GET 方式向服务器发送请求，GET 方式最常见。</li>
+<li>表单使用的 post 方法提交数据 <code>&lt;form method=&#39;post&#39; enctype=&#39;multipart/form-data&#39;&gt;</code></li>
+<li>通常来说，从服务器获取数据，使用 get 方法，向服务器提交数据，使用 post 方法</li>
+<li>其他的方法，在现在的web应用程序中，用到的很少</li>
+</ul>
+</li>
+</ul>
+<h4 id="MyHTTPServer类"><a href="#MyHTTPServer类" class="headerlink" title="MyHTTPServer类"></a>MyHTTPServer类</h4><ul>
+<li><p>MyHTTPServer类，是继承自原生的HTTPServer，重写 init 函数，增加了打印输出语言</p>
+</li>
+<li><p>然后直接调用父类 HTTPServer 的 init 函数传递了服务器运行需要的地址、端口等参数，我们的监听地址和端口是 0.0.0.0:8080</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyHTTPServer</span>(<span class="params">HTTPServer</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, host, port</span>):</span></span><br><span class="line">        print(<span class="string">&quot;run app server by python!&quot;</span>)</span><br><span class="line">        HTTPServer.__init__(self,  (host, port), MyHTTPRequestHandler)</span><br></pre></td></tr></table></figure>
+<h4 id="MyHTTPRequestHandler"><a href="#MyHTTPRequestHandler" class="headerlink" title="MyHTTPRequestHandler"></a>MyHTTPRequestHandler</h4></li>
+<li><p>MyHTTPRequestHandler 类，这个是 HTTPServer 的回调，用来处理到达的请求，也就是 0.0.0.0:8080 上有任何的 HTTP 请求到达时，都会调用 MyHTTPRequestHandler来处理</p>
+<ul>
+<li>MyHTTPRequestHandler 直接继承自 BaseHTTPRequestHandler</li>
+<li>重写了父类的 do_GET和do_POST两个方法</li>
+<li>这个HTTP请求的处理类是整个代码的主体，也是出问题的地方</li>
+<li>在 python 的 BaseHTTPRequestHandler 类中 ，do_XXX函数，就是处理对应的客户端请求的函数。代码指定了 MyHTTPRequestHandler 来处理 http 请求，那么当用 GET 方法请求，就会调用 do_GET，POST 方法请求，就会调用 do_POST函数</li>
+<li>浏览器所发送的数据包里包括请求类型， 在 http 的 headers里，会说明方法。</li>
+<li>这是python最基本的http 服务器的方式</li>
+</ul>
+</li>
+</ul>
+<h3 id="其他处理"><a href="#其他处理" class="headerlink" title="其他处理"></a>其他处理</h3><ul>
+<li>通常，一个静态的http服务器，这里的路径就是 http 服务器根目录下的文件，动态服务器可能是文件和参数，或者是对应其他服务器后台的处理过程<ul>
+<li>self.path 是这个请求的路径</li>
+<li>例如 <a target="_blank" rel="noopener" href="http://127.0.0.1:8080/a.html">http://127.0.0.1:8080/a.html</a> 。其中 <a href="http://127.0.0.1:8080是协议服务器地址和端口。/a.html就是路径">http://127.0.0.1:8080是协议服务器地址和端口。/a.html就是路径</a></li>
+<li>例如 <a target="_blank" rel="noopener" href="http://127.0.0.1:8080/a.php?p1=x">http://127.0.0.1:8080/a.php?p1=x</a> 。指定由 a.php 来处理这个请求，参数是 p1=x 。问号后面是参数，可以有多个</li>
+</ul>
+</li>
+<li>一般来说，如果读的文件不存在，应该返回404<ul>
+<li>self.send_response(200) 按照协议应该是404</li>
+<li>则这里的处理为 如果指定的文件不存在，还是返回200，表示请求路径是正确的，可以处理，然后返回一个默认的页面。这个页面是 form_html的变量，在FileNotFoundError异常处理过程中写回</li>
+<li>self.wfile 和 self.rfile 对应 http 响应和请求的 body 部分</li>
+</ul>
+</li>
+<li>GET处理完成以后，浏览器就拿到了 200 状态的  “Content-type” 为 “text/html” 的 form_html</li>
+<li>在浏览器刷新是重复上一次的POST请求，所以会提示是否要重新提交表单</li>
+</ul>
+<h3 id="调试运行"><a href="#调试运行" class="headerlink" title="调试运行"></a>调试运行</h3><ul>
+<li>在 def do_GET 下断点，刷新浏览器，代码就会断点命中中断。</li>
+<li>结合浏览器，抓包看看 http 请求和响应的数据格式 （用抓包器或者浏览器的调试模式观察）</li>
+</ul>
+<h4 id="浏览器调试模式"><a href="#浏览器调试模式" class="headerlink" title="浏览器调试模式"></a>浏览器调试模式</h4><ul>
+<li><p>打开浏览器的调试模式(chrome &gt; 菜单 &gt; 更多工具 &gt; 开发者工具)</p>
+</li>
+<li><p>在sources这个标签下看到服务器向浏览器返回的数据，即 form_html 变量</p>
+<ul>
+<li><p>这一段 html 浏览器渲染出来，就是那个带一个编辑框的表单- 表单指定了使用post方式向服务器提交数据</p>
+<img src="sourcetab.png"></li>
+</ul>
+</li>
+<li><p>在network tab里可以看到完整的请求响应过程</p>
+<img src="networktab.png">
+
+<ul>
+<li>完整的网络数据，其中 header 里就说了 GET 或者 POST 、返回的状态码200等等<img src="headers.png"></li>
+</ul>
+</li>
+<li><p>在表单中填入数据，点提交按钮，然后服务器的 do_POST 函数被调用。通过 cgi.FieldStorage解析了客户端提交的请求，原始的请求的头部在self.headers。body部分在self.rfile。解析完成以后放到 form_data变量里，其中 form_data[‘field_name’].value 是在编辑框中填入的数据</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line">form_data = cgi.FieldStorage(</span><br><span class="line">          fp=self.rfile,</span><br><span class="line">          headers=self.headers,</span><br><span class="line">          environ=&#123;</span><br><span class="line">              <span class="string">&#x27;REQUEST_METHOD&#x27;</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">              <span class="string">&#x27;CONTENT_TYPE&#x27;</span>: self.headers[<span class="string">&#x27;Content-Type&#x27;</span>],</span><br><span class="line">          &#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3></li>
+<li><p>通常，一个服务器会根据业务逻辑处理用户提交的数据，比如用户发表的商品评论，比如在线教学系统中填入的作业一般会写入数据库。但是这些数据，在某些情况下又会被显示出来，比如其他用户查看别人的商品评论的时候，比如老师查看学生的作业时。</p>
+</li>
+<li><p>为了模拟这个过程，简化了一下，没有用户系统，也没有数据库，直接写入了 path 对应的文件。</p>
+</li>
+<li><p>处理用户提交，写入文件</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line">fields = form_data.keys()</span><br><span class="line"><span class="keyword">if</span> self.field_name <span class="keyword">in</span> fields:</span><br><span class="line">    input_data = form_data[self.field_name].value</span><br><span class="line">    file = <span class="built_in">open</span>(<span class="string">&quot;.&quot;</span>+self.path, <span class="string">&quot;wb&quot;</span>)</span><br><span class="line">    file.write(input_data.encode())</span><br></pre></td></tr></table></figure>
+<ul>
+<li>fields = form_data.keys()是获取表单中的键值对，因此使用.value得到输入的值：这里获得是对应的是form中input的name <code>&lt;input type=&#39;text&#39; name=&#39;%s&#39;&gt;</code></li>
+<li>表单以变量名变量值的方式组织，input的name相当于变量名，填入的数据就是变量值</li>
+<li>python的cgi.FieldStorage将form组织为python的dict数据类型，所以可以通过  form_data[‘field_name’].value 获得所填入的数据</li>
+</ul>
+</li>
+<li><p>如果写入成功，就返回一个 200 状态的 OK </p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line">self.send_response(<span class="number">200</span>)</span><br><span class="line">self.send_header(<span class="string">&quot;Content-type&quot;</span>, <span class="string">&quot;text/html&quot;</span>)</span><br><span class="line">self.end_headers()</span><br><span class="line">self.wfile.write(<span class="string">b&quot;&lt;html&gt;&lt;body&gt;OK&lt;/body&gt;&lt;/html&gt;&quot;</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="漏洞"><a href="#漏洞" class="headerlink" title="漏洞"></a>漏洞</h2><ul>
+<li><p>如果向网页中填入了 123 ，那么123被写入了a.html文件。执行完成后，同目录下会多一个a.html，内容为123。然后下次再访问 <a target="_blank" rel="noopener" href="http://127.0.0.1:8080/a.html">http://127.0.0.1:8080/a.html</a> 时，在浏览器地址栏里回车。由于这个时候a.html已经存在了，所以是运行的部分是</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    content = file.read()</span><br><span class="line">    self.wfile.write(content)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>会直接把文件内容会写给浏览器</li>
+<li>这里是在简化模拟用户提交数据 &gt; 存入数据 &gt; 其他用户获取这个数据的过程</li>
+</ul>
+<img src="httpserver1.gif"></li>
+<li><p>XSS漏洞</p>
+<ul>
+<li><p>再访问一个不存在的页面，比如b.html，又会出现那个默认的form。这时输入<code>&lt;html&gt;&lt;body&gt;&lt;script&gt;alert(&#39;XSS&#39;)&lt;/script&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</code>，然后在访问b.html的时候，整个页面被载入 script 在浏览器上执行，也就是<strong>用户提交的数据被执行了</strong></p>
+<img src="httpserver-xss.gif"></li>
+<li><p>重新开一个页面，在c.html中填入<code>&lt;html&gt;&lt;body&gt;&lt;script&gt;window.location.href=&#39;http://by.cuc.edu.cn&#39;&lt;/script&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</code>。下次再访问c.html的时候。页面跳转了。<code>window.location.href=&#39;http://by.cuc.edu.cn&#39;</code> 这段脚本的功能是实现了跳转</p>
+</li>
+</ul>
+</li>
+<li><p>理论上，任何的js都是可以被执行的。js可以实现非常丰富的功能。比如可以骗取用户扫码、支付，实际到黑客的账户。如果是没有基本防御措施的网站，这段会被放进服务器数据库里，然后别人提交了数据就自动跳转到这个网站。比如有一个商品A，用户在评论里输入了一段js代码。如果服务器不做处理直接保存。后面的用户访问商品A、看评论，前一个用户输入的代码就会在其他用户的页面上执行。</p>
+</li>
+</ul>
+<h3 id="Furthermore"><a href="#Furthermore" class="headerlink" title="Furthermore"></a>Furthermore</h3><ul>
+<li><p>如果大家在浏览器中访问 <a target="_blank" rel="noopener" href="http://127.0.0.1:8080/httpserver.py">http://127.0.0.1:8080/httpserver.py</a> ，则在sources中显示全部完整的源代码。由于服务器没有做任何过滤，只要是存在的文件，就发送给客户端</p>
+<ul>
+<li>现在黑客可以知道我整个后台的逻辑了。</li>
+<li>如果还有一些配置文件，比如数据库地址和访问口令等。那就更严重了</li>
+<li>更严重的是，黑客甚至可以注入后端代码。由于我们是回写到文件，可以构造一个http post请求，把httpserver.py文件改写了。但是构造这个请求用浏览器就不行了，需要采用curl等更基础的工具裸写post请求发送给服务器的</li>
+</ul>
+</li>
+<li><p>在调试工具的 elements tab，由于后台只处理名为a的表单项写入文件，所以我们需要把input的把 name=”%s” 改为 name=”a” 再提交。改为以后，同时在提交框中输入‘hahaha’提交。此时httpserver.py，它变为’hahaha’，只是注入一个hahaha 服务器就挂了，再也跑不起来了。</p>
+<img src="httpserver-xss3.gif"></li>
+<li><p>所以，这是一个及其简单，但是漏洞百出的web服务器。这就是不做任何过滤，直接写入数据的危害。</p>
+</li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods">http methods</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Purplezi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://purplezi.gitee.io/2020/06/11/xss-attack/">https://purplezi.gitee.io/2020/06/11/xss-attack/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/xss/">xss</a><a class="post-meta__tags" href="/tags/security/">security</a></div><div class="post_share"><div class="social-share" data-image="/img/bg2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/06/13/binary-safe/"><img class="prev-cover" src="/img/bg2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">软件安全中的二进制安全</div></div></a></div><div class="next-post pull-right"><a href="/2020/06/09/Software-Security/"><img class="next-cover" src="/img/bg2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">软件安全概述</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Purplezi</div><div class="author-info__description">DreamCreator & DreamLoser</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">21</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8python%E5%86%85%E7%BD%AE%E7%9A%84%E5%BA%93%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E5%9F%BA%E6%9C%AC%E7%9A%84http%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF"><span class="toc-number">1.</span> <span class="toc-text">使用python内置的库开发一个基本的http服务器端</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%B2%E8%A7%A3%E4%BB%A3%E7%A0%81"><span class="toc-number">1.1.</span> <span class="toc-text">讲解代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E4%BB%A3%E7%A0%81"><span class="toc-number">1.1.1.</span> <span class="toc-text">运行代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E7%9A%84%E7%88%B6%E7%B1%BB%E4%B8%8E%E5%AD%90%E7%B1%BB"><span class="toc-number">1.1.2.</span> <span class="toc-text">主要的父类与子类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#http-methods"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">http methods</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MyHTTPServer%E7%B1%BB"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">MyHTTPServer类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MyHTTPRequestHandler"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">MyHTTPRequestHandler</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%A4%84%E7%90%86"><span class="toc-number">1.1.3.</span> <span class="toc-text">其他处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E8%AF%95%E8%BF%90%E8%A1%8C"><span class="toc-number">1.1.4.</span> <span class="toc-text">调试运行</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B0%83%E8%AF%95%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.1.4.1.</span> <span class="toc-text">浏览器调试模式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.1.5.</span> <span class="toc-text">使用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text">漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Furthermore"><span class="toc-number">1.2.1.</span> <span class="toc-text">Furthermore</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.3.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/03/26/hello-world/" title="Hello World"><img src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2021/03/26/hello-world/" title="Hello World">Hello World</a><time datetime="2021-03-26T05:54:47.464Z" title="Created 2021-03-26 05:54:47">2021-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/19/Linux-fundamental/" title="入门 Linux"><img src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="入门 Linux"/></a><div class="content"><a class="title" href="/2021/03/19/Linux-fundamental/" title="入门 Linux">入门 Linux</a><time datetime="2021-03-19T18:02:58.000Z" title="Created 2021-03-19 18:02:58">2021-03-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/13/binary-search/" title="二分查找【binary search】"><img src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二分查找【binary search】"/></a><div class="content"><a class="title" href="/2021/03/13/binary-search/" title="二分查找【binary search】">二分查找【binary search】</a><time datetime="2021-03-13T18:34:20.000Z" title="Created 2021-03-13 18:34:20">2021-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/12/hacker-learning/" title="hacker-learning"><img src="https://w.wallhaven.cc/full/j8/wallhaven-j8lkxw.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hacker-learning"/></a><div class="content"><a class="title" href="/2021/03/12/hacker-learning/" title="hacker-learning">hacker-learning</a><time datetime="2021-03-12T12:47:46.000Z" title="Created 2021-03-12 12:47:46">2021-03-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/11/c-fundamental-function/" title="【C 语言基础】函数"><img src="https://w.wallhaven.cc/full/e7/wallhaven-e7z65r.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【C 语言基础】函数"/></a><div class="content"><a class="title" href="/2021/03/11/c-fundamental-function/" title="【C 语言基础】函数">【C 语言基础】函数</a><time datetime="2021-03-11T12:18:16.000Z" title="Created 2021-03-11 12:18:16">2021-03-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Purplezi</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="/js/randombg.js"></script><script defer src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/hexo-theme-volantis@latest/source/js/issues.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

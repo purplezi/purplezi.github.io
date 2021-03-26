@@ -1,0 +1,467 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NoSQL数据库系统Hadoop-Hbase安装配置(伪分布模式)与简单使用 | DreamHacker</title><meta name="keywords" content="Hadoop,Hbase"><meta name="author" content="Purplezi"><meta name="copyright" content="Purplezi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="&#x2F;* 设置整个页面的字体 *&#x2F;   html, body, .markdown-body {     font-family: Georgia, sans, serif;     font-size: 15px;   }    &#x2F;* 只设置 markdown 字体 *&#x2F;   .markdown-body {     font-family: Georgia, sans, serif;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NoSQL数据库系统Hadoop-Hbase安装配置(伪分布模式)与简单使用">
+<meta property="og:url" content="https://purplezi.gitee.io/2020/05/15/Hadoop-Hbase/index.html">
+<meta property="og:site_name" content="DreamHacker">
+<meta property="og:description" content="&#x2F;* 设置整个页面的字体 *&#x2F;   html, body, .markdown-body {     font-family: Georgia, sans, serif;     font-size: 15px;   }    &#x2F;* 只设置 markdown 字体 *&#x2F;   .markdown-body {     font-family: Georgia, sans, serif;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://purplezi.gitee.io/img/bg2.jpg">
+<meta property="article:published_time" content="2020-05-15T17:32:27.000Z">
+<meta property="article:modified_time" content="2021-03-26T05:54:47.272Z">
+<meta property="article:author" content="Purplezi">
+<meta property="article:tag" content="Hadoop">
+<meta property="article:tag" content="Hbase">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://purplezi.gitee.io/img/bg2.jpg"><link rel="shortcut icon" href="/img/icon1.png"><link rel="canonical" href="https://purplezi.gitee.io/2020/05/15/Hadoop-Hbase/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-26 05:54:47'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/l-lin/font-awesome-animation/dist/font-awesome-animation.min.css"  media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 5.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">21</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> Books</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li><li><a class="site-page" href="/photos/"><i class="fa-fw fas fa-images"></i><span> Photo</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg2.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DreamHacker</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> Books</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li><li><a class="site-page" href="/photos/"><i class="fa-fw fas fa-images"></i><span> Photo</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">NoSQL数据库系统Hadoop-Hbase安装配置(伪分布模式)与简单使用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-05-15T17:32:27.000Z" title="Created 2020-05-15 17:32:27">2020-05-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-26T05:54:47.272Z" title="Updated 2021-03-26 05:54:47">2021-03-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/DataBase/">DataBase</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><style>
+  /* 设置整个页面的字体 */
+  html, body, .markdown-body {
+    font-family: Georgia, sans, serif;
+    font-size: 15px;
+  }
+
+  /* 只设置 markdown 字体 */
+  .markdown-body {
+    font-family: Georgia, sans, serif;
+    font-size: 15px;
+  }
+</style>
+
+<ul>
+<li>Hbase是一种NoSQL数据库，这意味着它不像传统的RDBMS(关系数据库管理系统 Relational Database Management System)数据库那样支持SQL作为查询语言</li>
+<li>Hbase是一种分布式存储的数据库，技术上来讲，它更像是分布式存储而不是分布式数据库</li>
+<li>数据库量要足够多，如果有十亿及百亿行数据，那么Hbase是一个很好的选项，如果只有几百万行甚至不到的数据量，RDBMS是一个很好的选择。因为数据量小的话，真正能工作的机器量少，剩余的机器都处于空闲的状态</li>
+<li>保证硬件资源足够，每个HDFS集群在少于5个节点的时候，都不能表现的很好。因为HDFS默认的复制数量是3，再加上一个NameNode</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>VMware Workstation Pro 12</li>
+<li>系统为Ubuntu 16.04 Server的Linux虚拟机</li>
+<li><a target="_blank" rel="noopener" href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">jdk-8u201-linux-x64.tar.gz</a>，<a target="_blank" rel="noopener" href="https://www.oracle.com/webfolder/s/digest/8u201checksum.html">校验和</a></li>
+<li><a target="_blank" rel="noopener" href="http://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-3.1.2/hadoop-3.1.2.tar.gz">hadoop-3.1.2.tar.gz</a>，<a target="_blank" rel="noopener" href="https://archive.apache.org/dist/hadoop/common/hadoop-3.1.2/hadoop-3.1.2.tar.gz.mds">校验和</a></li>
+<li>hbase-1.2.11-bin.tar.gz，<a target="_blank" rel="noopener" href="https://archive.apache.org/dist/hbase/hbase-1.2.11/hbase-1.2.11-bin.tar.gz.sha512">校验和</a></li>
+<li><a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/r3.2.0/hadoop-project-dist/hadoop-common/SingleCluster.html">官方教程1</a>、<a target="_blank" rel="noopener" href="https://hbase.apache.org/book.html">官方教程2</a></li>
+</ul>
+<h2 id="HBase结构"><a href="#HBase结构" class="headerlink" title="HBase结构"></a>HBase结构</h2><img src="hbase-construction.webp">
+
+<h2 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h2><h3 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h3><h4 id="创建实验用户hadoop"><a href="#创建实验用户hadoop" class="headerlink" title="创建实验用户hadoop"></a>创建实验用户hadoop</h4><ul>
+<li>[再已配置mysql cluster的基础上] 可以采用已有的mysql用户，给mysql用户做相应管理员权限赋权，后续需要用到用户名hadoop的时候，使用mysql</li>
+<li>此处选择新创建hadoop用户<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo useradd -m hadoop -s &#x2F;bin&#x2F;bash  #创建hadoop用户，并使用&#x2F;bin&#x2F;bash作为shell</span><br><span class="line">$ sudo passwd hadoop  #为hadoop用户设置密码，之后需要连续输入两次密码</span><br><span class="line">$ sudo adduser hadoop sudo #为hadoop用户增加管理员权限</span><br><span class="line">$ su - hadoop            #切换当前用户为用户hadoop</span><br><span class="line">$ sudo apt-get update    #更新hadoop用户的apt,方便后面的安装</span><br></pre></td></tr></table></figure>
+<img src="adduserhadoop.png"></li>
+</ul>
+<h4 id="SSH配置免密登录"><a href="#SSH配置免密登录" class="headerlink" title="SSH配置免密登录"></a>SSH配置免密登录</h4><ul>
+<li><p>安装SSH，设置SSH无密码登陆</p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install openssh-server   #安装SSH server</span><br><span class="line">$ ssh localhost         #登陆SSH，第一次登陆输入yes</span><br><span class="line">$ exit                  #退出登录的ssh localhost</span><br></pre></td></tr></table></figure>
+  <img src="ssh-install.png" width=70%></li>
+<li><p>生成密钥</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd ~&#x2F;.ssh&#x2F;                            #如果没法进入该目录，执行一次ssh localhost</span><br><span class="line">$ ssh-keygen -t rsa　　</span><br><span class="line"># 需要连续敲击三次回车</span><br><span class="line"># 第一次回车是让KEY存于默认位置，以方便后续的命令输入</span><br><span class="line"># 第二次和第三次是确定passphrase，相关性不大</span><br></pre></td></tr></table></figure>
+<img src="ssh-keygen.png" width=70%></li>
+<li><p>加入授权，免密登录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cat .&#x2F;id_rsa.pub &gt;&gt; .&#x2F;authorized_keys  #加入授权</span><br><span class="line">$ ssh localhost  #此时已不需密码即可登录localhost</span><br></pre></td></tr></table></figure>
+<img src="ssh-authorizedkeys.png" width=70%></li>
+</ul>
+<h3 id="安装jdk1-8"><a href="#安装jdk1-8" class="headerlink" title="安装jdk1.8"></a>安装jdk1.8</h3><ul>
+<li><p>在<a target="_blank" rel="noopener" href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">oracle官网</a>下载jdk1.8，根据个人电脑系统选择对应版本，如<code>jdk-8u201-linux-x64.tar.gz</code></p>
+</li>
+<li><p>安装过程</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ mkdir &#x2F;usr&#x2F;lib&#x2F;jvm  #创建jvm文件夹</span><br><span class="line">$ sudo tar zxvf  jdk-8u201-linux-x64.tar.gz  -C &#x2F;usr&#x2F;lib&#x2F;jvm  #&#x2F; 解压到&#x2F;usr&#x2F;lib&#x2F;jvm目录下</span><br><span class="line">$ cd &#x2F;usr&#x2F;lib&#x2F;jvm  #进入该目录</span><br><span class="line">$ mv  jdk1.8.0_201 java  #重命名为java</span><br><span class="line">$ vi ~&#x2F;.bashrc  #给JDK配置环境变量</span><br></pre></td></tr></table></figure></li>
+<li><p>编辑环境变量<code>vi ~/.bashrc</code>，在<code>.bashrc</code>文件添加如下指令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java</span><br><span class="line">export JRE_HOME&#x3D;$&#123;JAVA_HOME&#125;&#x2F;jre</span><br><span class="line">export CLASSPATH&#x3D;.:$&#123;JAVA_HOME&#125;&#x2F;lib:$&#123;JRE_HOME&#125;&#x2F;lib:$CLASSPATH</span><br><span class="line">export PATH&#x3D;$&#123;JAVA_HOME&#125;&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure>
+
+  <img src="javaenrpath.png">
+
+<ul>
+<li>JAVA_HOME=/usr/lib/jvm/java</li>
+</ul>
+</li>
+<li><p>使得环境变量生效，并查看是否安装成功</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ source ~&#x2F;.bashrc  #使新配置的环境变量生效</span><br><span class="line">$ java -version  #检测是否安装成功，查看java版本</span><br></pre></td></tr></table></figure>
+  <img src="javainstallsuccess.png"></li>
+</ul>
+<h3 id="安装hadoop-3-1-2"><a href="#安装hadoop-3-1-2" class="headerlink" title="安装hadoop-3.1.2"></a>安装hadoop-3.1.2</h3><ul>
+<li>下载<a target="_blank" rel="noopener" href="http://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-3.1.2/hadoop-3.1.2.tar.gz">hadoop-3.1.2.tar.gz</a>并安装<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo tar -zxvf  hadoop-3.1.2.tar.gz  -C  &#x2F;usr&#x2F;local  #解压到&#x2F;usr&#x2F;local目录下</span><br><span class="line">$ cd &#x2F;usr&#x2F;local</span><br><span class="line">$ sudo mv  hadoop-3.1.2 hadoop  #重命名为hadoop</span><br><span class="line">$ sudo chown -R hadoop .&#x2F;hadoop  #修改文件权限，根据实际情况确定用户名</span><br></pre></td></tr></table></figure></li>
+<li>配置环境变量，将下面代码添加到<code>.bashrc</code>文件:<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export HADOOP_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;hadoop</span><br><span class="line">export HADOOP_COMMON_LIB_NATIVE_DIR&#x3D;$HADOOP_HOME&#x2F;lib&#x2F;native</span><br><span class="line">export PATH&#x3D;$PATH:$HADOOP_HOME&#x2F;bin:$HADOOP_HOME&#x2F;sbin</span><br></pre></td></tr></table></figure></li>
+<li>执行<code>source ~/.bashrc</code>使设置生效，并查看<code>hadoop</code>是否安装成功  <img src="hadoopinstallsuccess.png"></li>
+</ul>
+<h3 id="伪分布配置"><a href="#伪分布配置" class="headerlink" title="伪分布配置"></a>伪分布配置</h3><ul>
+<li><code>Hadoop</code>可以在单节点上以伪分布式的方式运行，<code>Hadoop</code>进程以分离的<code>Java</code>进程来运行，节点既作为<code>NameNode</code>也作为 <code>DataNode</code>，同时，读取的是<code>HDFS</code>中的文件</li>
+<li><code>Hadoop</code>的配置文件位于<code>/usr/local/hadoop/etc/hadoop/</code>中，伪分布式需要修改2个配置文件<code>core-site.xml</code>和<code>hdfs-site.xml</code> </li>
+<li><code>Hadoop</code>的配置文件是<code>xml</code>格式，每个配置以声明<code>property</code> 的<code>name</code>和<code>value</code>的方式来实现</li>
+</ul>
+<h4 id="修改hadoop-env-sh文件"><a href="#修改hadoop-env-sh文件" class="headerlink" title="修改hadoop-env.sh文件"></a>修改hadoop-env.sh文件</h4><ul>
+<li><p>首先将jdk1.8的路径添(<code>export JAVA_HOME=/usr/lib/jvm/java</code>)加到<code>hadoop-env.sh</code>文件，路径为<code>cd /usr/local/hadoop/etc/hadoop/</code></p>
+  <img src="hadoopenv.png" width=70%></li>
+</ul>
+<h4 id="修改core-site-xml文件"><a href="#修改core-site-xml文件" class="headerlink" title="修改core-site.xml文件"></a>修改core-site.xml文件</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">  	      <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.tmp.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:/usr/local/hadoop/tmp<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">description</span>&gt;</span>Abase for other temporary directories.<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://localhost:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="core-site.png">
+
+<h4 id="配置hdfs-site-xml文件"><a href="#配置hdfs-site-xml文件" class="headerlink" title="配置hdfs-site.xml文件"></a>配置hdfs-site.xml文件</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">value</span>&gt;</span>1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.name.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:/usr/local/hadoop/tmp/dfs/name<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.datanode.data.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:/usr/local/hadoop/tmp/dfs/data<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="hdfs-site.png">
+
+<ul>
+<li><p><code>Hadoop</code>配置文件参数</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>属性值</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fs.defaultFS</td>
+<td>NameNode URI The name of the default file system. A URI whose scheme and authority determine the FileSystem implementation. The uri’s scheme determines the config property (fs.SCHEME.impl) naming the FileSystem implementation class. The uri’s authority is used to determine the host, port, etc. for a filesystem.</td>
+<td>hdfs://host:port/</td>
+</tr>
+<tr>
+<td>dfs.namenode.name.dir</td>
+<td>Determines where on the local filesystem the DFS name node should store the name table(fsimage) 在本地文件系统所在的NameNode的存储空间和持续化处理日志</td>
+<td>如果这是一个以逗号分隔的目录列表，然后将名称表被复制的所有目录，以备不时需</td>
+</tr>
+<tr>
+<td>dfs.datanode.data.dir</td>
+<td>Determines where on the local filesystem an DFS data node should store its blocks 逗号分隔的一个DataNode上，它应该保存它的块的本地文件系统的路径列表</td>
+<td>如果这是一个以逗号分隔的目录列表，那么数据将被存储在所有命名的目录，通常在不同的设备</td>
+</tr>
+</tbody></table>
+</li>
+<li><p><code>Hadoop</code>的运行方式是由配置文件决定的(运行<code>Hadoop</code>时会读取配置文件)</p>
+</li>
+<li><p>因此如果需要从伪分布式模式切换回非分布式模式，需要删除 <code>core-site.xml</code>中的配置项</p>
+</li>
+<li><p>伪分布式虽然只需要配置<code>fs.defaultFS</code>和<code>dfs.replication</code>就可以运行（可参考官方教程）</p>
+</li>
+<li><p>若没有配置<code>hadoop.tmp.dir</code>参数，则默认使用的临时目录为 <code>/tmp/hadoo-hadoop</code>，而这个目录在重启时有可能被系统清理掉，导致必须重新执行<code>format</code>。所以同时也指定<code>dfs.namenode.name.dir</code>和<code>dfs.datanode.data.dir</code>，否则在接下来的步骤中可能会出错。</p>
+</li>
+<li><p>配置完成后，执行 NameNode 的格式化</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;hadoop&#x2F;</span><br><span class="line">.&#x2F;bin&#x2F;hdfs namenode –format</span><br></pre></td></tr></table></figure>
+<img src="namenode-format.png">
+
+<img src="format-success.png"></li>
+<li><p>启动<code>namenode</code>和<code>datanode</code>进程，并查看启动结果</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;sbin&#x2F;start-dfs.sh</span><br><span class="line">$ jps</span><br></pre></td></tr></table></figure>
+<ul>
+<li>启动完成后，可以通过命令<code>jps</code>来判断是否成功启动，若成功启动则会列出如下进程: <code>NameNode</code>、<code>DataNode</code> 和 <code>SecondaryNameNode</code><img src="start-namenode-datanode.png"></li>
+</ul>
+</li>
+<li><p>Hadoop出现错误：<code>WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable</code>，解决方案是在文件<code>hadoop-env.sh</code>中增加：<code>export HADOOP_OPTS=&quot;-Djava.library.path=$&#123;HADOOP_HOME&#125;/lib/native&quot;  </code></p>
+  <img src="hadoop-warn.png"></li>
+<li><p>出现<code>ssh: connect to host master port 22: Connection timed out</code></p>
+<img src="hdfs-ssh-timeout.png">
+
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.itread01.com/content/1548390616.html">解决方法：</a></p>
+<ul>
+<li><p>查看防火墙</p>
+</li>
+<li><p>查看ssh是否开启，22端口是否监听</p>
+</li>
+<li><p><code>sudo vi /etc/hosts</code></p>
+  <img src="etc-host.png">
+
+<ul>
+<li>127.0.0.1和127.0.1.1都是本地回路/回环地址（区别搜索）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>有可能出现要求输入localhost密码的情况，如果此时明明输入的是正确的密码却仍无法登入，其原因是由于如果不输入用户名的时候默认的是root用户，但是ssh服务默认没有开root用户的ssh权限</p>
+<ul>
+<li>输入指令：<code>$vim /etc/ssh/sshd_config</code></li>
+<li>PermitRootLogin yes</li>
+<li>之后输入下列代码重启SSH服务：<code>$ /etc/init.d/sshd restart</code>，即可正常登入（免密码登录参考前文）</li>
+<li>注：Ubuntu 16.04若安装openssh-server，是无法找到/etc/init.d/sshd文件的，但是可以启动/etc/init.d/ssh</li>
+</ul>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_19628145/article/details/56494337">secondarynamenode没有启动</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_38750084/article/details/82856211">NameNode和SecondaryNameNode的区别</a></p>
+</li>
+</ul>
+<h4 id="访问web界面"><a href="#访问web界面" class="headerlink" title="访问web界面"></a>访问web界面</h4><ul>
+<li><p>成功启动后，如果是在桌面版linux上安装的，也可以访问 Web 界面 <a href="http://localhost:9870（老版本为50070）">http://localhost:9870（老版本为50070）</a> 查看NameNode 和 Datanode 信息，还可以在线查看 HDFS 中的文件。 </p>
+</li>
+<li><p>如果是在服务器版linux上安装的hadoop, 为了进行浏览器访问，需要配置一个桌面版的虚拟机来进行，输入用IP地址代替localhost）</p>
+</li>
+<li><p>此处配置了静态ip地址为<code>192.18.50.129</code>，在宿主机上输入<code>http://192.168.50.129:9870</code></p>
+  <img src="hadoopweb.png"></li>
+</ul>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><ul>
+<li>DFS文件系统格式化时，会在namenode数据文件夹（即配置文件中dfs.namenode.name.dir在本地系统的路径）中保存一个current/VERSION文件，记录clusterID，标识了所格式化的 namenode的版本</li>
+<li>如果频繁的格式化namenode，那么datanode中保存（即配置文件中dfs.data.dir在本地系统的路径）的current/VERSION文件只是你第一次格式化时保存的namenode的ID，因此就会造成datanode与namenode之间的 id 不一致。可能导致datanode无法启动</li>
+</ul>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><ul>
+<li><p>创建执行MapReduce作业所需的 DFS 目录:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ bin&#x2F;hdfs dfs -mkdir &#x2F;user</span><br><span class="line">$ bin&#x2F;hdfs dfs -mkdir &#x2F;user&#x2F;&lt;username&gt;  #&lt;username&gt; 问用户名，如hadoop</span><br></pre></td></tr></table></figure></li>
+<li><p>拷贝输入文件到分布式文件系统:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ bin&#x2F;hdfs dfs -put etc&#x2F;hadoop input</span><br></pre></td></tr></table></figure></li>
+<li><p>运行一些例子</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin&#x2F;hadoop jar share&#x2F;hadoop&#x2F;mapreduce&#x2F;hadoop-mapreduce-examples-3.2.1.jar grep input output &#39;dfs[a-z.]+&#39;</span><br></pre></td></tr></table></figure></li>
+<li><p>查看输出的文件(files): 从分布式文件系统中拷贝文件到本地文件系统并查看:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin&#x2F;hdfs dfs -get output output</span><br><span class="line">cat output&#x2F;*</span><br></pre></td></tr></table></figure>
+<p>或者直接在分布式文件系统上查看:</p>
+<p><code>$ bin/hdfs dfs -cat output/*</code></p>
+<p>我也不知道对不对</p>
+<img src="mapreduce-output.png"></li>
+<li><p>结束运行<code>sbin/stop-dfs.sh</code></p>
+</li>
+</ul>
+<h4 id="YARN单机配置"><a href="#YARN单机配置" class="headerlink" title="YARN单机配置"></a>YARN单机配置</h4><ul>
+<li><p>通过设置几个参数并运行ResourceManager daemon and NodeManager daemon，可以在YARN上以伪分布模式运行MapReduce job</p>
+<p>配置mapred-site.xml(cd /usr/local/hadoop/etc/hadoop)如下:</p>
+<img src="mapred-site.png">
+
+<p>配置yarn-site.xml如下：</p>
+<img src="yarn-site.png"></li>
+<li><p>启动ResourceManager daemon 和 NodeManager daemon:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;hadoop</span><br><span class="line">sbin&#x2F;start-yarn.sh</span><br><span class="line"></span><br><span class="line"># 输出如下</span><br><span class="line">Starting resourcemanager</span><br><span class="line">Starting nodemanagers</span><br><span class="line"></span><br><span class="line">sbin&#x2F;stop-yarn.sh # 关闭</span><br></pre></td></tr></table></figure></li>
+<li><p>如果是在桌面版linux上安装的, 可以用浏览器打开资源管理器端口，默认为：ResourceManager - <a target="_blank" rel="noopener" href="http://localhost:8088/">http://localhost:8088/</a><br>（如果是在服务器版linux上安装的hadoop, 为了进行浏览器访问，需要配置一个桌面版的虚拟机来进行，输入用IP地址代替localhost） - 同上</p>
+  <img src="start-yarn.png"></li>
+</ul>
+<h3 id="安装Hbase和简单使用"><a href="#安装Hbase和简单使用" class="headerlink" title="安装Hbase和简单使用"></a>安装Hbase和简单使用</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 解压安装包hbase-1.2.11-bin.tar.gz至路径 &#x2F;usr&#x2F;local</span><br><span class="line">$ sudo tar -zxvf  hbase-1.2.11-bin.tar.gz -C &#x2F;usr&#x2F;local</span><br><span class="line"># 将解压的文件名hbase-1.2.11改为hbase，以方便使用</span><br><span class="line">$ sudo mv &#x2F;usr&#x2F;local&#x2F;hbase-1.2.11  &#x2F;usr&#x2F;local&#x2F;hbase</span><br><span class="line">cd &#x2F;usr&#x2F;local</span><br><span class="line">$ sudo chown -R hadoop .&#x2F;hbase  # 将hbase下的所有文件的所有者改为hadoop，hadoop是当前用户的用户名。</span><br></pre></td></tr></table></figure>
+<h4 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h4><ul>
+<li><p>给hbase配置环境变量，将下面代码添加到.bashrc文件<code>:export PATH=$PATH:/usr/local/hbase</code></p>
+  <img src="hbase-env.png"></li>
+<li><p>执行source ~/.bashrc使设置生效，并查看hbase是否安装成功<code>/usr/local/hbase/bin/hbase version</code>或者直接<code>hbase -version</code></p>
+  <img src="hbase-success.png"></li>
+</ul>
+<h4 id="hBase单机配置"><a href="#hBase单机配置" class="headerlink" title="hBase单机配置"></a>hBase单机配置</h4><ul>
+<li><p>单机配置（可能需要配置JAVA_HOME环境变量，由于本实验指南在HADOOP安装时已配置，故省略）</p>
+</li>
+<li><p>配置<code>/usr/local/hbase/conf/hbase-site.xml</code>如下</p>
+<img src="hbase-site.png"></li>
+<li><p>采用如下命令启动服务、查看进程和启动客户端</p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd &#x2F;usr&#x2F;local&#x2F;hbase</span><br><span class="line">$ bin&#x2F;start-hbase.sh</span><br><span class="line">$ jps</span><br><span class="line">$ bin&#x2F;hbase shell</span><br></pre></td></tr></table></figure>
+  <img src="hbase-start.png"></li>
+</ul>
+<h4 id="配置伪分布模式的指南"><a href="#配置伪分布模式的指南" class="headerlink" title="配置伪分布模式的指南"></a>配置伪分布模式的指南</h4><ul>
+<li>配置分布模式方法请查阅官方文档</li>
+</ul>
+<h5 id="配置hbase-env-sh"><a href="#配置hbase-env-sh" class="headerlink" title="配置hbase-env.sh"></a>配置hbase-env.sh</h5><ul>
+<li><p><code>cd /usr/local/hbase/conf</code>修改<code>hbase-site.xml</code>文件</p>
+  <img src="modify-hbase-site.png">
+
+<p>  将HBase的数据存储到之前的Hadoop的HDFS上，hbase.rootdir的值便是HDFS上HBase数据存储的位置，值中的主机名和端口号要和之前Hadoop的core-site.xml中的fs.default.name的值相同</p>
+</li>
+<li><p>启动hBase</p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 先stop-hbase.sh</span><br><span class="line">$ start-dfs.sh</span><br><span class="line">$ cd &#x2F;usr&#x2F;local&#x2F;hbase&#x2F;bin</span><br><span class="line">$ .&#x2F;start-hbase.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>hbase集群在启动的时候报错：JAVA_HOME is not set and Java could not be found出现这种错误，一般应该是hbase下conf文件下的hbase-env.sh文件中的java_home的环境变量没有配置或者是被注释了</p>
+<img src="java_homeisnotset.png">
+
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;hbase&#x2F;conf</span><br><span class="line">vi hbase-env.sh</span><br><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java</span><br></pre></td></tr></table></figure>
+<img src="java_home.png"></li>
+<li><p>正确顺序：启动Hadoop—&gt;启动HBase—&gt;关闭HBase—&gt;关闭Hadoop</p>
+</li>
+<li><p>注：执行jps命令，如果在Hadoop进程的基础上新增加了如下三个进程则表示HBase启动成功：1. HMaster，2. HRegionServer，3. HQuorumpeer</p>
+</li>
+</ul>
+<h5 id="查看DFS中Hbase-目录，自动创建"><a href="#查看DFS中Hbase-目录，自动创建" class="headerlink" title="查看DFS中Hbase 目录，自动创建"></a>查看DFS中Hbase 目录，自动创建</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd ~</span><br><span class="line">hdfs dfs -ls &#x2F;hbase</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>hadoop@zizi:~$ hdfs dfs -ls /hbase<br>ls: Call From zizi/127.0.1.1 to localhost:9000 failed on connection exception: java.net.ConnectException: Connection refused; For more details see:  <a target="_blank" rel="noopener" href="http://wiki.apache.org/hadoop/ConnectionRefused">http://wiki.apache.org/hadoop/ConnectionRefused</a><br>该问题一般由于没有start dfs 和 yarn造成的</p>
+</blockquote>
+<img src="hdfs-dfs.png">
+
+<ul>
+<li><p>仅仅为了测试和学习，生产环境不会在一台机器上启动备份master</p>
+</li>
+<li><p>HMaster服务器控制HBase集群，图中的指令启动三个<strong>备份</strong>HMaster，体现了<strong>伪分布式</strong>(在一个机器上多个备份HMaster服务器)，一个HMaster没了，其他的还可以使用</p>
+  <img src="master-backup-start.png"></li>
+</ul>
+<pre><code><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">The HMaster server controls the HBase cluster. You can start up to 9 backup HMaster servers, which makes 10 total HMasters, counting the primary. </span><br><span class="line">To start a backup HMaster, use the local-master-backup.sh. </span><br><span class="line">For each backup master you want to start, add a parameter representing the port offset for that master. </span><br><span class="line">Each HMaster uses two ports (16000 and 16010 by default). </span><br><span class="line">The port offset is added to these ports, so using an offset of 2, the backup HMaster would use ports 16002 and 16012. </span><br><span class="line">The following command starts 3 backup servers using ports 16002&#x2F;16012, 16003&#x2F;16013, and 16005&#x2F;16015.</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ul>
+<li><p>如：start 1</p>
+<img src="master-backup-1.png"></li>
+<li><p><a target="_blank" rel="noopener" href="http://192.168.50.129:16010/master-status%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE%EF%BC%8Cport=16000%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%EF%BC%8Cport=16011%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE">http://192.168.50.129:16010/master-status可以访问，port=16000无法访问，port=16011可以访问</a></p>
+<img src="master-status1.png"></li>
+<li><p>启动和停止附加区域服务器RegionServers</p>
+<img src="regionalserver.png"></li>
+<li><p>关闭刚才开启的备份HMaster服务：<code>local-master-backup.sh stop 1</code></p>
+</li>
+</ul>
+<h5 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h5><ul>
+<li><p>进入交互界面<code>$ hbase shell</code></p>
+<img src="hbase-shell.png"></li>
+<li><p>使用create命令创建一个新表，必须规定表名和列族名</p>
+<p>使用list 命令可以显示表信息</p>
+<p>使用 describe 命令显示表的详细信息，此时表中的VERSIONS默认设置为1</p>
+<img src="create-list-describe.png"></li>
+<li><p>向表中加入数据，使用 put 命令</p>
+<p>使用scan命令扫描整个表取得数据</p>
+<p>取一行数据，使用get指令</p>
+<img src="put-scan-get.png"></li>
+<li><p>修改表模式，使用alter命令，如修改存储版本数，为5个版本</p>
+<img src="alter-version.png"></li>
+</ul>
+<h2 id="实验总结"><a href="#实验总结" class="headerlink" title="实验总结"></a>实验总结</h2><ol>
+<li><p>请问伪分布和分布式的含义有何不同？就本实验，你是如何理解在一台计算机上做到“伪分布”的？</p>
+<ul>
+<li>伪分布式模式是一个相对简单的分布式模式，用来测试</li>
+<li>不能把这个模式用于生产环节，也不能用于测试性能。</li>
+<li>多个HMaster备份节点在一台机器上工作</li>
+</ul>
+</li>
+<li><p>在1.2小节进行安装SSH并设置SSH无密码登陆，请问这个安装的目的是什么？</p>
+<blockquote>
+<p>ssh must be installed and sshd must be running to use the Hadoop scripts that manage remote Hadoop daemons if the optional start and stop scripts are to be used. Additionally, it is recommmended that pdsh also be installed for better ssh resource management.</p>
+</blockquote>
+<ul>
+<li>ssh必须安装，sshd必须运行，Hadoop的脚本才可以远程操控其他的Hadoop和HBase进程</li>
+<li>ssh之间必须都打通，远程登录、自动登录、免密登录</li>
+</ul>
+</li>
+<li><p>如果继续向Hbase的test表中put行键为”row1”，值为其它字符串的数据，put ‘test’ ,’row1’, ‘cf:a’, ‘value6’，会发生什么？如果采用语句get ‘test’, ‘row1’, {COLUMN=&gt;’cf:a’, VERSIONS=&gt;3} 进行查询，分析你得到的结果。put与关系数据库的插入有何不同？</p>
+ <img src="put.png">
+
+<ul>
+<li>VERSIONS的作用<ul>
+<li>当想要用HBase存储历史几个版本的数据是（达到类似于git的效果时）可以设定版本号，版本号为几就是存储几个版本的数据</li>
+<li>最开始，没有设定VERSION，则为VERSIONS为1，也就是说，默认情况只会存取一个版本的列数据，当再次插入的时候，后面的值会覆盖前面的值</li>
+<li>后面修改表结构，让Hbase表支持存储5个VERSIONS的版本列数据 alter ‘test’, NAME=&gt;’cf’,VERSIONS=&gt;5</li>
+<li>解析：一开始row1只有一条数据，然后又插入了第二条数据，虽然scan ‘test’只返回最新的数据，但是用get那条语句能够返回历史版本，所以返回两条数据 <img src="versions.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="错误与解决"><a href="#错误与解决" class="headerlink" title="错误与解决"></a>错误与解决</h2><ul>
+<li>如何执行shell脚本！！！-牢记  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hadoop@zizi:&#x2F;usr&#x2F;local&#x2F;hbase&#x2F;bin$ local-master-backup.sh start 2 3 5</span><br><span class="line">local-master-backup.sh: command not found</span><br></pre></td></tr></table></figure></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/tiankong_12345/article/details/93585463">Hbase启动警告：Java HotSpot(TM) 64-Bit Server VM warning: ignoring option PermSize=128m;</a></li>
+<li>hBase中get和scan的区别和总结</li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6aeceb5d49cf">HBase入门精要-百闻不如一Run</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b23800d9b227">入门HBase，看这一篇就够了</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Purplezi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://purplezi.gitee.io/2020/05/15/Hadoop-Hbase/">https://purplezi.gitee.io/2020/05/15/Hadoop-Hbase/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hadoop/">Hadoop</a><a class="post-meta__tags" href="/tags/Hbase/">Hbase</a></div><div class="post_share"><div class="social-share" data-image="/img/bg2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/06/09/Software-Security/"><img class="prev-cover" src="/img/bg2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">软件安全概述</div></div></a></div><div class="next-post pull-right"><a href="/2020/04/12/Number-Theory/"><img class="next-cover" src="/img/bg2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Number Theory</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Purplezi</div><div class="author-info__description">DreamCreator & DreamLoser</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">21</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83"><span class="toc-number">1.</span> <span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">HBase结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E8%BF%87%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">实验过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5"><span class="toc-number">3.1.</span> <span class="toc-text">准备阶段</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%AE%9E%E9%AA%8C%E7%94%A8%E6%88%B7hadoop"><span class="toc-number">3.1.1.</span> <span class="toc-text">创建实验用户hadoop</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SSH%E9%85%8D%E7%BD%AE%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95"><span class="toc-number">3.1.2.</span> <span class="toc-text">SSH配置免密登录</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85jdk1-8"><span class="toc-number">3.2.</span> <span class="toc-text">安装jdk1.8</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85hadoop-3-1-2"><span class="toc-number">3.3.</span> <span class="toc-text">安装hadoop-3.1.2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E5%88%86%E5%B8%83%E9%85%8D%E7%BD%AE"><span class="toc-number">3.4.</span> <span class="toc-text">伪分布配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9hadoop-env-sh%E6%96%87%E4%BB%B6"><span class="toc-number">3.4.1.</span> <span class="toc-text">修改hadoop-env.sh文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9core-site-xml%E6%96%87%E4%BB%B6"><span class="toc-number">3.4.2.</span> <span class="toc-text">修改core-site.xml文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEhdfs-site-xml%E6%96%87%E4%BB%B6"><span class="toc-number">3.4.3.</span> <span class="toc-text">配置hdfs-site.xml文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BF%E9%97%AEweb%E7%95%8C%E9%9D%A2"><span class="toc-number">3.4.4.</span> <span class="toc-text">访问web界面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F"><span class="toc-number">3.4.5.</span> <span class="toc-text">注意</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">3.4.6.</span> <span class="toc-text">例子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#YARN%E5%8D%95%E6%9C%BA%E9%85%8D%E7%BD%AE"><span class="toc-number">3.4.7.</span> <span class="toc-text">YARN单机配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Hbase%E5%92%8C%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">3.5.</span> <span class="toc-text">安装Hbase和简单使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">3.5.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">3.5.2.</span> <span class="toc-text">配置环境变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#hBase%E5%8D%95%E6%9C%BA%E9%85%8D%E7%BD%AE"><span class="toc-number">3.5.3.</span> <span class="toc-text">hBase单机配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%8C%87%E5%8D%97"><span class="toc-number">3.5.4.</span> <span class="toc-text">配置伪分布模式的指南</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEhbase-env-sh"><span class="toc-number">3.5.4.1.</span> <span class="toc-text">配置hbase-env.sh</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BDFS%E4%B8%ADHbase-%E7%9B%AE%E5%BD%95%EF%BC%8C%E8%87%AA%E5%8A%A8%E5%88%9B%E5%BB%BA"><span class="toc-number">3.5.4.2.</span> <span class="toc-text">查看DFS中Hbase 目录，自动创建</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BB%BA%E8%A1%A8"><span class="toc-number">3.5.4.3.</span> <span class="toc-text">建表</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">实验总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-number">5.</span> <span class="toc-text">错误与解决</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">6.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/03/26/hello-world/" title="Hello World"><img src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2021/03/26/hello-world/" title="Hello World">Hello World</a><time datetime="2021-03-26T05:54:47.464Z" title="Created 2021-03-26 05:54:47">2021-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/19/Linux-fundamental/" title="入门 Linux"><img src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="入门 Linux"/></a><div class="content"><a class="title" href="/2021/03/19/Linux-fundamental/" title="入门 Linux">入门 Linux</a><time datetime="2021-03-19T18:02:58.000Z" title="Created 2021-03-19 18:02:58">2021-03-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/13/binary-search/" title="二分查找【binary search】"><img src="/img/bg2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二分查找【binary search】"/></a><div class="content"><a class="title" href="/2021/03/13/binary-search/" title="二分查找【binary search】">二分查找【binary search】</a><time datetime="2021-03-13T18:34:20.000Z" title="Created 2021-03-13 18:34:20">2021-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/12/hacker-learning/" title="hacker-learning"><img src="https://w.wallhaven.cc/full/j8/wallhaven-j8lkxw.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hacker-learning"/></a><div class="content"><a class="title" href="/2021/03/12/hacker-learning/" title="hacker-learning">hacker-learning</a><time datetime="2021-03-12T12:47:46.000Z" title="Created 2021-03-12 12:47:46">2021-03-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/11/c-fundamental-function/" title="【C 语言基础】函数"><img src="https://w.wallhaven.cc/full/e7/wallhaven-e7z65r.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【C 语言基础】函数"/></a><div class="content"><a class="title" href="/2021/03/11/c-fundamental-function/" title="【C 语言基础】函数">【C 语言基础】函数</a><time datetime="2021-03-11T12:18:16.000Z" title="Created 2021-03-11 12:18:16">2021-03-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Purplezi</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="/js/randombg.js"></script><script defer src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/hexo-theme-volantis@latest/source/js/issues.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
