@@ -4,25 +4,25 @@
   xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>DreamHacker</title>
-    <link>https://purplezi.gitee.io/</link>
+    <link>https://purplezi.github.io/</link>
     
     <image>
-      <url>https://purplezi.gitee.io/icon.png</url>
+      <url>https://purplezi.github.io/icon.png</url>
       <title>DreamHacker</title>
-      <link>https://purplezi.gitee.io/</link>
+      <link>https://purplezi.github.io/</link>
     </image>
     
-    <atom:link href="https://purplezi.gitee.io/rss2.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="https://purplezi.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>DreamCreator &amp; DreamLoser</description>
-    <pubDate>Fri, 26 Mar 2021 08:22:09 GMT</pubDate>
+    <pubDate>Fri, 26 Mar 2021 08:35:18 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
       <title>Hello World</title>
-      <link>https://purplezi.gitee.io/2021/03/26/hello-world/</link>
-      <guid>https://purplezi.gitee.io/2021/03/26/hello-world/</guid>
-      <pubDate>Fri, 26 Mar 2021 08:22:09 GMT</pubDate>
+      <link>https://purplezi.github.io/2021/03/26/hello-world/</link>
+      <guid>https://purplezi.github.io/2021/03/26/hello-world/</guid>
+      <pubDate>Fri, 26 Mar 2021 08:35:18 GMT</pubDate>
       
       <description>&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
       
@@ -31,14 +31,14 @@
       
       
       
-      <comments>https://purplezi.gitee.io/2021/03/26/hello-world/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2021/03/26/hello-world/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>入门 Linux</title>
-      <link>https://purplezi.gitee.io/2021/03/19/Linux-fundamental/</link>
-      <guid>https://purplezi.gitee.io/2021/03/19/Linux-fundamental/</guid>
+      <link>https://purplezi.github.io/2021/03/19/Linux-fundamental/</link>
+      <guid>https://purplezi.github.io/2021/03/19/Linux-fundamental/</guid>
       <pubDate>Fri, 19 Mar 2021 18:02:58 GMT</pubDate>
       
         
@@ -53,17 +53,17 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/tags/Linux/">Linux</category>
+      <category domain="https://purplezi.github.io/tags/Linux/">Linux</category>
       
       
-      <comments>https://purplezi.gitee.io/2021/03/19/Linux-fundamental/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2021/03/19/Linux-fundamental/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>二分查找【binary search】</title>
-      <link>https://purplezi.gitee.io/2021/03/13/binary-search/</link>
-      <guid>https://purplezi.gitee.io/2021/03/13/binary-search/</guid>
+      <link>https://purplezi.github.io/2021/03/13/binary-search/</link>
+      <guid>https://purplezi.github.io/2021/03/13/binary-search/</guid>
       <pubDate>Sat, 13 Mar 2021 18:34:20 GMT</pubDate>
       
         
@@ -78,17 +78,17 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/tags/algorithm/">algorithm</category>
+      <category domain="https://purplezi.github.io/tags/algorithm/">algorithm</category>
       
       
-      <comments>https://purplezi.gitee.io/2021/03/13/binary-search/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2021/03/13/binary-search/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>hacker-learning</title>
-      <link>https://purplezi.gitee.io/2021/03/12/hacker-learning/</link>
-      <guid>https://purplezi.gitee.io/2021/03/12/hacker-learning/</guid>
+      <link>https://purplezi.github.io/2021/03/12/hacker-learning/</link>
+      <guid>https://purplezi.github.io/2021/03/12/hacker-learning/</guid>
       <pubDate>Fri, 12 Mar 2021 12:47:46 GMT</pubDate>
       
         
@@ -103,17 +103,17 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/tags/hacker/">hacker</category>
+      <category domain="https://purplezi.github.io/tags/hacker/">hacker</category>
       
       
-      <comments>https://purplezi.gitee.io/2021/03/12/hacker-learning/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2021/03/12/hacker-learning/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>【C 语言基础】函数</title>
-      <link>https://purplezi.gitee.io/2021/03/11/c-fundamental-function/</link>
-      <guid>https://purplezi.gitee.io/2021/03/11/c-fundamental-function/</guid>
+      <link>https://purplezi.github.io/2021/03/11/c-fundamental-function/</link>
+      <guid>https://purplezi.github.io/2021/03/11/c-fundamental-function/</guid>
       <pubDate>Thu, 11 Mar 2021 12:18:16 GMT</pubDate>
       
         
@@ -128,17 +128,17 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/tags/C/">C</category>
+      <category domain="https://purplezi.github.io/tags/C/">C</category>
       
       
-      <comments>https://purplezi.gitee.io/2021/03/11/c-fundamental-function/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2021/03/11/c-fundamental-function/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>The road to the Spider Man!!</title>
-      <link>https://purplezi.gitee.io/2021/03/10/spider/</link>
-      <guid>https://purplezi.gitee.io/2021/03/10/spider/</guid>
+      <link>https://purplezi.github.io/2021/03/10/spider/</link>
+      <guid>https://purplezi.github.io/2021/03/10/spider/</guid>
       <pubDate>Wed, 10 Mar 2021 21:59:59 GMT</pubDate>
       
         
@@ -154,14 +154,14 @@
       
       
       
-      <comments>https://purplezi.gitee.io/2021/03/10/spider/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2021/03/10/spider/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>计算机选购</title>
-      <link>https://purplezi.gitee.io/2021/01/19/computer/</link>
-      <guid>https://purplezi.gitee.io/2021/01/19/computer/</guid>
+      <link>https://purplezi.github.io/2021/01/19/computer/</link>
+      <guid>https://purplezi.github.io/2021/01/19/computer/</guid>
       <pubDate>Tue, 19 Jan 2021 18:41:01 GMT</pubDate>
       
         
@@ -177,14 +177,14 @@
       
       
       
-      <comments>https://purplezi.gitee.io/2021/01/19/computer/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2021/01/19/computer/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>数字图像篡改取证</title>
-      <link>https://purplezi.gitee.io/2021/01/16/digital-images-forensic/</link>
-      <guid>https://purplezi.gitee.io/2021/01/16/digital-images-forensic/</guid>
+      <link>https://purplezi.github.io/2021/01/16/digital-images-forensic/</link>
+      <guid>https://purplezi.github.io/2021/01/16/digital-images-forensic/</guid>
       <pubDate>Sat, 16 Jan 2021 11:55:34 GMT</pubDate>
       
         
@@ -199,19 +199,19 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/tags/forensic/">forensic</category>
+      <category domain="https://purplezi.github.io/tags/forensic/">forensic</category>
       
-      <category domain="https://purplezi.gitee.io/tags/cv/">cv</category>
+      <category domain="https://purplezi.github.io/tags/cv/">cv</category>
       
       
-      <comments>https://purplezi.gitee.io/2021/01/16/digital-images-forensic/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2021/01/16/digital-images-forensic/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>icarus-一个hexo主题美化过程</title>
-      <link>https://purplezi.gitee.io/2021/01/15/icarus/</link>
-      <guid>https://purplezi.gitee.io/2021/01/15/icarus/</guid>
+      <link>https://purplezi.github.io/2021/01/15/icarus/</link>
+      <guid>https://purplezi.github.io/2021/01/15/icarus/</guid>
       <pubDate>Fri, 15 Jan 2021 18:43:21 GMT</pubDate>
       
         
@@ -226,19 +226,19 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/tags/blog/">blog</category>
+      <category domain="https://purplezi.github.io/tags/blog/">blog</category>
       
-      <category domain="https://purplezi.gitee.io/tags/hexo/">hexo</category>
+      <category domain="https://purplezi.github.io/tags/hexo/">hexo</category>
       
       
-      <comments>https://purplezi.gitee.io/2021/01/15/icarus/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2021/01/15/icarus/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>白帽子讲web安全</title>
-      <link>https://purplezi.gitee.io/2021/01/11/web-notes/</link>
-      <guid>https://purplezi.gitee.io/2021/01/11/web-notes/</guid>
+      <link>https://purplezi.github.io/2021/01/11/web-notes/</link>
+      <guid>https://purplezi.github.io/2021/01/11/web-notes/</guid>
       <pubDate>Mon, 11 Jan 2021 19:33:45 GMT</pubDate>
       
         
@@ -253,17 +253,17 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/tags/web-security/">web security</category>
+      <category domain="https://purplezi.github.io/tags/web-security/">web security</category>
       
       
-      <comments>https://purplezi.gitee.io/2021/01/11/web-notes/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2021/01/11/web-notes/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>IP地址</title>
-      <link>https://purplezi.gitee.io/2020/07/20/ipaddress/</link>
-      <guid>https://purplezi.gitee.io/2020/07/20/ipaddress/</guid>
+      <link>https://purplezi.github.io/2020/07/20/ipaddress/</link>
+      <guid>https://purplezi.github.io/2020/07/20/ipaddress/</guid>
       <pubDate>Mon, 20 Jul 2020 09:25:45 GMT</pubDate>
       
         
@@ -278,17 +278,17 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/tags/Network/">Network</category>
+      <category domain="https://purplezi.github.io/tags/Network/">Network</category>
       
       
-      <comments>https://purplezi.gitee.io/2020/07/20/ipaddress/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2020/07/20/ipaddress/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>阿里云服务器(centos7系统) 使用nginx+uwsgi 部署python+flask项目</title>
-      <link>https://purplezi.gitee.io/2020/06/21/aliyun-sfim/</link>
-      <guid>https://purplezi.gitee.io/2020/06/21/aliyun-sfim/</guid>
+      <link>https://purplezi.github.io/2020/06/21/aliyun-sfim/</link>
+      <guid>https://purplezi.github.io/2020/06/21/aliyun-sfim/</guid>
       <pubDate>Sun, 21 Jun 2020 21:05:05 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;Web服务器的搭建&quot;&gt;&lt;a href=&quot;#Web服务器的搭建&quot; class=&quot;headerlink&quot; title=&quot;Web服务器的搭建&quot;&gt;&lt;/a&gt;Web服务器的搭建&lt;/h1&gt;&lt;h2 id=&quot;阿里云ECS-centos7-python-flask-Nginx&quot;&gt;&lt;a href=&quot;#阿里云ECS-centos7-python-flask-Nginx&quot; class=&quot;headerlink&quot; title=&quot;阿里云ECS(centos7) + python flask + Nginx&quot;&gt;&lt;/a&gt;阿里云ECS(centos7) + python flask + Nginx&lt;/h2&gt;&lt;ul&gt;
@@ -327,21 +327,21 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/tags/nginx/">nginx</category>
+      <category domain="https://purplezi.github.io/tags/nginx/">nginx</category>
       
-      <category domain="https://purplezi.gitee.io/tags/uwsgi/">uwsgi</category>
+      <category domain="https://purplezi.github.io/tags/uwsgi/">uwsgi</category>
       
-      <category domain="https://purplezi.gitee.io/tags/web-server/">web server</category>
+      <category domain="https://purplezi.github.io/tags/web-server/">web server</category>
       
       
-      <comments>https://purplezi.gitee.io/2020/06/21/aliyun-sfim/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2020/06/21/aliyun-sfim/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>软件安全中的二进制安全</title>
-      <link>https://purplezi.gitee.io/2020/06/13/binary-safe/</link>
-      <guid>https://purplezi.gitee.io/2020/06/13/binary-safe/</guid>
+      <link>https://purplezi.github.io/2020/06/13/binary-safe/</link>
+      <guid>https://purplezi.github.io/2020/06/13/binary-safe/</guid>
       <pubDate>Sat, 13 Jun 2020 23:18:25 GMT</pubDate>
       
       <description>&lt;p&gt;二进制安全是整个软件安全中核心的内容&lt;/p&gt;</description>
@@ -349,20 +349,20 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/categories/Security/">Security</category>
+      <category domain="https://purplezi.github.io/categories/Security/">Security</category>
       
       
-      <category domain="https://purplezi.gitee.io/tags/Security/">Security</category>
+      <category domain="https://purplezi.github.io/tags/Security/">Security</category>
       
       
-      <comments>https://purplezi.gitee.io/2020/06/13/binary-safe/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2020/06/13/binary-safe/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>XSS攻击</title>
-      <link>https://purplezi.gitee.io/2020/06/11/xss-attack/</link>
-      <guid>https://purplezi.gitee.io/2020/06/11/xss-attack/</guid>
+      <link>https://purplezi.github.io/2020/06/11/xss-attack/</link>
+      <guid>https://purplezi.github.io/2020/06/11/xss-attack/</guid>
       <pubDate>Thu, 11 Jun 2020 10:18:33 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;使用python内置的库开发一个基本的http服务器端&quot;&gt;&lt;a href=&quot;#使用python内置的库开发一个基本的http服务器端&quot; class=&quot;headerlink&quot; title=&quot;使用python内置的库开发一个基本的http服务器端&quot;&gt;&lt;/a&gt;使用python内置的库开发一个基本的http服务器端&lt;/h1&gt;&lt;ul&gt;
@@ -379,19 +379,19 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/tags/xss/">xss</category>
+      <category domain="https://purplezi.github.io/tags/xss/">xss</category>
       
-      <category domain="https://purplezi.gitee.io/tags/security/">security</category>
+      <category domain="https://purplezi.github.io/tags/security/">security</category>
       
       
-      <comments>https://purplezi.gitee.io/2020/06/11/xss-attack/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2020/06/11/xss-attack/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>软件安全概述</title>
-      <link>https://purplezi.gitee.io/2020/06/09/Software-Security/</link>
-      <guid>https://purplezi.gitee.io/2020/06/09/Software-Security/</guid>
+      <link>https://purplezi.github.io/2020/06/09/Software-Security/</link>
+      <guid>https://purplezi.github.io/2020/06/09/Software-Security/</guid>
       <pubDate>Tue, 09 Jun 2020 10:13:05 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;三大软件安全问题&quot;&gt;&lt;a href=&quot;#三大软件安全问题&quot; class=&quot;headerlink&quot; title=&quot;三大软件安全问题&quot;&gt;&lt;/a&gt;三大软件安全问题&lt;/h1&gt;&lt;h2 id=&quot;有什么安全问题，安全问题产生的原因&quot;&gt;&lt;a href=&quot;#有什么安全问题，安全问题产生的原因&quot; class=&quot;headerlink&quot; title=&quot;有什么安全问题，安全问题产生的原因&quot;&gt;&lt;/a&gt;有什么安全问题，安全问题产生的原因&lt;/h2&gt;&lt;h3 id=&quot;二进制方面&quot;&gt;&lt;a href=&quot;#二进制方面&quot; class=&quot;headerlink&quot; title=&quot;二进制方面&quot;&gt;&lt;/a&gt;二进制方面&lt;/h3&gt;&lt;ol&gt;
@@ -419,20 +419,20 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/categories/Security/">Security</category>
+      <category domain="https://purplezi.github.io/categories/Security/">Security</category>
       
       
-      <category domain="https://purplezi.gitee.io/tags/Security/">Security</category>
+      <category domain="https://purplezi.github.io/tags/Security/">Security</category>
       
       
-      <comments>https://purplezi.gitee.io/2020/06/09/Software-Security/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2020/06/09/Software-Security/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>NoSQL数据库系统Hadoop-Hbase安装配置(伪分布模式)与简单使用</title>
-      <link>https://purplezi.gitee.io/2020/05/15/Hadoop-Hbase/</link>
-      <guid>https://purplezi.gitee.io/2020/05/15/Hadoop-Hbase/</guid>
+      <link>https://purplezi.github.io/2020/05/15/Hadoop-Hbase/</link>
+      <guid>https://purplezi.github.io/2020/05/15/Hadoop-Hbase/</guid>
       <pubDate>Fri, 15 May 2020 17:32:27 GMT</pubDate>
       
       <description>&lt;style&gt;
@@ -459,22 +459,22 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/categories/DataBase/">DataBase</category>
+      <category domain="https://purplezi.github.io/categories/DataBase/">DataBase</category>
       
       
-      <category domain="https://purplezi.gitee.io/tags/Hadoop/">Hadoop</category>
+      <category domain="https://purplezi.github.io/tags/Hadoop/">Hadoop</category>
       
-      <category domain="https://purplezi.gitee.io/tags/Hbase/">Hbase</category>
+      <category domain="https://purplezi.github.io/tags/Hbase/">Hbase</category>
       
       
-      <comments>https://purplezi.gitee.io/2020/05/15/Hadoop-Hbase/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2020/05/15/Hadoop-Hbase/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>Number Theory</title>
-      <link>https://purplezi.gitee.io/2020/04/12/Number-Theory/</link>
-      <guid>https://purplezi.gitee.io/2020/04/12/Number-Theory/</guid>
+      <link>https://purplezi.github.io/2020/04/12/Number-Theory/</link>
+      <guid>https://purplezi.github.io/2020/04/12/Number-Theory/</guid>
       <pubDate>Sun, 12 Apr 2020 23:52:12 GMT</pubDate>
       
       <description>&lt;ul&gt;
@@ -488,20 +488,20 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/categories/ACM/">ACM</category>
+      <category domain="https://purplezi.github.io/categories/ACM/">ACM</category>
       
       
-      <category domain="https://purplezi.gitee.io/tags/%E6%95%B0%E8%AE%BA/">数论</category>
+      <category domain="https://purplezi.github.io/tags/%E6%95%B0%E8%AE%BA/">数论</category>
       
       
-      <comments>https://purplezi.gitee.io/2020/04/12/Number-Theory/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2020/04/12/Number-Theory/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>部署MySQL Cluster集群系统</title>
-      <link>https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/</link>
-      <guid>https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/</guid>
+      <link>https://purplezi.github.io/2020/03/25/MySQL-Cluster-set-up-configuration/</link>
+      <guid>https://purplezi.github.io/2020/03/25/MySQL-Cluster-set-up-configuration/</guid>
       <pubDate>Wed, 25 Mar 2020 11:31:59 GMT</pubDate>
       
       <description>&lt;blockquote&gt;
@@ -511,22 +511,22 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/categories/DataBase/">DataBase</category>
+      <category domain="https://purplezi.github.io/categories/DataBase/">DataBase</category>
       
       
-      <category domain="https://purplezi.gitee.io/tags/mysql/">mysql</category>
+      <category domain="https://purplezi.github.io/tags/mysql/">mysql</category>
       
-      <category domain="https://purplezi.gitee.io/tags/Cluster/">Cluster</category>
+      <category domain="https://purplezi.github.io/tags/Cluster/">Cluster</category>
       
       
-      <comments>https://purplezi.gitee.io/2020/03/25/MySQL-Cluster-set-up-configuration/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2020/03/25/MySQL-Cluster-set-up-configuration/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>Git 学习之路</title>
-      <link>https://purplezi.gitee.io/2020/03/21/Windows-git-clone-slow/</link>
-      <guid>https://purplezi.gitee.io/2020/03/21/Windows-git-clone-slow/</guid>
+      <link>https://purplezi.github.io/2020/03/21/Windows-git-clone-slow/</link>
+      <guid>https://purplezi.github.io/2020/03/21/Windows-git-clone-slow/</guid>
       <pubDate>Sat, 21 Mar 2020 12:40:38 GMT</pubDate>
       
       <description>&lt;p&gt;learning-git：&lt;/p&gt;
@@ -549,20 +549,20 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/categories/git/">git</category>
+      <category domain="https://purplezi.github.io/categories/git/">git</category>
       
       
-      <category domain="https://purplezi.gitee.io/tags/git/">git</category>
+      <category domain="https://purplezi.github.io/tags/git/">git</category>
       
       
-      <comments>https://purplezi.gitee.io/2020/03/21/Windows-git-clone-slow/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2020/03/21/Windows-git-clone-slow/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>MkDocs+Github+Travis搭建博客</title>
-      <link>https://purplezi.gitee.io/2020/03/21/MkDocs-Github-Travis/</link>
-      <guid>https://purplezi.gitee.io/2020/03/21/MkDocs-Github-Travis/</guid>
+      <link>https://purplezi.github.io/2020/03/21/MkDocs-Github-Travis/</link>
+      <guid>https://purplezi.github.io/2020/03/21/MkDocs-Github-Travis/</guid>
       <pubDate>Sat, 21 Mar 2020 12:38:41 GMT</pubDate>
       
       <description>&lt;blockquote&gt;
@@ -577,19 +577,19 @@
       
       
       
-      <category domain="https://purplezi.gitee.io/categories/Blogs/">Blogs</category>
+      <category domain="https://purplezi.github.io/categories/Blogs/">Blogs</category>
       
       
-      <category domain="https://purplezi.gitee.io/tags/blog/">blog</category>
+      <category domain="https://purplezi.github.io/tags/blog/">blog</category>
       
-      <category domain="https://purplezi.gitee.io/tags/MkDocs/">MkDocs</category>
+      <category domain="https://purplezi.github.io/tags/MkDocs/">MkDocs</category>
       
-      <category domain="https://purplezi.gitee.io/tags/github/">github</category>
+      <category domain="https://purplezi.github.io/tags/github/">github</category>
       
-      <category domain="https://purplezi.gitee.io/tags/Travis/">Travis</category>
+      <category domain="https://purplezi.github.io/tags/Travis/">Travis</category>
       
       
-      <comments>https://purplezi.gitee.io/2020/03/21/MkDocs-Github-Travis/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2020/03/21/MkDocs-Github-Travis/#disqus_thread</comments>
       
     </item>
     
