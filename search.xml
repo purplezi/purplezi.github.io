@@ -1523,6 +1523,15 @@
 </blockquote>
 </li>
 </ul>
+<blockquote>
+<p>something to say<br>感恩开源大佬，此生永远为开源发电 🚀，GayHub 🐮🍺<br>豆瓣 gg，没有恶意，不用来干违法犯罪的事，只用来顶顶贴，我们小组会好好爱护豆瓣服务器，不要过于频繁地发送请求，如果违规触犯了什么，俺俺俺😐🤐，马上撤</p>
+</blockquote>
+<p>待实现的功能：（最近在写毕设，来不及改代码，等过完答辩先~）</p>
+<ul>
+<li><input disabled="" type="checkbox"> 按照帖子 topic 定制回复语</li>
+<li><input disabled="" type="checkbox"> 回复 &lt; x 条的消息</li>
+</ul>
+<hr>
 <h2 id="移动端抓包"><a href="#移动端抓包" class="headerlink" title="移动端抓包"></a>移动端抓包</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><ul>
 <li>Windows 64</li>
 <li>Android 10.0</li>
@@ -1551,16 +1560,16 @@
 <li><p>【登录包】在装包状态下，此时我们用 VirtualXposed 打开「豆瓣」，一定要用<strong>帐号密码登录</strong>，成功登录后，在 Fiddler 页面 ctrl + f 查找一个 URL 包含 <code>/service/auth2/token</code> 的包，如下图所示。</p>
 <ul>
 <li><p>User-Agent 信息</p>
-<p>   <img src="douban-robot/1.png" alt="POST"></p>
+<p>   <img src="1.png" alt="POST"></p>
 </li>
 <li><p>点击 WebForms 也有一些重要信息，我发现这个包里的密码都是明文的呜呜（码上加码</p>
-<p>   <img src="douban-robot/6.png" alt="POST"></p>
+<p>   <img src="6.png" alt="POST"></p>
 <p>   注：其中只有 _sig 、_ts 字段会更新，而且要定期更换（意思就是定期重新操作一遍），不然 POST 请求会失效</p>
 </li>
 </ul>
 </li>
 <li><p>【抓刷新小组首页时的包】同理，我们继续访问小组首页，刷新成功后，在 Fiddler 页面 ctrl + f 查找一个 URL 包含「小组 id」的包（给我们的小组打上小码码），需要里面的 <strong>Authorization</strong></p>
-<p> <img src="douban-robot/4.png" alt="Group-auth"></p>
+<p> <img src="4.png" alt="Group-auth"></p>
 </li>
 </ol>
 <h2 id="线上部署"><a href="#线上部署" class="headerlink" title="线上部署"></a>线上部署</h2><h3 id="部署环境"><a href="#部署环境" class="headerlink" title="部署环境"></a>部署环境</h3><ul>
@@ -1585,17 +1594,8 @@
 <li><p>【运行主程序】再跑 <code>python3 autoreply.py</code></p>
 </li>
 <li><p>结果</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[2021-04-13 21:15:32] [INFO] Sleep <span class="keyword">for</span> 4 seconds</span><br><span class="line">[2021-04-13 21:15:36] [INFO] New proxy, &#123;<span class="string">&#x27;http&#x27;</span>: <span class="string">&#x27;http://27.9.97.90:8118&#x27;</span>&#125;</span><br><span class="line">[2021-04-13 21:15:36] [INFO] 第1次刷新小组首页</span><br><span class="line">[2021-04-13 21:15:37] [INFO] comment: ค(TㅅT)ค, https://frodo.douban.com/api/v2/group/topic/22067****/create_comment, status_code: 200</span><br><span class="line">[2021-04-13 21:15:37] [INFO] 第1次回复</span><br><span class="line">[2021-04-13 21:15:37] [INFO] Sleep <span class="keyword">for</span> 18 seconds</span><br><span class="line">[2021-04-13 21:15:55] [INFO] 第2次刷新小组首页</span><br><span class="line">[2021-04-13 21:15:56] [INFO] comment: ｡･+ﾟﾟ(うд´｡)ﾟﾟ+･｡, https://frodo.douban.com/api/v2/group/topic/22071****/create_comment, status_code: 200</span><br><span class="line">[2021-04-13 21:15:56] [INFO] 第2次回复</span><br><span class="line">[2021-04-13 21:15:56] [INFO] Sleep <span class="keyword">for</span> 25 seconds</span><br></pre></td></tr></table></figure>
-<p>待实现的功能：（最近在写毕设，来不及改代码，等过完答辩先~）</p>
-</li>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[2021-04-13 21:15:32] [INFO] Sleep <span class="keyword">for</span> 4 seconds</span><br><span class="line">[2021-04-13 21:15:36] [INFO] New proxy, &#123;<span class="string">&#x27;http&#x27;</span>: <span class="string">&#x27;http://27.9.97.90:8118&#x27;</span>&#125;</span><br><span class="line">[2021-04-13 21:15:36] [INFO] 第1次刷新小组首页</span><br><span class="line">[2021-04-13 21:15:37] [INFO] comment: ค(TㅅT)ค, https://frodo.douban.com/api/v2/group/topic/22067****/create_comment, status_code: 200</span><br><span class="line">[2021-04-13 21:15:37] [INFO] 第1次回复</span><br><span class="line">[2021-04-13 21:15:37] [INFO] Sleep <span class="keyword">for</span> 18 seconds</span><br><span class="line">[2021-04-13 21:15:55] [INFO] 第2次刷新小组首页</span><br><span class="line">[2021-04-13 21:15:56] [INFO] comment: ｡･+ﾟﾟ(うд´｡)ﾟﾟ+･｡, https://frodo.douban.com/api/v2/group/topic/22071****/create_comment, status_code: 200</span><br><span class="line">[2021-04-13 21:15:56] [INFO] 第2次回复</span><br><span class="line">[2021-04-13 21:15:56] [INFO] Sleep <span class="keyword">for</span> 25 seconds</span><br></pre></td></tr></table></figure></li>
 </ol>
-<ul>
-<li><input disabled="" type="checkbox"> 按照帖子 topic 定制回复语</li>
-<li><input disabled="" type="checkbox"> 回复 &lt; x 条的消息</li>
-</ul>
-<blockquote>
-<p>something to say<br>感恩开源大佬，此生永远为开源发电 🚀，GayHub 🐮🍺<br>豆瓣 gg，没有恶意，不用来干违法犯罪的事，只用来顶顶贴，我们小组会好好爱护豆瓣服务器，不要过于频繁地发送请求，如果触犯了什么，俺俺俺😐🤐</p>
-</blockquote>
 ]]></content>
       <tags>
         <tag>playing</tag>
