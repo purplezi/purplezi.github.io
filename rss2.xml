@@ -15,14 +15,14 @@
     <atom:link href="https://purplezi.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>DreamCreator &amp; DreamLoser</description>
-    <pubDate>Fri, 26 Mar 2021 08:35:18 GMT</pubDate>
+    <pubDate>Wed, 14 Apr 2021 02:53:22 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
       <title>Hello World</title>
-      <link>https://purplezi.github.io/2021/03/26/hello-world/</link>
-      <guid>https://purplezi.github.io/2021/03/26/hello-world/</guid>
-      <pubDate>Fri, 26 Mar 2021 08:35:18 GMT</pubDate>
+      <link>https://purplezi.github.io/2021/04/14/hello-world/</link>
+      <guid>https://purplezi.github.io/2021/04/14/hello-world/</guid>
+      <pubDate>Wed, 14 Apr 2021 02:53:22 GMT</pubDate>
       
       <description>&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
       
@@ -31,7 +31,57 @@
       
       
       
-      <comments>https://purplezi.github.io/2021/03/26/hello-world/#disqus_thread</comments>
+      <comments>https://purplezi.github.io/2021/04/14/hello-world/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>豆瓣自动回贴机器人【我没有用来干坏事呀~】</title>
+      <link>https://purplezi.github.io/2021/04/13/douban-robot/</link>
+      <guid>https://purplezi.github.io/2021/04/13/douban-robot/</guid>
+      <pubDate>Tue, 13 Apr 2021 21:52:48 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</description>
+          
+        
+      
+      
+      
+      
+      
+      <category domain="https://purplezi.github.io/tags/playing/">playing</category>
+      
+      
+      <comments>https://purplezi.github.io/2021/04/13/douban-robot/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>数字图像篡改取证整理</title>
+      <link>https://purplezi.github.io/2021/04/03/digital-images-tampering-introduce/</link>
+      <guid>https://purplezi.github.io/2021/04/03/digital-images-tampering-introduce/</guid>
+      <pubDate>Sat, 03 Apr 2021 10:58:51 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</description>
+          
+        
+      
+      
+      
+      
+      
+      <category domain="https://purplezi.github.io/tags/forensic/">forensic</category>
+      
+      
+      <comments>https://purplezi.github.io/2021/04/03/digital-images-tampering-introduce/#disqus_thread</comments>
       
     </item>
     
@@ -520,76 +570,6 @@
       
       
       <comments>https://purplezi.github.io/2020/03/25/MySQL-Cluster-set-up-configuration/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>Git 学习之路</title>
-      <link>https://purplezi.github.io/2020/03/21/Windows-git-clone-slow/</link>
-      <guid>https://purplezi.github.io/2020/03/21/Windows-git-clone-slow/</guid>
-      <pubDate>Sat, 21 Mar 2020 12:40:38 GMT</pubDate>
-      
-      <description>&lt;p&gt;learning-git：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://link.zhihu.com/?target=http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/&quot;&gt;https://link.zhihu.com/?target=http%3A//www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.zhihu.com/search?type=content&amp;amp;q=git%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B&quot;&gt;https://www.zhihu.com/search?type=content&amp;amp;q=git%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&quot;Windows-下-git-clone-慢的尝试解决方法&quot;&gt;&lt;a href=&quot;#Windows-下-git-clone-慢的尝试解决方法&quot; class=&quot;headerlink&quot; title=&quot;Windows 下 git clone 慢的尝试解决方法&quot;&gt;&lt;/a&gt;Windows 下 git clone 慢的尝试解决方法&lt;/h1&gt;&lt;div class=&quot;tip success&quot;&gt;&lt;p&gt;&lt;strong&gt;重启大法?!&lt;/strong&gt;&lt;br&gt;重启网络，重启机器&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;tip success&quot;&gt;&lt;p&gt;科学上网&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;tip warning faa-horizontal animated&quot;&gt;&lt;p&gt;STILL SLOW&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;tip error faa-horizontal animated&quot;&gt;&lt;p&gt;ERROR: PRC fail&lt;/p&gt;
-&lt;/div&gt;</description>
-      
-      
-      
-      
-      <category domain="https://purplezi.github.io/categories/git/">git</category>
-      
-      
-      <category domain="https://purplezi.github.io/tags/git/">git</category>
-      
-      
-      <comments>https://purplezi.github.io/2020/03/21/Windows-git-clone-slow/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>MkDocs+Github+Travis搭建博客</title>
-      <link>https://purplezi.github.io/2020/03/21/MkDocs-Github-Travis/</link>
-      <guid>https://purplezi.github.io/2020/03/21/MkDocs-Github-Travis/</guid>
-      <pubDate>Sat, 21 Mar 2020 12:38:41 GMT</pubDate>
-      
-      <description>&lt;blockquote&gt;
-&lt;p&gt;最近是不是玩博客玩疯了&lt;br&gt;大概逻辑：通过Travis CI部署的MkDocs环境生成静态页面并且发布到GitHub上&lt;br&gt;能够通过&lt;a href=&quot;https://xxx.github.io/&quot;&gt;https://xxx.github.io/&lt;/a&gt;&amp;lt;仓库名&amp;gt;访问&lt;br&gt;MkDocs 官网&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&quot;https://squidfunk.github.io/mkdocs-material/&quot;&gt;https://squidfunk.github.io/mkdocs-material/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.mkdocs.org/&quot;&gt;https://www.mkdocs.org/&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Travis 官网 &lt;a href=&quot;https://travis-ci.org/&quot;&gt;https://travis-ci.org&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</description>
-      
-      
-      
-      
-      <category domain="https://purplezi.github.io/categories/Blogs/">Blogs</category>
-      
-      
-      <category domain="https://purplezi.github.io/tags/blog/">blog</category>
-      
-      <category domain="https://purplezi.github.io/tags/MkDocs/">MkDocs</category>
-      
-      <category domain="https://purplezi.github.io/tags/github/">github</category>
-      
-      <category domain="https://purplezi.github.io/tags/Travis/">Travis</category>
-      
-      
-      <comments>https://purplezi.github.io/2020/03/21/MkDocs-Github-Travis/#disqus_thread</comments>
       
     </item>
     
